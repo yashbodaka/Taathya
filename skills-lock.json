@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": {
+    "colorize": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "computedHash": "c7ade3015517ee497c77c39285b25984f52e7948fd6164c3a85f717d6f8ecca9"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "landing-page-design": {
+      "source": "toolshell/skills",
+      "sourceType": "github",
+      "computedHash": "83e7581cb15bc34309fc76cb6680b1143d355a710e979d9d638c47e185813771"
+    },
+    "polish": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "computedHash": "3e101ab23d322abd2de3b8a783009e034f85b46d4b86c36e58389f8670edac21"
+    },
+    "ui-animation": {
+      "source": "mblode/agent-skills",
+      "sourceType": "github",
+      "computedHash": "d03322a1be1a1b7189b6edd6d1615cc4e19767cad79bf42fb0a2e58425607d03"
+    }
+  }
+}

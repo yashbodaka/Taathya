@@ -1,0 +1,909 @@
+/* ================================================================
+   Taathya — Listings Page Styles
+   ================================================================ */
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* ---- Scrollbar ---- */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Hide scrollbar on cards container but preserve scrolling functionality */
+.cards-container::-webkit-scrollbar { 
+    display: none; 
+}
+.cards-container { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+/* ---- Split Layout ---- */
+.split-layout {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+}
+
+.list-panel {
+    width: 35%; /* giving approx 40-45% depending on constraints */
+    min-width: 600px;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    background: #F8F2F4; /* Soft warm background */
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+}
+
+.map-panel {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+    padding: 24px; /* Frame for the map */
+    background-color: #F8F2F4; /* Matching background for map frame */
+    display: flex;
+    flex-direction: column;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border-radius: 40px; /* High radius for card look */
+    overflow: hidden;
+    box-shadow: 
+        0 20px 50px -10px rgba(0, 0, 0, 0.08), 
+        0 0 0 1px rgba(140, 39, 76, 0.05); /* Soft highlight border */
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+/* Custom Zoom Controls Aesthetic */
+.mapboxgl-ctrl-group {
+    border-radius: 16px !important;
+    border: none !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08) !important;
+    overflow: hidden;
+    margin: 24px !important;
+}
+
+.mapboxgl-ctrl-group button {
+    width: 44px !important;
+    height: 44px !important;
+    background: white !important;
+}
+
+/* ---- Navbar ---- */
+.listings-nav {
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid rgba(140, 39, 76, 0.05);
+    box-shadow: 
+        0 10px 40px -10px rgba(140, 39, 76, 0.06),
+        0 4px 12px -2px rgba(0, 0, 0, 0.02);
+    z-index: 50;
+}
+
+/* Add a subtle feather/blur transition between header and content */
+.filter-bar {
+    position: sticky;
+    top: 128px; /* Updated for h-32 navbar */
+    z-index: 40;
+    box-shadow: 
+        0 20px 30px -10px rgba(248, 242, 244, 0.9), /* Uses the #F8F2F4 color to blend */
+        0 1px 0 0 rgba(140, 39, 76, 0.03);
+    border-bottom: none;
+}
+
+.nav-search-container input {
+    background: #F9FAFB !important;
+}
+
+.nav-search-container input:focus {
+    background: #FFFFFF !important;
+}
+
+/* ---- Filter Chips ---- */
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: 14px;
+    border: 1.5px solid #EAEAEA;
+    background: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4B5563;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    flex-shrink: 0;
+}
+
+.filter-chip:hover {
+    border-color: #8C274C;
+    color: #8C274C;
+    background: rgba(140, 39, 76, 0.03);
+    transform: translateY(-2px);
+}
+
+.filter-chip.active {
+    background: linear-gradient(135deg, #8C274C 0%, #B03366 100%);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(140, 39, 76, 0.25);
+}
+
+/* ---- Property Card ---- */
+.property-card {
+    display: flex;
+    gap: 20px;
+    padding: 16px;
+    background: #FFFFFF;
+    border-radius: 28px;
+    border: 1px solid rgba(140, 39, 76, 0.05);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.02);
+}
+
+.property-card:hover {
+    box-shadow: 0 20px 40px rgba(140, 39, 76, 0.08);
+    transform: translateY(-6px);
+    border-color: rgba(140, 39, 76, 0.15);
+}
+
+.card-image-wrap {
+    width: 220px;
+    min-width: 220px;
+    height: 170px;
+    border-radius: 28px; /* Increased to match the 28px outer card radius */
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.card-image-wrap img {
+    border-radius: 28px; /* Added explicit rounding for images */
+}
+
+.card-price {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: #8C274C;
+    letter-spacing: -0.03em;
+}
+
+.stat-chip {
+    padding: 6px 12px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8C274C;
+    border: 1px solid rgba(140, 39, 76, 0.12);
+    box-shadow: 0 2px 4px rgba(140, 39, 76, 0.04);
+}
+
+.stat-chip .material-icons-outlined {
+    font-size: 14px;
+}
+
+/* Map Badge & Mobile Polish */
+.map-badge {
+    background: white;
+    border: 1px solid rgba(140, 39, 76, 0.1);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    backdrop-filter: blur(8px);
+}
+
+.badge-dot {
+    background: #8C274C;
+    box-shadow: 0 0 0 3px rgba(140, 39, 76, 0.2);
+}
+
+.card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.property-card:hover .card-image-wrap img {
+    transform: scale(1.1);
+}
+
+/* Image badge */
+.card-img-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: white;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.badge-premium { background: linear-gradient(135deg, #8C274C, #C33B6D); }
+.badge-hot { background: linear-gradient(135deg, #E65100, #FF8F00); }
+.badge-upcoming { background: linear-gradient(135deg, #1565C0, #42A5F5); }
+.badge-new { background: linear-gradient(135deg, #2E7D32, #66BB6A); }
+
+/* --- BHK Switcher --- */
+.bhk-switcher {
+    display: flex;
+    gap: 4px;
+    background: #F3F4F6;
+    padding: 3px;
+    border-radius: 12px;
+    margin-bottom: 4px;
+}
+
+.bhk-pill {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: #6B7280;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    white-space: nowrap;
+}
+
+.bhk-pill.active {
+    background: white;
+    color: #8C274C;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.bhk-pill:hover:not(.active) {
+    color: #8C274C;
+    background: rgba(255,255,255,0.4);
+}
+
+/* --- Cashback Chip --- */
+.cashback-chip {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    border: 1px solid rgba(140, 39, 76, 0.1);
+    z-index: 5;
+    transition: all 0.3s ease;
+}
+
+.property-card:hover .cashback-chip {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 12px 30px rgba(140, 39, 76, 0.15);
+}
+
+.cashback-chip .material-icons-outlined {
+    font-size: 16px;
+    color: #8C274C;
+}
+
+.cashback-amount {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: #8C274C;
+}
+
+.cashback-label {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #6B7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Wishlist heart */
+.wishlist-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(4px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.wishlist-btn:hover {
+    background: white;
+    transform: scale(1.15);
+}
+
+.wishlist-btn svg {
+    width: 16px;
+    height: 16px;
+    transition: all 0.2s ease;
+}
+
+.wishlist-btn.active svg {
+    fill: #E53E3E;
+    stroke: #E53E3E;
+}
+
+/* Card details */
+.card-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 6px 0;
+}
+
+.card-price {
+    font-family: 'Sora', sans-serif;
+    font-weight: 800; /* Match index.html bold fonts */
+    font-size: 22px;
+    color: #8C274C;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.card-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1A1A2E;
+    line-height: 1.3;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: #6B7280;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+.card-location .material-icons-outlined {
+    font-size: 13px;
+    color: #8C274C;
+}
+
+/* Stat chips */
+.stat-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.stat-chip {
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #F3F4F6;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #4B5563;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Status tag */
+.status-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tag-ready { background: #D1FAE5; color: #065F46; }
+.tag-prelaunch { background: #DBEAFE; color: #1E40AF; }
+.tag-upcoming { background: #FEF3C7; color: #92400E; }
+.tag-underconstruction { background: #FEE2E2; color: #991B1B; }
+
+/* Verified badge */
+.verified-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #059669;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+}
+
+.verified-badge .material-icons-outlined {
+    font-size: 14px;
+}
+
+/* ---- Map Styles ---- */
+.map-badge {
+    position: absolute;
+    top: 48px; /* Adjusted for map-panel padding */
+    left: 48px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(140, 39, 76, 0.1);
+}
+
+.badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #8C274C;
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(140,39,76,0.5); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(140,39,76,0); }
+}
+
+/* Price markers on map wrapper */
+.marker-wrapper {
+    width: 0;
+    height: 0;
+    position: relative;
+    z-index: 10;
+}
+
+.marker-wrapper.top {
+    z-index: 50 !important;
+}
+
+/* Base Price Marker (Pill-shape) */
+.price-marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    padding: 5px 12px;
+    background: #8C274C;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 999px;
+    white-space: nowrap;
+    cursor: pointer;
+    position: absolute;
+    bottom: 0px; 
+    left: 50%;
+    /* Default state: Point the triangle exactly at the 0x0 origin */
+    transform: translate(-50%, -5px);
+    transform-origin: bottom center;
+    transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(140,39,76,0.35);
+}
+
+/* Invisible hit area to prevent cursor slippage / flickering during transition */
+.price-marker::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    z-index: -1;
+}
+
+.price-marker::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #8C274C;
+    transition: border-top-color 0.25s ease;
+}
+
+.price-marker:hover,
+.price-marker.active {
+    background: #4A0E28;
+    transform: translate(-50%, -5px) scale(1.15); /* Pill pop straight out from coordinate */
+    box-shadow: 0 4px 16px rgba(74,14,40,0.45);
+}
+
+.price-marker:hover::after,
+.price-marker.active::after {
+    border-top-color: #4A0E28;
+}
+
+/* Airbnb-style Zoomed Out State */
+.is-zoomed-out .price-marker:not(.active):not(:hover) {
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    padding: 0;
+    border-radius: 50%;
+    /* 14px circle centered perfectly over the 0x0 point */
+    transform: translate(-50%, 7px);
+    box-shadow: 0 0 0 2px white, 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.is-zoomed-out .price-marker:not(.active):not(:hover) span {
+    display: none; /* Hide the text inside the dot */
+}
+
+.is-zoomed-out .price-marker:not(.active):not(:hover)::after {
+    opacity: 0; /* Fade out the triangle instead of display:none */
+}
+
+.price-marker.dimmed {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Map popup */
+.mapboxgl-popup {
+    z-index: 200 !important; /* Force popup above all pins */
+}
+
+.mapboxgl-popup-content {
+    padding: 0 !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.14) !important;
+    border: 1px solid #f0f0f0;
+    min-width: 260px;
+    z-index: 201; /* Inner content above popup wrapper */
+}
+
+.mapboxgl-popup-close-button {
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    color: #6B7280;
+    right: 6px !important;
+    top: 6px !important;
+    z-index: 5;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.popup-body {
+    padding: 12px 14px 14px;
+}
+
+.popup-price {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: #8C274C;
+    margin-bottom: 2px;
+}
+
+.popup-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #1A1A2E;
+    margin-bottom: 4px;
+}
+
+.popup-location {
+    font-size: 11.5px;
+    color: #6B7280;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.popup-stats {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.popup-stat {
+    padding: 2px 8px;
+    background: #F3F4F6;
+    border-radius: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10.5px;
+    font-weight: 500;
+    color: #4B5563;
+}
+
+.popup-view-btn {
+    display: block;
+    width: 100%;
+    padding: 8px 0;
+    text-align: center;
+    background: #8C274C;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.popup-view-btn:hover {
+    background: #6B1D3A;
+}
+
+/* Mapbox nav controls */
+.mapboxgl-ctrl-bottom-right {
+    bottom: 24px !important;
+    right: 12px !important;
+}
+
+/* ---- Mobile Toggle ---- */
+.mobile-toggle {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    padding: 12px 24px;
+    border-radius: 999px;
+    background: #8C274C;
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(140,39,76,0.35);
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.mobile-toggle:hover {
+    background: #6B1D3A;
+    transform: translateX(-50%) scale(1.03);
+}
+
+/* ---- Filters Drawer ---- */
+.filters-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    transition: opacity 0.3s ease;
+}
+
+.filters-overlay.hidden { display: none; }
+
+.filters-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 85vh;
+    background: white;
+    border-radius: 24px 24px 0 0;
+    z-index: 201;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 -10px 50px rgba(0,0,0,0.1);
+}
+
+.filters-drawer.open {
+    transform: translateY(0);
+}
+
+/* Bedroom & Possession buttons */
+.bedroom-btn,
+.possession-btn {
+    padding: 7px 16px;
+    border-radius: 10px;
+    border: 1px solid #E5E7EB;
+    background: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #6B7280;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bedroom-btn:hover,
+.possession-btn:hover {
+    border-color: #8C274C;
+    color: #8C274C;
+}
+
+.bedroom-btn.active,
+.possession-btn.active {
+    background: #8C274C;
+    color: white;
+    border-color: #8C274C;
+}
+
+/* Amenity toggles */
+.amenity-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #E5E7EB;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12.5px;
+    color: #4B5563;
+}
+
+.amenity-toggle:hover {
+    border-color: #8C274C;
+}
+
+.amenity-toggle input[type="checkbox"] {
+    accent-color: #8C274C;
+    width: 15px;
+    height: 15px;
+}
+
+.amenity-toggle:has(input:checked) {
+    background: #fdf2f8;
+    border-color: #8C274C;
+    color: #8C274C;
+}
+
+/* ---- Empty state ---- */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.empty-state .material-icons-outlined {
+    font-size: 48px;
+    color: #D1D5DB;
+    margin-bottom: 12px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 860px) {
+    .list-panel {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        border-right: none;
+    }
+
+    .map-panel {
+        position: fixed;
+        inset: 0;
+        top: 0;
+        z-index: 40;
+        display: none;
+    }
+
+    .map-panel.mobile-visible {
+        display: block;
+    }
+
+    .list-panel.mobile-hidden {
+        display: none;
+    }
+
+    .mobile-toggle {
+        display: flex;
+    }
+
+    .nav-search-container {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .listings-nav {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .nav-search-container {
+        order: 3;
+        max-width: 100%;
+        width: 100%;
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .listings-nav {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .filter-bar {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .nav-search-container {
+        padding: 0;
+        margin-right: 8px;
+    }
+}

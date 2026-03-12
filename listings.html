@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Taathya — Property Listings</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@100;200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+
+    <!-- Mapbox GL JS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            darkMode: false,
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8C274C",
+                        "primary-light": "#B03366",
+                        "primary-dark": "#6B1D3A",
+                        "bg-page": "#F8F2F4",
+                        "bg-card": "#FFFFFF",
+                        "text-main": "#1A1A2E",
+                        "text-sub": "#6B7280",
+                        "border-soft": "#E5E7EB",
+                    },
+                    fontFamily: {
+                        display: ["'Sora'", "sans-serif"],
+                        body: ["'Inter'", "sans-serif"],
+                        ui: ["'Space Grotesk'", "sans-serif"],
+                    },
+                    borderRadius: {
+                        card: "20px",
+                        chip: "12px",
+                        pill: "999px",
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Listings CSS -->
+    <link rel="stylesheet" href="listings.css" />
+</head>
+
+<body class="font-body bg-bg-page text-text-main m-0 p-0 overflow-hidden h-screen flex flex-col">
+
+    <!-- ===================== NAVBAR ===================== -->
+    <nav class="listings-nav flex items-center justify-between px-8 h-16 bg-white/95 backdrop-blur-xl flex-shrink-0 z-50">
+        <!-- Brand -->
+        <a href="index.html" class="flex items-center gap-2 no-underline flex-shrink-0">
+            <img src="assets/logo.png" alt="Taathya Logo" class="h-40 w-auto object-contain transition-transform hover:scale-105" />
+        </a>
+
+        <!-- Optimized Search Bar with better Hierarchy -->
+        <div class="nav-search-container flex-1 max-w-4xl px-4">
+            <div class="relative flex items-center w-full group h-14">
+                <span class="material-icons-outlined absolute left-5 text-text-sub text-xl group-focus-within:text-primary transition-colors">search</span>
+                <input id="searchInput" type="text" placeholder="Search by name, location, or project type..."
+                    class="w-full h-3rem pl-14 pr-6 rounded-2xl border border-border-soft bg-slate-50 text-base font-ui placeholder:text-text-sub/50 focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]" />
+            </div>
+        </div>
+
+        <!-- Right Actions -->
+        <div class="flex items-center gap-4 flex-shrink-0">
+            <button id="moreFiltersBtnNav" onclick="openFiltersDrawer()"
+                class="flex items-center gap-2 px-5 py-2.5 rounded-pill border border-border-soft text-sm font-ui font-semibold text-text-sub hover:border-primary hover:shadow-[0_4px_12px_rgba(140,39,76,0.08)] transition-all bg-white">
+                <span class="material-icons-outlined text-lg">tune</span>
+                <span>Filters</span>
+            </button>
+            <a href="#"
+                class="px-6 py-2.5 rounded-pill bg-primary text-white text-sm font-ui font-bold hover:bg-primary-dark transition-all no-underline shadow-[0_8px_20px_-4px_rgba(140,39,76,0.3)]">
+                Contact Us
+            </a>
+        </div>
+    </nav>
+
+    <!-- ===================== QUICK FILTERS BAR ===================== -->
+    <div class="filter-bar flex items-center justify-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-2xl border-b border-border-soft/30 flex-shrink-0 overflow-x-auto scrollbar-hide sticky top-20 z-40 transition-all duration-300">
+        <div class="flex items-center gap-2 max-w-7xl mx-auto w-full">
+            <span class="text-[10px] font-bold text-text-sub uppercase tracking-[0.2em] mr-4 opacity-40">Explore</span>
+            <button class="filter-chip active" data-filter="all">All Properties</button>
+            <button class="filter-chip" data-filter="Apartment">Apartments</button>
+            <button class="filter-chip" data-filter="Villa">Villas</button>
+            <button class="filter-chip" data-filter="Penthouse">Penthouses</button>
+            <button class="filter-chip" data-filter="Plot">Plots</button>
+            <div class="w-px h-6 bg-border-soft/50 flex-shrink-0 mx-4"></div>
+            <button class="filter-chip" data-status="Ready to Move">Ready to Move</button>
+            <button class="filter-chip" data-status="Upcoming">Upcoming</button>
+            <button class="filter-chip" data-status="Pre-launch">Pre-launch</button>
+        </div>
+    </div>
+
+    <!-- ===================== MAIN SPLIT LAYOUT ===================== -->
+    <div class="split-layout flex flex-1 min-h-0">
+
+        <!-- LEFT PANEL — Property Cards -->
+        <div id="listPanel" class="list-panel bg-surface-main">
+            <!-- Result count -->
+            <div class="flex items-center justify-between px-8 pt-6 pb-4">
+                <p class="text-[15px] text-text-sub font-ui font-medium tracking-tight">
+                    <span id="resultCount" class="font-bold text-text-main text-lg mr-1">18</span> 
+                    luxury properties found
+                </p>
+                <button id="sortBtnMobile"
+                    class="sm:hidden flex items-center gap-1 text-xs font-ui text-text-sub transition-colors hover:text-brand-primary">
+                    <span class="material-icons-outlined text-sm">swap_vert</span>
+                    Sort
+                </button>
+            </div>
+
+            <!-- Cards container -->
+            <div id="cardsContainer" class="cards-container px-6 pb-6 space-y-6 overflow-y-auto flex-1">
+                <!-- Cards injected by JS -->
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL — Mapbox Map -->
+        <div id="mapPanel" class="map-panel">
+            <!-- Map badge -->
+            <div class="map-badge">
+                <span class="badge-dot"></span>
+                <span id="mapBadgeCount" class="font-ui text-xs font-medium text-text-main">18 properties on map</span>
+            </div>
+            <div id="map" class="w-full h-full"></div>
+        </div>
+    </div>
+
+    <!-- ===================== MOBILE MAP/LIST TOGGLE ===================== -->
+    <button id="mobileToggle" class="mobile-toggle">
+        <span class="material-icons-outlined text-lg">map</span>
+        <span id="mobileToggleLabel">Show Map</span>
+    </button>
+
+    <!-- ===================== MORE FILTERS DRAWER ===================== -->
+    <div id="filtersOverlay" class="filters-overlay hidden" onclick="closeFiltersDrawer()"></div>
+    <div id="filtersDrawer" class="filters-drawer">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-border-soft">
+            <h3 class="font-display text-lg font-bold">More Filters</h3>
+            <button onclick="closeFiltersDrawer()" class="p-1 rounded-full hover:bg-gray-100 transition">
+                <span class="material-icons-outlined text-xl">close</span>
+            </button>
+        </div>
+        <div class="px-6 py-5 space-y-6 overflow-y-auto flex-1">
+            <!-- Budget Range -->
+            <div>
+                <label class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Budget Range</label>
+                <div class="flex items-center gap-3">
+                    <div class="flex-1">
+                        <label class="text-xs text-text-sub mb-1 block">Min (₹ Cr)</label>
+                        <input id="budgetMin" type="number" min="0" max="50" step="0.25" value="0"
+                            class="w-full px-3 py-2 rounded-chip border border-border-soft text-sm font-ui focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none" />
+                    </div>
+                    <span class="text-text-sub text-sm mt-5">—</span>
+                    <div class="flex-1">
+                        <label class="text-xs text-text-sub mb-1 block">Max (₹ Cr)</label>
+                        <input id="budgetMax" type="number" min="0" max="50" step="0.25" value="50"
+                            class="w-full px-3 py-2 rounded-chip border border-border-soft text-sm font-ui focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none" />
+                    </div>
+                </div>
+            </div>
+            <!-- Bedrooms -->
+            <div>
+                <label class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Bedrooms</label>
+                <div class="flex gap-2 flex-wrap" id="bedroomBtns">
+                    <button class="bedroom-btn active" data-bhk="any">Any</button>
+                    <button class="bedroom-btn" data-bhk="1">1 BHK</button>
+                    <button class="bedroom-btn" data-bhk="2">2 BHK</button>
+                    <button class="bedroom-btn" data-bhk="3">3 BHK</button>
+                    <button class="bedroom-btn" data-bhk="4">4 BHK</button>
+                    <button class="bedroom-btn" data-bhk="5">5+ BHK</button>
+                </div>
+            </div>
+            <!-- Possession Timeline -->
+            <div>
+                <label class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Possession Timeline</label>
+                <div class="flex gap-2 flex-wrap" id="possessionBtns">
+                    <button class="possession-btn active" data-poss="any">Any</button>
+                    <button class="possession-btn" data-poss="immediate">Immediate</button>
+                    <button class="possession-btn" data-poss="6months">Within 6 Months</button>
+                    <button class="possession-btn" data-poss="1year">Within 1 Year</button>
+                    <button class="possession-btn" data-poss="2years">1–2 Years</button>
+                </div>
+            </div>
+            <!-- Amenities -->
+            <div>
+                <label class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Amenities</label>
+                <div class="grid grid-cols-2 gap-2" id="amenityToggles">
+                    <label class="amenity-toggle"><input type="checkbox" value="Swimming Pool" /><span>Swimming Pool</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Gym" /><span>Gym</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Club House" /><span>Club House</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Garden" /><span>Garden</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Parking" /><span>Parking</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Security" /><span>24/7 Security</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Power Backup" /><span>Power Backup</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Children Play Area" /><span>Play Area</span></label>
+                </div>
+            </div>
+        </div>
+        <!-- Drawer Footer -->
+        <div class="flex items-center gap-3 px-6 py-4 border-t border-border-soft bg-white">
+            <button onclick="resetAdvancedFilters()" class="flex-1 py-2.5 rounded-pill border border-border-soft text-sm font-ui font-medium text-text-sub hover:border-primary hover:text-primary transition-all">
+                Reset
+            </button>
+            <button onclick="applyAdvancedFilters()" class="flex-1 py-2.5 rounded-pill bg-primary text-white text-sm font-ui font-semibold hover:bg-primary-dark transition-all">
+                Apply Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- ===================== JS ===================== -->
+    <script src="listings.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,7 @@
+<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="80" rx="24" fill="#FFF7F1"/>
+  <rect x="16" y="16" width="48" height="48" rx="16" fill="#F06A22"/>
+  <path d="M31 28H43C48 28 51 31 51 35C51 38 49.4 40 46.7 40.8C50 41.6 52 44 52 47.5C52 52.2 48.2 55 42.2 55H31V28ZM42.4 39C45.2 39 46.8 37.7 46.8 35.5C46.8 33.3 45.2 32 42.4 32H35.5V39H42.4ZM42.8 51C46 51 47.8 49.6 47.8 47C47.8 44.6 46 43 42.6 43H35.5V51H42.8Z" fill="white"/>
+  <text x="78" y="34" fill="#C85A1E" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
+  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="22" font-weight="800">Bank of Baroda</text>
+</svg>

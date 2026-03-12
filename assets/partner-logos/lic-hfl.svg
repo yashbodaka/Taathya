@@ -1,0 +1,8 @@
+<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="80" rx="24" fill="#FFFCEF"/>
+  <rect x="16" y="16" width="48" height="48" rx="16" fill="#F5B51F"/>
+  <path d="M40 26L49 34V53H31V34L40 26Z" fill="#1D4D91"/>
+  <path d="M40 31L44.5 35V53H35.5V35L40 31Z" fill="#D13D3D"/>
+  <text x="78" y="34" fill="#A36F00" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
+  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">LIC Housing</text>
+</svg>

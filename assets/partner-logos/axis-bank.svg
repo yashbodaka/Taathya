@@ -1,0 +1,8 @@
+<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="80" rx="24" fill="#FFF6FA"/>
+  <rect x="16" y="16" width="48" height="48" rx="16" fill="#8F214B"/>
+  <path d="M30 52L40 28L50 52H44.6L42.6 47H37.3L35.3 52H30Z" fill="white"/>
+  <path d="M37.8 42.4H42.2L40 36.9L37.8 42.4Z" fill="#8F214B" opacity="0.75"/>
+  <text x="78" y="34" fill="#8F214B" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
+  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">Axis Bank</text>
+</svg>

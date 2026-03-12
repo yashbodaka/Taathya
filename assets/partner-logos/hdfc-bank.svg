@@ -1,0 +1,8 @@
+<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="80" rx="24" fill="#FFF8F7"/>
+  <rect x="16" y="16" width="48" height="48" rx="16" fill="#C83E3E"/>
+  <rect x="26" y="26" width="28" height="28" rx="8" fill="white" opacity="0.96"/>
+  <rect x="34" y="34" width="12" height="12" rx="3" fill="#1F3563"/>
+  <text x="78" y="34" fill="#8E2D2D" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
+  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">HDFC Bank</text>
+</svg>

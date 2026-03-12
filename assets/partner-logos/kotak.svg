@@ -1,0 +1,8 @@
+<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="80" rx="24" fill="#F5F8FF"/>
+  <circle cx="40" cy="40" r="24" fill="#E54B4B"/>
+  <circle cx="40" cy="40" r="14" fill="white"/>
+  <path d="M32 29V51H37V42L45 51H51L42.2 40.8L50 29H44.4L37 38.5V29H32Z" fill="#173D8A"/>
+  <text x="78" y="34" fill="#173D8A" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
+  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">Kotak</text>
+</svg>

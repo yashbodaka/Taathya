@@ -1,0 +1,731 @@
+﻿/* Force high-visibility light-maroon for Dark Mode/Dark Backgrounds */
+html,
+body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+
+/* Premium Tones & Visual Flow */
+.bg-warm-depth {
+    background-color: #F8F2F4;
+}
+
+.text-warm-depth {
+    color: #F8F2F4;
+}
+
+/* Bento Card Unification */
+.unified-card {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(139, 30, 30, 0.1) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03) !important;
+    border-radius: 1.5rem !important;
+    transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.unified-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(107, 18, 18, 0.12) !important;
+    border-color: rgba(139, 30, 30, 0.3) !important;
+}
+
+/* Section Transitions */
+.divider-peak {
+    position: relative;
+    height: 60px;
+    width: 100%;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.divider-peak svg {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    fill: currentColor;
+}
+
+/* Bold Typography Enhancements */
+.font-display {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: 800;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font-extrabold {
+    font-weight: 900;
+}
+
+.tracking-tighter {
+    letter-spacing: -0.04em;
+}
+
+.tracking-tight {
+    letter-spacing: -0.02em;
+}
+
+/* Body text contrast */
+.font-body {
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+/* Ensure bold headings stand out */
+h1 {
+    font-weight: 900;
+}
+
+/* â”€â”€ Bank Logo Marquee â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+.marquee-outer {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 28s linear infinite;
+    will-change: transform;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+.partner-logo-card {
+    flex: 0 0 auto;
+    width: 220px;
+    height: 64px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: none;
+    overflow: hidden;
+    transition: all 250ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.partner-logo-card:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.08);
+}
+
+.partner-logo-img {
+    width: 85%;
+    height: 85%;
+    max-height: 48px;
+    display: block;
+    object-fit: contain;
+}
+
+@keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Enhanced Property Cards */
+.property-card-hover {
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.property-card-hover:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.15);
+}
+
+.property-card-hover:hover img {
+    scale: 1.1;
+}
+
+.glass-tag {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.price-glow {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes subtle-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-subtle-pulse {
+    animation: subtle-pulse 3s infinite ease-in-out;
+}
+
+h2 {
+    font-weight: 800;
+}
+
+h3 {
+    font-weight: 700;
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Section Zoom Effect */
+.section-zoom {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.section-zoom.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Image Reveal & Transition Skills */
+.reveal-img {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
+}
+
+.reveal-img.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.reveal-img:hover {
+    transform: scale(1.03) translateY(-5px);
+    box-shadow: 0 20px 40px rgba(123, 30, 30, 0.15);
+    z-index: 20;
+}
+
+/* Scanning Animation for Minimal Docs */
+/* Subtle Dot Pattern Overlay */
+.subtle-pattern-overlay {
+    background-image: radial-gradient(rgba(200, 62, 62, 0.15) 1px, transparent 1px);
+    background-size: 20px 20px;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Float Animation */
+@keyframes float-icon {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+.animate-float-slow {
+    animation: float-icon 4s ease-in-out infinite;
+}
+
+/* Premium Wheat Card with Geometric Background */
+.premium-card-wheat {
+    background-color: #F5E6D3;
+    /* A warm, premium wheat/cream tone */
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-card-wheat::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='240' height='240' viewBox='0 0 240 240' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='180' cy='-20' r='100' stroke='%23781A3C' stroke-width='1.5' /%3E%3Ccircle cx='180' cy='-20' r='70' stroke='%23781A3C' stroke-width='1' /%3E%3Ccircle cx='180' cy='-20' r='140' stroke='%23781A3C' stroke-width='0.5' /%3E%3Cline x1='20' y1='200' x2='220' y2='20' stroke='%23781A3C' stroke-width='0.8' /%3E%3Cline x1='0' y1='120' x2='240' y2='80' stroke='%23781A3C' stroke-width='0.5' /%3E%3Cpolygon points='60,180 120,60 180,180' stroke='%23781A3C' stroke-width='1' /%3E%3Crect x='10' y='160' width='60' height='60' stroke='%23781A3C' stroke-width='0.8' transform='rotate(25 40 190)' /%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
+}
+
+/* Palette mapping for Wheat Highlight card */
+.premium-card-wheat .card-icon-container {
+    background: #8C274C;
+    color: white;
+}
+
+.premium-card-wheat .card-text-primary {
+    color: #2E0B18;
+}
+
+.premium-card-wheat .card-text-secondary {
+    color: #5C4B43;
+}
+
+.premium-card-wheat .timeline-dot {
+    background: rgba(123, 30, 30, 0.15);
+}
+
+.premium-card-wheat .timeline-dot-active {
+    background: #8C274C;
+}
+
+/* Tab Switching Styles */
+.tab-button {
+    color: #9CA3AF;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-button.active {
+    color: #8C274C;
+    border-bottom-color: #8C274C;
+}
+
+.tab-button:hover {
+    color: #8C274C;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Premium How It Works Section Styles */
+.tab-btn {
+    color: #6B7280;
+    background: transparent;
+    font-weight: 700;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #8C274C 0%, #4F142A 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(139, 30, 30, 0.3);
+    font-weight: 700;
+}
+
+.tab-btn:hover:not(.active) {
+    background: rgba(139, 30, 30, 0.05);
+    color: #8C274C;
+}
+
+.tab-content {
+    display: none;
+    animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Parallax Effects */
+.parallax-slow {
+    animation: parallaxSlow 20s ease-in-out infinite;
+}
+
+.parallax-fast {
+    animation: parallaxFast 15s ease-in-out infinite;
+}
+
+@keyframes parallaxSlow {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+}
+
+@keyframes parallaxFast {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-40px, 40px) scale(1.15);
+    }
+}
+
+.parallax-image {
+    transition: transform 0.3s ease-out;
+}
+
+/* Featured Properties Grid Styles */
+.group.flex.flex-col.rounded-3xl.overflow-hidden {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-font-smoothing: subpixel-antialiased;
+    isolation: isolate;
+}
+
+.group.flex.flex-col.rounded-3xl.overflow-hidden .relative.h-80.overflow-hidden {
+    mask-image: -webkit-radial-gradient(white, black);
+    border-radius: 1.5rem 1.5rem 0 0;
+}
+
+.parallax-image:hover {
+    transform: translateY(-8px);
+}
+
+/* Testimonial Carousel Styles - Redesigned */
+.testimonial-slide {
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.5s cubic-bezier(0.2, 0, 0.2, 1),
+        visibility 0s linear 0.7s;
+}
+
+.testimonial-slide .testimonial-content {
+    transition: opacity 0.4s ease-out;
+}
+
+.testimonial-card {
+    position: relative;
+    overflow: hidden;
+    background: #FFFFFF;
+    border: 1px solid rgba(115, 17, 27, 0.08);
+}
+
+
+
+
+
+.testimonial-content {
+    position: relative;
+    z-index: 10;
+}
+
+.testimonial-slide.center {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+    z-index: 10;
+    pointer-events: auto;
+    visibility: visible;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 0s;
+}
+
+.testimonial-slide.left {
+    transform: translateX(-55%) scale(0.85);
+    opacity: 0.25;
+    filter: blur(0px);
+    z-index: 5;
+    visibility: visible;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 0s;
+}
+
+.testimonial-slide.left .testimonial-content {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.testimonial-slide.right {
+    transform: translateX(55%) scale(0.85);
+    opacity: 0.25;
+    filter: blur(0px);
+    z-index: 5;
+    visibility: visible;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 0s;
+}
+
+.testimonial-slide.right .testimonial-content {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.testimonial-slide.hidden {
+    transform: translateX(0) scale(0.7);
+    opacity: 0;
+    filter: blur(0);
+    z-index: 1;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        visibility 0s linear 0.3s;
+}
+
+/* Disabled button styles */
+button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Enhanced shadow for glassmorphism */
+.shadow-3xl {
+    box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+}
+
+/* Smooth background transition for all sections */
+section {
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Layered Wave Styles */
+.layered-waves {
+    position: relative;
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+    /* Flows naturally downward */
+    background: transparent;
+}
+
+.layered-waves svg {
+    display: block;
+    width: 200%;
+    /* Double width for seamless loop */
+    height: 80px;
+}
+
+.layered-waves path {
+    fill: currentColor;
+}
+
+.layered-waves .layer-1 {
+    opacity: 0.15;
+    animation: waveFlow 15s linear infinite;
+}
+
+.layered-waves .layer-2 {
+    opacity: 0.35;
+    animation: waveFlow 25s linear infinite;
+}
+
+.layered-waves .layer-3 {
+    opacity: 1;
+    animation: waveFlow 20s linear infinite;
+}
+
+@keyframes waveFlow {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 768px) {
+    .partner-logo-card {
+        width: 170px;
+        height: 50px;
+        border-radius: 10px;
+    }
+    .partner-logo-img { max-height: 32px; }
+
+    .testimonial-slide.left {
+        transform: translateX(-35%) scale(0.9) !important;
+        opacity: 0.15 !important;
+    }
+
+    .testimonial-slide.right {
+        transform: translateX(35%) scale(0.9) !important;
+        opacity: 0.15 !important;
+    }
+}
+
+/* Custom FAQ animations */
+.faq-group.active .faq-content {
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+}
+
+.faq-group.active .faq-inner-content {
+    transform: translateY(0);
+}
+
+.faq-group.active .faq-icon-v {
+    transform: rotate(90deg);
+    opacity: 0;
+}
+
+.faq-group.active .faq-icon-h {
+    background-color: #8C274C;
+    /* primary color */
+}
+
+/* Vertical and horizontal lines inside FAQ cross icon */
+.faq-icon-v {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, background-color 0.3s;
+}
+
+.faq-icon-h {
+    transition: background-color 0.3s;
+}
+
+/* ================================================================
+   NEW FAQ SECTION â€” Editorial Split Dark/Cream
+   ================================================================ */
+
+/* Category button base */
+.faq-cat-btn {
+    color: inherit;
+}
+
+/* Active category state */
+.faq-cat-btn.faq-cat-active .faq-cat-bg {
+    opacity: 1 !important;
+}
+.faq-cat-btn.faq-cat-active .faq-cat-icon-wrap {
+    background: rgba(200, 62, 62, 0.2) !important;
+}
+.faq-cat-btn.faq-cat-active .faq-cat-icon,
+.faq-cat-btn.faq-cat-active .material-icons-outlined {
+    color: #8C274C !important;
+}
+.faq-cat-btn.faq-cat-active .faq-cat-label {
+    color: #FBF7F1 !important;
+}
+.faq-cat-btn.faq-cat-active .faq-cat-count {
+    color: rgba(200, 62, 62, 0.6) !important;
+}
+
+/* FAQ item: the full interactive row */
+.faq-item-new {
+    overflow: hidden;
+}
+
+/* The expanding body â€” closed by default */
+.faq-body {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+        max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-body > * {
+    overflow: hidden;
+}
+
+/* When open */
+.faq-item-new.faq-open .faq-body {
+    max-height: 320px;
+    opacity: 1;
+}
+
+/* Number glows when open */
+.faq-item-new.faq-open .faq-num {
+    color: rgba(200, 62, 62, 0.5) !important;
+}
+
+/* Question text turns primary when open */
+.faq-item-new.faq-open .faq-q {
+    color: #8C274C !important;
+}
+
+/* Toggle icon rotates to Ã— when open */
+.faq-item-new.faq-open .faq-toggle-icon {
+    background: rgba(200, 62, 62, 0.08);
+    border-color: rgba(200, 62, 62, 0.5) !important;
+}
+
+.faq-item-new.faq-open .faq-plus {
+    stroke: #8C274C !important;
+    opacity: 1;
+    transform: rotate(45deg);
+}
+
+/* Hover state when not open */
+.faq-item-new:not(.faq-open) .faq-trigger:hover .faq-num {
+    color: rgba(200, 62, 62, 0.25) !important;
+}
+.faq-item-new:not(.faq-open) .faq-trigger:hover .faq-q {
+    color: #8C274C !important;
+}
+.faq-item-new:not(.faq-open) .faq-trigger:hover .faq-toggle-icon {
+    border-color: rgba(200, 62, 62, 0.5) !important;
+    background: rgba(200, 62, 62, 0.05);
+}
+.faq-item-new:not(.faq-open) .faq-trigger:hover .faq-plus {
+    stroke: #8C274C !important;
+}
+
+/* Panel fade-in when switching categories */
+.faq-content-panel {
+    animation: faqPanelIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes faqPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tag chip */
+.faq-tag {
+    background: rgba(200, 62, 62, 0.08);
+}
+
+/* Dark mode overrides */
+
+
+
+
