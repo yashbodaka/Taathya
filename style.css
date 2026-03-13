@@ -1,7 +1,7 @@
-﻿/* Force high-visibility light-maroon for Dark Mode/Dark Backgrounds */
+/* Force high-visibility light-maroon for Dark Mode/Dark Backgrounds */
 html,
 body {
-    overflow-x: hidden;
+    overflow-x: clip;
     scroll-behavior: smooth;
 }
 
@@ -31,7 +31,75 @@ body {
     border-color: rgba(139, 30, 30, 0.3) !important;
 }
 
-/* Section Transitions */
+/* Section Transitions & Reveal System */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: transform, opacity;
+}
+
+.reveal-on-scroll.visible {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0) scale(1);
+}
+
+/* Scroll-Driven Hero Specific */
+#hero-scroll-container {
+    /* Safe container with no restrictive overflow/contain rules */
+    position: relative;
+    z-index: 10;
+}
+
+#hero-reveal-layer {
+    /* Ensure the clip-path is sharp on Safari */
+    -webkit-clip-path: circle(0vmax at 50% 100%);
+    clip-path: circle(0vmax at 50% 100%);
+    /* Force GPU acceleration for smooth scaling */
+    transform: translateZ(0); 
+}
+
+/* Cardification: smooth transitions between rAF ticks */
+#hero-sticky-hub {
+    will-change: left, right, width, height, border-radius;
+    /* Smooth out micro-jitter between animation frames */
+    transition: border-radius 0.08s linear;
+    /* Ensure rounded corners properly clip children */
+    overflow: hidden;
+    isolation: isolate;
+}
+
+
+#hero-animated-path {
+    transition: stroke-dashoffset 0.1s linear;
+}
+
+.text-accent-plum {
+    color: #E8D8C4;
+}
+
+/* Directional Reveal Variants */
+.reveal-from-left { transform: translateX(-100px) rotate(-5deg) scale(0.9); }
+.reveal-from-right { transform: translateX(100px) rotate(5deg) scale(0.9); }
+.reveal-from-top { transform: translateY(-100px) rotate(-2deg) scale(0.9); }
+.reveal-from-bottom { transform: translateY(100px) rotate(2deg) scale(0.9); }
+
+/* Corner Variants for "Gathering" Effect */
+.reveal-from-top-left { transform: translate(-120px, -120px) rotate(-10deg) scale(0.8); }
+.reveal-from-top-right { transform: translate(120px, -120px) rotate(10deg) scale(0.8); }
+.reveal-from-bottom-left { transform: translate(-120px, 120px) rotate(-10deg) scale(0.8); }
+.reveal-from-bottom-right { transform: translate(120px, 120px) rotate(10deg) scale(0.8); }
+
+/* Staggered Delays for Sequential Apperance */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+.delay-500 { transition-delay: 500ms; }
+.delay-600 { transition-delay: 600ms; }
+.delay-700 { transition-delay: 700ms; }
+.delay-800 { transition-delay: 800ms; }
+
 .divider-peak {
     position: relative;
     height: 60px;

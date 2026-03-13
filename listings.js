@@ -422,10 +422,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function switchConfig(e, propertyId, configIndex) {
     if (e) e.stopPropagation();
     activeConfigs[propertyId] = configIndex;
-    
+
     const prop = PROPERTIES.find(p => p.id === propertyId);
     const config = prop.configs[configIndex];
-    
+
     const card = document.querySelector(`.property-card[data-id="${propertyId}"]`);
     if (card) {
         // Price
@@ -474,7 +474,7 @@ function initMap() {
     map.on('load', () => {
         renderMarkers();
         fitMapToBounds();
-        
+
         // Ensure map layout is recalculated after our padding/styling application
         setTimeout(() => map.resize(), 300);
     });
@@ -517,7 +517,7 @@ function cancelHoverIntent() {
 
 function fitMapToBounds() {
     if (filteredProperties.length === 0) return;
-    
+
     // Create bounding box representing all visible markers
     const bounds = new mapboxgl.LngLatBounds();
     filteredProperties.forEach(p => {
@@ -609,9 +609,9 @@ function openMapPopup(prop) {
         .addTo(map);
 
     // Pan map to center the popup. Apply an offset so the popup fits comfortably on screen without being clipped by the top bar.
-    map.flyTo({ 
-        center: [prop.lng, prop.lat], 
-        zoom: 14.5, 
+    map.flyTo({
+        center: [prop.lng, prop.lat],
+        zoom: 14.5,
         duration: 800,
         offset: [0, 120] // Pivot origin down so the top-heavy popup is centered
     });
@@ -646,13 +646,13 @@ function panToProperty(prop) {
     // If we are hovering the property that is ALREADY zoomed in/open, do nothing (keep the zoom).
     if (hasClickZoomed) {
         const isCurrentPropOpen = activePopup && activePopup.getLngLat().lng === prop.lng && activePopup.getLngLat().lat === prop.lat;
-        
+
         if (!isCurrentPropOpen) {
             hasClickZoomed = false;      // clear flag
             closeActivePopup();           // remove UI state of previous property
             unhighlightAllCards();        // remove card highlight
             fitMapToBounds();             // zoom out
-            
+
             // Highlight the NEW hovered marker after standardizing view
             markers.forEach(m => {
                 const isActive = m.id === prop.id;
@@ -738,21 +738,21 @@ function renderCards() {
     container.innerHTML = filteredProperties.map(prop => {
         const badgeClass = prop.badge === 'Premium' ? 'badge-premium'
             : prop.badge === 'Hot' ? 'badge-hot'
-            : prop.badge === 'Upcoming' ? 'badge-upcoming'
-            : 'badge-new';
+                : prop.badge === 'Upcoming' ? 'badge-upcoming'
+                    : 'badge-new';
 
         const tagClass = prop.tag === 'Ready to Move' ? 'tag-ready'
             : prop.tag === 'Pre-launch' ? 'tag-prelaunch'
-            : prop.tag === 'Upcoming' ? 'tag-upcoming'
-            : 'tag-underconstruction';
+                : prop.tag === 'Upcoming' ? 'tag-upcoming'
+                    : 'tag-underconstruction';
 
         const isWished = wishlist.has(prop.id);
-        
+
         // Handle BHK configs
         const configIdx = activeConfigs[prop.id] || 0;
         const hasConfigs = prop.configs && prop.configs.length > 0;
         const activeConfig = hasConfigs ? prop.configs[configIdx] : null;
-        
+
         const displayPrice = activeConfig ? activeConfig.price : prop.price;
         const displayBHK = activeConfig ? activeConfig.bhk : prop.bhk;
         const displayArea = activeConfig ? activeConfig.area : prop.area;

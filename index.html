@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -75,108 +75,188 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
 
-<body
-    class="font-body bg-white text-text-light transition-colors duration-300 relative">
-    <div
-        class="fixed inset-0 bg-gradient-to-b from-transparent via-white/30 to-white/40 pointer-events-none z-[-1]">
+<body class="font-body bg-white text-text-light transition-colors duration-300 relative">
+    <div class="fixed inset-0 bg-gradient-to-b from-transparent via-white/30 to-white/40 pointer-events-none z-[-1]">
     </div>
     <nav
-        class="sticky top-0 z-50 bg-gradient-to-r from-white/95 via-white/95 to-white/95 backdrop-blur-xl saturate-150 shadow-sm border-b border-primary/10 overflow-visible">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20 overflow-visible">
-                <div class="flex-shrink-0 flex items-center h-full">
+        class="sticky top-0 z-[100] bg-white/80 backdrop-blur-2xl border-b border-primary/5 h-16 flex items-center transition-all duration-500 overflow-visible">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-visible">
+            <div class="flex justify-between items-center h-full overflow-visible">
+                <!-- Premium Logo Slot - Floating/Hanging Logo -->
+                <div class="flex-shrink-0 flex items-center relative w-48 h-full overflow-visible">
                     <img src="assets/logo.png" alt="Taathya Logo"
-                        class="transition hover:scale-105 duration-300 drop-shadow-md"
-                        style="width: auto; height: 160px;">
+                        class="absolute left-0 top-1/2 -translate-y-1/2 w-auto transition-transform hover:scale-105 duration-500 drop-shadow-xl"
+                        style="height: 140px !important; max-height: none !important;">
                 </div>
-                <div class="hidden md:flex space-x-8 items-center">
-                    <a class="text-gray-700 hover:text-primary transition font-medium relative group"
+
+                <!-- Refined Navigation Links -->
+                <div class="hidden md:flex space-x-10 items-center">
+                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
                         href="#">
                         Home
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a class="text-gray-700 hover:text-primary transition font-medium relative group"
+                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
                         href="#">
                         Properties
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a class="text-gray-700 hover:text-primary transition font-medium relative group"
+                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
                         href="#">
                         Finance
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a class="text-gray-700 hover:text-primary transition font-medium relative group"
+                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
                         href="#">
                         About Us
                         <span
-                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                     </a>
-                    <a class="px-5 py-2.5 rounded-full bg-primary text-white text-white hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 font-medium"
+
+                    <!-- Premium Styled Button -->
+                    <a class="ml-4 px-7 py-2 text-[12px] uppercase tracking-widest font-extrabold rounded-full bg-primary text-white hover:bg-[#A63B61] transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0"
                         href="#">Contact Us</a>
-                    <!-- Dark Mode Toggle -->
-                    
                 </div>
-                <div class="md:hidden flex items-center space-x-4">
-                    
-                    <button class="text-gray-700 hover:text-primary">
-                        <span class="material-icons-outlined text-3xl">menu</span>
+
+                <!-- Mobile Trigger -->
+                <div class="md:hidden flex items-center">
+                    <button class="text-gray-900 focus:outline-none">
+                        <span class="material-icons-outlined text-2xl">menu</span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
-    <header class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-white via-white to-white">
-        <div class="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-br from-primary/5 via-secondary/20 to-transparent -skew-x-12 transform origin-top-right z-0"></div>
-        <div class="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-20 left-20 w-72 h-72 bg-primary/5 rounded-full blur-[100px]"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <!-- Scroll-Driven Hero Wrapper (White background for partitions) -->
+    <div id="hero-scroll-container" class="relative h-[400vh] z-10 bg-white cursor-default">
+        <!-- Sticky Hub (White background for card container) -->
+        <div id="hero-sticky-hub" class="sticky top-0 w-full bg-white z-20" style="height: 100vh;">
 
-            <!-- Left: Text -->
-            <div class="order-2 lg:order-1 space-y-7 animate-fade-in-up">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 backdrop-blur-sm border border-primary/20 text-gray-700 text-sm font-medium shadow-sm shadow-primary/10">
-                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-lg shadow-primary/50"></span>
-                    Trusted by 5,000+ Homeowners
+            <!-- LAYER 1: Base Hero (Cinematic Glassmorphic) -->
+            <header
+                class="absolute inset-0 w-full h-full z-10 flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-black">
+                <!-- Full-Opacity Cinematic Video -->
+                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-100">
+                    <source src="assets/19834302-uhd_3840_2160_60fps.mp4" type="video/mp4">
+                </video>
+                <!-- Dark Cinematic Scrim — preserves video, ensures text legibility -->
+                <div class="absolute inset-0 bg-gradient-to-b from-black/65 via-black/25 to-black/65"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/35"></div>
+
+                <!-- Glassmorphic Content Card -->
+                <!-- Hero Content (Directly on Background) -->
+                <div class="relative z-10 flex flex-col items-center justify-center max-w-5xl mx-auto w-full px-4">
+
+                    <h1
+                        class="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight leading-[1.05] mb-8 text-white drop-shadow-2xl">
+                        You Find <br class="hidden md:block" />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8E8E] to-[#FFBABA]">
+                            We Fund.
+                        </span>
+                    </h1>
+                    <p class="text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-body">
+                        Unlock instant loan approvals with 0.5% cashback on disbursement, while you browse verified
+                        premium estates.
+                    </p>
+                    <!-- Glassmorphic CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
+                        <a href="#"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-[13px] font-extrabold uppercase tracking-widest rounded-full text-white backdrop-blur-xl bg-primary/80 border border-primary/50 hover:bg-primary transition-all duration-300 shadow-2xl shadow-primary/40 hover:-translate-y-1">
+                            Get a Home
+                            <span class="material-icons-outlined text-[18px]">arrow_forward</span>
+                        </a>
+                        <a href="#"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-[13px] font-extrabold uppercase tracking-widest rounded-full text-white backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-1">
+                            Get a Loan
+                            <span class="material-icons-outlined text-[18px]">account_balance</span>
+                        </a>
+                    </div>
                 </div>
-                <h1 class="font-display text-5xl lg:text-6xl font-extrabold leading-[1.1] text-gray-900 tracking-tight">
-                    We help you get your <span class="text-primary">dream home.</span>
-                </h1>
-                <p class="text-lg text-gray-600 max-w-lg leading-relaxed">
-                    Find verified properties, get funded in 24 hours, and earn 0.5% cashback on every loan.
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl text-white bg-gradient-to-r from-[#781A3C] to-[#A52A2A] hover:from-[#5C1616] hover:to-[#781A3C] transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5">
-                        Browse Properties
-                        <span class="material-icons-outlined ml-2 text-xl">arrow_forward</span>
-                    </a>
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl text-gray-900 bg-white border-2 border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all duration-300">
-                        Check Eligibility
-                        <span class="material-icons-outlined ml-2 text-xl">account_balance</span>
+            </header>
+
+            <!-- LAYER 2: Expanding Brand Color Section (Triggered by Scroll) -->
+            <div id="hero-reveal-layer" class="absolute inset-0 bg-primary z-30 text-white will-change-[clip-path]"
+                style="clip-path: circle(0vmax at 50% 100%); transition: clip-path 0.1s ease-out;">
+
+                <div class="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-primary/20"></div>
+
+                <!-- SVG Animated Path Background -->
+                <div class="absolute inset-0 pointer-events-none opacity-60">
+                    <svg class="w-full h-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <!-- Artistic, energetic multi-curve path (Primary) -->
+                        <path id="hero-animated-path-bg"
+                            d="M -100,600 C 100,600 250,850 450,600 C 650,350 750,50 950,300 C 1150,550 1250,750 1450,400 C 1650,50 1750,650 1950,450"
+                            fill="none" stroke="rgba(255, 255, 255, 0.15)" stroke-width="12" stroke-linecap="round" />
+                        <!-- Artistic, energetic multi-curve path (Secondary Accent) -->
+                        <path id="hero-animated-path"
+                            d="M -100,600 C 150,600 300,800 500,550 C 700,300 800,100 1000,350 C 1200,600 1300,700 1500,450 C 1700,200 1800,500 2000,400"
+                            fill="none" stroke="rgba(255, 255, 255, 0.6)" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                </div>
+
+                <!-- Scroll Indicator / Prompt -->
+                <div id="hero-scroll-prompt"
+                    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/80 transition-opacity">
+                    <span class="text-[10px] font-bold uppercase tracking-widest mb-2">Scroll To Explore</span>
+                    <span class="material-icons-outlined animate-bounce">south</span>
+                </div>
+
+                <!-- Scroll Progress Text Elements (Parallax) -->
+                <div class="absolute inset-0 max-w-7xl mx-auto pointer-events-none">
+
+                    <div id="hero-text-1"
+                        class="absolute top-[15%] left-6 md:left-24 transition-transform duration-200 opacity-0 transform translate-y-10">
+                        <h2
+                            class="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold leading-tight tracking-tighter text-white drop-shadow-2xl">
+                            Instant Loan <br />
+                            <span class="text-white/80">Approvals</span>
+                        </h2>
+                    </div>
+
+                    <div id="hero-text-2"
+                        class="absolute top-[48%] right-6 md:right-32 text-right -translate-y-1/2 transition-transform duration-200 opacity-0 transform translate-y-10">
+                        <h2
+                            class="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold leading-tight tracking-tighter text-white drop-shadow-2xl">
+                            Lowest Interest <br />
+                            <span class="text-white/80 font-display">Rates</span>
+                        </h2>
+                    </div>
+
+                    <div id="hero-text-3"
+                        class="absolute bottom-[10%] left-1/2 -translate-x-1/2 text-center transition-transform duration-200 opacity-0 transform translate-y-10 -translate-x-1/2">
+                        <h2
+                            class="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold leading-tight tracking-tighter text-white drop-shadow-2xl">
+                            0.5% Cashback <br />
+                            <span class="text-white/80 font-display">On Disbursement</span>
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- Sticky Call-to-Action Panel -->
+                <div id="hero-sticky-cta"
+                    class="absolute bottom-8 right-8 z-50 flex opacity-0 transition-opacity duration-500">
+                    <a href="#how-it-works"
+                        class="pointer-events-auto flex items-center justify-center px-6 py-3 text-sm font-bold rounded-full text-primary bg-white hover:bg-gray-50 hover:-translate-y-1 transition-all duration-300 shadow-2xl">
+                        Apply for Loan
+                        <span class="material-icons-outlined ml-2 text-base">arrow_forward</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Right: Image -->
-            <div class="order-1 lg:order-2 relative h-[460px] lg:h-[640px]">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 rounded-tr-[80px] rounded-bl-[80px] transform rotate-3"></div>
-                <img alt="Modern luxury architecture"
-                    class="w-full h-full object-cover rounded-tr-[80px] rounded-bl-[80px] shadow-2xl shadow-primary/20 relative z-10 transform transition hover:scale-[1.01] duration-700 animate-float ring-2 ring-primary/10"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBLpSketGwB9qL9sBRfKYzBAxYRcgjaTpoJUb7o99LPHu4ONCMRqdCNsrBZYhcbf3khDifLBJCstPMbfGpwBEkOMjpSvaPuUvCt-lMuPuM3wOBgS2G952JO06jtbO_S0pyVk6aqPC64qxqz3FHfEe5hGzXbs_-uaFI-eei2WU2ZtpZVUFY-i4DVOfcA5AIaSZtVfqpMj8GIcV1Qez7UPvKwDNS7a_PYMAXQcWsSawlIgFKEB1tG4lrJkkv-ewJXqXZbH1-reUkCUw" />
-            </div>
+        </div> <!-- End Sticky Hub -->
+    </div> <!-- End 400vh Scroll Container -->
 
-        </div>
-    </header>
-
-    <!-- Trust Logos & Key Metrics Section -->
-    <section class="py-8 bg-white/50 backdrop-blur-md border-y border-gray-100 relative z-20">
+    <!-- Trust Logos & Key Metrics Section (Pushed down by 400vh container) -->
+    <section class="py-12 bg-white relative z-10 pt-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center gap-10 lg:gap-20">
 
             <!-- Compact Metrics -->
-            <div class="flex items-center justify-between md:justify-start gap-12 lg:gap-16 shrink-0 md:pr-12 md:border-r border-gray-200">
+            <div
+                class="flex items-center justify-between md:justify-start gap-12 lg:gap-16 shrink-0 md:pr-12 md:border-r border-gray-200">
                 <div class="text-left">
                     <div class="font-display font-bold text-primary text-2xl tracking-tight">₹500Cr+</div>
                     <div class="text-[11px] text-gray-500 font-semibold uppercase tracking-widest mt-1">Disbursed</div>
@@ -193,28 +273,46 @@
 
             <!-- Partner Marquee Inline -->
             <div class="grow overflow-hidden flex items-center min-w-0">
-                <p class="text-[10px] hidden xl:block font-bold text-gray-400 uppercase tracking-widest mb-0 mr-8 shrink-0">Trusted Partners</p>
+                <p
+                    class="text-[10px] hidden xl:block font-bold text-gray-400 uppercase tracking-widest mb-0 mr-8 shrink-0">
+                    Trusted Partners</p>
                 <div class="marquee-outer w-full">
                     <div class="marquee-track">
                         <div class="flex items-center gap-4 pr-4">
-                            <div class="partner-logo-card"><img src="assets/partner-logos/hdfc-bank.svg" alt="HDFC Bank" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/sbi.svg" alt="State Bank" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/icici-bank.svg" alt="ICICI Bank" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/axis-bank.svg" alt="Axis Bank" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/kotak.svg" alt="Kotak" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/bank-of-baroda.svg" alt="Bank of Baroda" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/lic-hfl.svg" alt="LIC Housing" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/pnb.svg" alt="PNB" class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/hdfc-bank.svg" alt="HDFC Bank"
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/sbi.svg" alt="State Bank"
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/icici-bank.svg"
+                                    alt="ICICI Bank" class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/axis-bank.svg" alt="Axis Bank"
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/kotak.svg" alt="Kotak"
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/bank-of-baroda.svg"
+                                    alt="Bank of Baroda" class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/lic-hfl.svg" alt="LIC Housing"
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/pnb.svg" alt="PNB"
+                                    class="partner-logo-img"></div>
                         </div>
                         <div class="flex items-center gap-4 pr-4" aria-hidden="true">
-                            <div class="partner-logo-card"><img src="assets/partner-logos/hdfc-bank.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/sbi.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/icici-bank.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/axis-bank.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/kotak.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/bank-of-baroda.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/lic-hfl.svg" alt="" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/pnb.svg" alt="" class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/hdfc-bank.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/sbi.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/icici-bank.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/axis-bank.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/kotak.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/bank-of-baroda.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/lic-hfl.svg" alt=""
+                                    class="partner-logo-img"></div>
+                            <div class="partner-logo-card"><img src="assets/partner-logos/pnb.svg" alt=""
+                                    class="partner-logo-img"></div>
                         </div>
                     </div>
                 </div>
@@ -238,12 +336,11 @@
                     class="font-display text-6xl md:text-7xl font-extrabold text-primary mb-6 tracking-tight leading-[1.05]">
                     How Taathya Works</h2>
                 <p class="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed mb-12 font-body">
-                    Start with a property or a loan &mdash; whichever suits you. We handle meetings, documentation, and
-                    everything in between.
+                    Whether you're scouting for prime real estate or securing high-leverage capital, we unify the entire
+                    journey under one roof with expert advisory and 0.5% instant cashback.
                 </p>
                 <div class="flex justify-center">
-                    <div
-                        class="inline-flex bg-white rounded-full p-2 shadow-lg border border-gray-200">
+                    <div class="inline-flex bg-white rounded-full p-2 shadow-lg border border-gray-200">
                         <button onclick="switchTab('property')" id="tab-property"
                             class="tab-btn active flex items-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-300">
                             <span class="material-icons-outlined text-lg">home</span>
@@ -270,11 +367,9 @@
                             <div class="col-span-12 lg:col-span-5 lg:pl-12">
                                 <span
                                     class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">01.</span>
-                                <h3
-                                    class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
+                                <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
                                     Discovery & Curation</h3>
-                                <p
-                                    class="text-gray-700 font-body text-base leading-relaxed font-normal">
+                                <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
                                     Our portfolio is meticulously vetted. We present a selection that aligns with your
                                     aesthetic and lifestyle, removing the clutter of the open market.</p>
                             </div>
@@ -284,11 +379,9 @@
                             <div class="col-span-12 lg:col-span-5 lg:pr-12 order-2 lg:order-1 text-right">
                                 <span
                                     class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">02.</span>
-                                <h3
-                                    class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
+                                <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
                                     Financial Engineering</h3>
-                                <p
-                                    class="text-gray-700 font-body text-base leading-relaxed font-normal">
+                                <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
                                     Concurrent with selection, our finance team structures your borrowing. We secure
                                     rates that traditional banks reserve for elite institutional partners.</p>
                             </div>
@@ -314,11 +407,9 @@
                             <div class="col-span-12 lg:col-span-5 lg:pl-12">
                                 <span
                                     class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">03.</span>
-                                <h3
-                                    class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
+                                <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
                                     Seamless Transition</h3>
-                                <p
-                                    class="text-gray-700 font-body text-base leading-relaxed font-normal">
+                                <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
                                     Closing is handled with absolute discretion and speed. We manage the documentation,
                                     the signatures, and the welcome to your new residence.</p>
                             </div>
@@ -335,11 +426,9 @@
                         <div class="col-span-12 lg:col-span-5 lg:pr-12 text-right">
                             <span
                                 class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">01.</span>
-                            <h3
-                                class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
+                            <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
                                 Capital Strategy</h3>
-                            <p
-                                class="text-gray-700 font-body text-base leading-relaxed font-normal">
+                            <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
                                 Establish your purchasing power before you even step into a property. We evaluate your
                                 profile to unlock maximum leverage and optimal rates.</p>
                         </div>
@@ -357,11 +446,9 @@
                         <div class="col-span-12 lg:col-span-5 lg:pl-12">
                             <span
                                 class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">02.</span>
-                            <h3
-                                class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
+                            <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
                                 Market Interrogation</h3>
-                            <p
-                                class="text-gray-700 font-body text-base leading-relaxed font-normal">
+                            <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
                                 We pit 20+ lenders against each other. Our allegiance is to your balance sheet, ensuring
                                 the debt is as refined as the property it secures.</p>
                         </div>
@@ -371,11 +458,9 @@
                         <div class="col-span-12 lg:col-span-5 lg:pr-12 order-2 lg:order-1 text-right">
                             <span
                                 class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">03.</span>
-                            <h3
-                                class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
+                            <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
                                 Funding & Loyalty</h3>
-                            <p
-                                class="text-gray-700 font-body text-base leading-relaxed font-normal">
+                            <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
                                 Disbursement is just the beginning. We credit 0.5% cashback instantly and provide
                                 ongoing property advisory for your new asset.</p>
                         </div>
@@ -403,16 +488,19 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
                 <div class="max-w-2xl">
-                    <h2 class="font-display text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]">
+                    <h2
+                        class="font-display text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]">
                         Handpicked<br /><span class="text-primary">Featured Properties</span>
                     </h2>
-                    <p class="text-gray-600 text-lg max-w-xl font-body leading-relaxed">Vetted opportunities in premium locations. Every property comes with pre-approved financing and dedicated advisory support.</p>
+                    <p class="text-gray-600 text-lg max-w-xl font-body leading-relaxed">Vetted opportunities in premium
+                        locations. Every property comes with pre-approved financing and dedicated advisory support.</p>
                 </div>
                 <div class="mt-8 md:mt-0 flex shrink-0">
                     <a class="group inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"
                         href="#">
-                        View All Listings 
-                        <span class="material-icons-outlined ml-2 text-xl group-hover:translate-x-1 transition-transform">east</span>
+                        View All Listings
+                        <span
+                            class="material-icons-outlined ml-2 text-xl group-hover:translate-x-1 transition-transform">east</span>
                     </a>
                 </div>
             </div>
@@ -420,174 +508,258 @@
             <!-- Property Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Property Card 1 -->
-                <div class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                <div
+                    class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                     <div class="relative h-80 overflow-hidden">
                         <div class="absolute top-4 left-4 z-10 flex gap-2">
-                            <div class="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm border border-gray-100">Ready to Move</div>
-                            <div class="bg-primary/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">Premium</div>
+                            <div
+                                class="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm border border-gray-100">
+                                Ready to Move</div>
+                            <div
+                                class="bg-primary/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">
+                                Premium</div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" alt="Premium Villa" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
+                            alt="Premium Villa"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60">
+                        </div>
                         <div class="absolute bottom-0 left-0 w-full p-6">
-                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹4.50 <span class="text-lg font-bold opacity-90">Cr</span></p>
-                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Starting Price</p>
+                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹4.50
+                                <span class="text-lg font-bold opacity-90">Cr</span>
+                            </p>
+                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Starting
+                                Price</p>
                         </div>
-                        <button class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
+                        <button
+                            class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
                             <span class="material-icons-outlined">favorite_border</span>
                         </button>
                     </div>
                     <div class="p-6 flex-1 flex flex-col">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">The Serene Meadows</h3>
+                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">The Serene Meadows
+                            </h3>
                         </div>
                         <p class="text-gray-500 text-sm mb-6 flex items-center gap-1.5 font-medium">
-                            <span class="material-icons-outlined text-primary text-lg">location_on</span> Ambli Road, Ahmedabad
+                            <span class="material-icons-outlined text-primary text-lg">location_on</span> Ambli Road,
+                            Ahmedabad
                         </p>
-                        
+
                         <div class="grid grid-cols-3 gap-4 py-6 border-y border-gray-100 mb-6">
                             <div class="flex flex-col gap-1">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
-                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">king_bed</span> 4 BHK</span>
+                                <span
+                                    class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
+                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">king_bed</span> 4
+                                    BHK</span>
                             </div>
                             <div class="flex flex-col gap-1 border-x border-gray-100 px-4">
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Area</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">square_foot</span> 4,500</span>
+                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">square_foot</span>
+                                    4,500</span>
                             </div>
                             <div class="flex flex-col gap-1">
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Facing</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">explore</span> East</span>
+                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">explore</span> East</span>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between mb-8">
                             <div class="flex gap-2">
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Gym">🏋️</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Swimming Pool">🏊</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Garden">🌳</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">+8</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Gym">🏋️</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Swimming Pool">🏊</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Garden">🌳</div>
+                                <div
+                                    class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">
+                                    +8</div>
                             </div>
-                            <span class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full flex items-center gap-1">
+                            <span
+                                class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Verified Listing
                             </span>
                         </div>
 
-                        <button class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
+                        <button
+                            class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
                             Request Full Layout <span class="material-icons-outlined text-sm">arrow_forward</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Property Card 2 -->
-                <div class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
+                <div
+                    class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
                     <div class="relative h-80 overflow-hidden">
                         <div class="absolute top-4 left-4 z-10 flex gap-2">
-                            <div class="bg-primary/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">Hot Property</div>
-                            <div class="bg-gray-900/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">Trending</div>
+                            <div
+                                class="bg-primary/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">
+                                Hot Property</div>
+                            <div
+                                class="bg-gray-900/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">
+                                Trending</div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop" alt="Luxury Apartment" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop"
+                            alt="Luxury Apartment"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60">
+                        </div>
                         <div class="absolute bottom-0 left-0 w-full p-6">
-                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹2.85 <span class="text-lg font-bold opacity-90">Cr</span></p>
-                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Investment Value</p>
+                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹2.85
+                                <span class="text-lg font-bold opacity-90">Cr</span>
+                            </p>
+                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Investment
+                                Value</p>
                         </div>
-                        <button class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
+                        <button
+                            class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
                             <span class="material-icons-outlined">favorite_border</span>
                         </button>
                     </div>
                     <div class="p-6 flex-1 flex flex-col">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">Skyline Heights</h3>
+                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">Skyline Heights
+                            </h3>
                         </div>
                         <p class="text-gray-500 text-sm mb-6 flex items-center gap-1.5 font-medium">
-                            <span class="material-icons-outlined text-primary text-lg">location_on</span> SG Highway, Ahmedabad
+                            <span class="material-icons-outlined text-primary text-lg">location_on</span> SG Highway,
+                            Ahmedabad
                         </p>
-                        
+
                         <div class="grid grid-cols-3 gap-4 py-6 border-y border-gray-100 mb-6">
                             <div class="flex flex-col gap-1">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
-                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">king_bed</span> 3 BHK</span>
+                                <span
+                                    class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
+                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">king_bed</span> 3
+                                    BHK</span>
                             </div>
                             <div class="flex flex-col gap-1 border-x border-gray-100 px-4">
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Area</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">square_foot</span> 2,800</span>
+                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">square_foot</span>
+                                    2,800</span>
                             </div>
                             <div class="flex flex-col gap-1">
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Floor</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">layers</span> 12th</span>
+                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">layers</span> 12th</span>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between mb-8">
                             <div class="flex gap-2">
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Clubhouse">🏓</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Security">🛡️</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Parking">🅿️</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">+5</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Clubhouse">🏓</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Security">🛡️</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Parking">🅿️</div>
+                                <div
+                                    class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">
+                                    +5</div>
                             </div>
-                            <span class="text-xs font-bold text-red-800 bg-red-50 px-3 py-1 rounded-full flex items-center gap-1">
+                            <span
+                                class="text-xs font-bold text-red-800 bg-red-50 px-3 py-1 rounded-full flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> High yield
                             </span>
                         </div>
 
-                        <button class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
+                        <button
+                            class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
                             Book Site Visit <span class="material-icons-outlined text-sm">arrow_forward</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Property Card 3 -->
-                <div class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 md:col-span-2 lg:col-span-1">
+                <div
+                    class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 md:col-span-2 lg:col-span-1">
                     <div class="relative h-80 overflow-hidden">
                         <div class="absolute top-4 left-4 z-10 flex gap-2">
-                            <div class="bg-primary/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm">Upcoming</div>
-                            <div class="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm border border-gray-100">Riverside</div>
+                            <div
+                                class="bg-primary/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm">
+                                Upcoming</div>
+                            <div
+                                class="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm border border-gray-100">
+                                Riverside</div>
                         </div>
-                        <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=800&auto=format&fit=crop" alt="The Azure Estancia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60"></div>
+                        <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=800&auto=format&fit=crop"
+                            alt="The Azure Estancia"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60">
+                        </div>
                         <div class="absolute bottom-0 left-0 w-full p-6">
-                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹6.20 <span class="text-lg font-bold opacity-90">Cr</span></p>
-                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Pre-launch Price</p>
+                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹6.20
+                                <span class="text-lg font-bold opacity-90">Cr</span>
+                            </p>
+                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Pre-launch
+                                Price</p>
                         </div>
-                        <button class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
+                        <button
+                            class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
                             <span class="material-icons-outlined">favorite_border</span>
                         </button>
                     </div>
                     <div class="p-6 flex-1 flex flex-col">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">The Azure Estancia</h3>
+                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">The Azure Estancia
+                            </h3>
                         </div>
                         <p class="text-gray-500 text-sm mb-6 flex items-center gap-1.5 font-medium">
-                            <span class="material-icons-outlined text-primary text-lg">location_on</span> Sindhu Bhavan, Ahmedabad
+                            <span class="material-icons-outlined text-primary text-lg">location_on</span> Sindhu Bhavan,
+                            Ahmedabad
                         </p>
-                        
+
                         <div class="grid grid-cols-3 gap-4 py-6 border-y border-gray-100 mb-6">
                             <div class="flex flex-col gap-1">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
-                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">king_bed</span> 5 BHK</span>
+                                <span
+                                    class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
+                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">king_bed</span> 5
+                                    BHK</span>
                             </div>
                             <div class="flex flex-col gap-1 border-x border-gray-100 px-4">
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Area</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span class="material-icons-outlined text-sm text-primary">square_foot</span> 6,000</span>
+                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
+                                        class="material-icons-outlined text-sm text-primary">square_foot</span>
+                                    6,000</span>
                             </div>
                             <div class="flex flex-col gap-1">
                                 <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Status</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold text-xs"><span class="material-icons-outlined text-sm text-primary">pending</span> 2026</span>
+                                <span class="flex items-center gap-1.5 text-gray-900 font-bold text-xs"><span
+                                        class="material-icons-outlined text-sm text-primary">pending</span> 2026</span>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between mb-8">
                             <div class="flex gap-2">
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Smart Home">📱</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Spa">💆</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm" title="Tennis Court">🎾</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">+12</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Smart Home">📱</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Spa">💆</div>
+                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
+                                    title="Tennis Court">🎾</div>
+                                <div
+                                    class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">
+                                    +12</div>
                             </div>
-                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full flex items-center gap-1">
+                            <span
+                                class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Rare collection
                             </span>
                         </div>
 
-                        <button class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
+                        <button
+                            class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
                             Get Brochure <span class="material-icons-outlined text-sm">arrow_forward</span>
                         </button>
                     </div>
@@ -597,8 +769,7 @@
     </section>
 
     <!-- Loan Benefits Section (Joined) -->
-    <section
-        class="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-white to-white relative overflow-hidden">
+    <section class="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white via-white to-white relative overflow-hidden">
         <!-- Background decorative gradient blobs -->
         <div class="absolute top-20 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute bottom-20 left-0 w-72 h-72 bg-primary/8 rounded-full blur-[100px] pointer-events-none">
@@ -616,129 +787,171 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6 auto-rows-[200px]">
                 <!-- Hero Card: 24h Funding (L-Large) -->
-                <div class="group relative md:col-span-2 lg:col-span-6 row-span-2 rounded-3xl overflow-hidden bg-gray-900 border border-white/10 shadow-2xl transition-all duration-700 hover:shadow-primary/20">
+                <div
+                    class="reveal-on-scroll reveal-from-top-left group relative md:col-span-2 lg:col-span-6 row-span-2 rounded-3xl overflow-hidden bg-gray-900 border border-white/10 shadow-2xl transition-all duration-700 hover:shadow-primary/20">
                     <img alt="Modern House"
                         class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-40"
                         src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
                     <div class="relative z-20 p-10 h-full flex flex-col justify-between">
                         <div>
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 backdrop-blur-md border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-                                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Rapid Disbursement
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-plum/20 backdrop-blur-md border border-accent-plum/30 text-accent-plum text-xs font-bold uppercase tracking-widest mb-6">
+                                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Rapid
+                                Disbursement
                             </div>
-                            <h3 class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[0.9] mb-4 tracking-tighter">
-                                Next-Day<br /><span class="text-primary">Funding</span>
+                            <h3
+                                class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[0.9] mb-4 tracking-tighter">
+                                Next-Day<br /><span class="text-accent-plum">Funding</span>
                             </h3>
                         </div>
                         <div class="max-w-md">
                             <div class="bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20 shadow-2xl">
                                 <p class="text-white font-bold text-xl mb-2 flex items-center gap-2">
-                                    <span class="material-icons-outlined text-primary">verified</span> Approved in 24 Hours
+                                    <span class="material-icons-outlined text-accent-plum">verified</span> Approved in
+                                    24
+                                    Hours
                                 </p>
-                                <p class="text-gray-700 text-sm leading-relaxed">Skip the weeks of waiting. Our proprietary AI vetting process gets you funded before the deal cools off.</p>
+                                <p class="text-white/70 text-sm leading-relaxed">Skip the weeks of waiting. Our
+                                    proprietary AI vetting process gets you funded before the deal cools off.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Lowest Rates (Tall Card) -->
-                <div class="group lg:col-span-3 row-span-2 relative overflow-hidden rounded-[2rem] bg-[#FBF7F1] border border-primary/10 p-7 flex flex-col transition-all duration-500 hover:border-primary/40 hover:-translate-y-1">
+                <div
+                    class="reveal-on-scroll reveal-from-top delay-50 group lg:col-span-3 row-span-2 relative overflow-hidden rounded-[2rem] bg-[#FBF7F1] border border-primary/10 p-7 flex flex-col transition-all duration-500 hover:border-primary/40 hover:-translate-y-1">
                     <div class="relative z-10 flex-1 flex flex-col justify-between h-full">
                         <div>
-                            <div class="w-12 h-12 rounded-xl bg-white shadow-sm border border-black/5 flex items-center justify-center mb-5 group-hover:rotate-12 transition-transform duration-500">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white shadow-sm border border-black/5 flex items-center justify-center mb-5 group-hover:rotate-12 transition-transform duration-500">
                                 <span class="material-icons-outlined text-primary text-2xl">trending_down</span>
                             </div>
-                            <h3 class="font-display text-4xl font-extrabold text-gray-900 tracking-tight leading-[0.95]">Lowest<br />Rates</h3>
-                            <p class="text-primary italic font-display text-2xl font-bold mt-1 mb-3 tracking-tight">guaranteed.</p>
-                            <p class="text-gray-600 leading-relaxed text-[13px] opacity-90 max-w-[90%]">Compare 20+ banks & lenders to beat any valid offer.</p>
+                            <h3
+                                class="font-display text-4xl font-extrabold text-gray-900 tracking-tight leading-[0.95]">
+                                Lowest<br />Rates</h3>
+                            <p class="text-primary italic font-display text-2xl font-bold mt-1 mb-3 tracking-tight">
+                                guaranteed.</p>
+                            <p class="text-gray-600 leading-relaxed text-[13px] opacity-90 max-w-[90%]">Compare 20+
+                                banks & lenders to beat any valid offer.</p>
                         </div>
-                        
+
                         <div class="flex flex-col gap-2 mt-4">
-                            <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/50 border border-gray-200/50 text-sm font-bold text-gray-800 backdrop-blur-sm transition-all hover:bg-white">
-                                <span class="material-icons-outlined text-[16px] text-primary shrink-0 drop-shadow-sm">verified</span>
+                            <div
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/50 border border-gray-200/50 text-sm font-bold text-gray-800 backdrop-blur-sm transition-all hover:bg-white">
+                                <span
+                                    class="material-icons-outlined text-[16px] text-primary shrink-0 drop-shadow-sm">verified</span>
                                 HDFC Bank
                             </div>
-                            <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/50 border border-gray-200/50 text-sm font-bold text-gray-800 backdrop-blur-sm transition-all hover:bg-white">
-                                <span class="material-icons-outlined text-[16px] text-primary shrink-0 drop-shadow-sm">verified</span>
+                            <div
+                                class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/50 border border-gray-200/50 text-sm font-bold text-gray-800 backdrop-blur-sm transition-all hover:bg-white">
+                                <span
+                                    class="material-icons-outlined text-[16px] text-primary shrink-0 drop-shadow-sm">verified</span>
                                 ICICI Bank
                             </div>
                         </div>
                     </div>
-                    <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-colors pointer-events-none"></div>
+                    <div
+                        class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-colors pointer-events-none">
+                    </div>
                 </div>
 
                 <!-- Hidden Fees (Small Card) -->
-                <div class="group lg:col-span-3 row-span-1 rounded-3xl bg-primary shadow-xl p-8 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:scale-[1.02]">
+                <div
+                    class="reveal-on-scroll reveal-from-top-right delay-100 group lg:col-span-3 row-span-1 rounded-3xl bg-primary shadow-xl p-8 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:scale-[1.02]">
                     <div class="absolute top-0 right-0 p-4 opacity-10">
                         <span class="material-icons-outlined text-8xl text-white">account_balance_wallet</span>
                     </div>
                     <div class="relative z-10">
-                        <div class="text-7xl font-extrabold text-white mb-2 font-display tracking-tighter drop-shadow-lg">₹0</div>
+                        <div
+                            class="text-7xl font-extrabold text-white mb-2 font-display tracking-tighter drop-shadow-lg">
+                            ₹0</div>
                         <h3 class="text-xl font-bold text-white mb-1 tracking-tight">Hidden Fees</h3>
                         <p class="text-white/70 text-sm">Full transparency, ALWAYS.</p>
                     </div>
                 </div>
 
                 <!-- Minimal Docs (Small Card) -->
-                <div class="group lg:col-span-3 row-span-1 rounded-3xl bg-gray-900 border border-white/10 p-8 flex flex-col transition-all duration-500 hover:bg-gray-800">
+                <div
+                    class="reveal-on-scroll reveal-from-right delay-150 group lg:col-span-3 row-span-1 rounded-3xl bg-gray-900 border border-white/10 p-8 flex flex-col transition-all duration-500 hover:bg-gray-800">
                     <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
-                            <span class="material-icons-outlined text-2xl text-primary">description</span>
+                        <div
+                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
+                            <span class="material-icons-outlined text-2xl text-accent-plum">description</span>
                         </div>
-                        <span class="text-primary text-[10px] font-bold px-3 py-1 bg-primary/10 rounded-full border border-primary/20 uppercase tracking-tighter">100% Digital</span>
+                        <span
+                            class="text-accent-plum text-[10px] font-bold px-3 py-1 bg-accent-plum/10 rounded-full border border-accent-plum/20 uppercase tracking-tighter">100%
+                            Digital</span>
                     </div>
                     <h3 class="text-xl font-bold text-white mb-2 tracking-tight">Minimal Docs</h3>
-                    <p class="text-gray-400 text-xs leading-relaxed">Upload everything from your phone. No physical visits required.</p>
+                    <p class="text-gray-400 text-xs leading-relaxed">Upload everything from your phone. No physical
+                        visits required.</p>
                 </div>
 
                 <!-- Flexible EMI (Medium Landscape) -->
-                <div class="group lg:col-span-4 row-span-1 rounded-3xl bg-gradient-to-br from-white to-primary/5 border border-primary/20 p-8 flex items-center gap-6 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40">
-                    <div class="w-20 h-20 shrink-0 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-[#A63B61] group-hover:text-white transition-all duration-500 shadow-sm">
+                <div
+                    class="reveal-on-scroll reveal-from-bottom-left delay-200 group lg:col-span-4 row-span-1 rounded-3xl bg-gradient-to-br from-white to-primary/5 border border-primary/20 p-8 flex items-center gap-6 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40">
+                    <div
+                        class="w-20 h-20 shrink-0 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-[#A63B61] group-hover:text-white transition-all duration-500 shadow-sm">
                         <span class="material-icons-outlined text-4xl">calendar_month</span>
                     </div>
                     <div>
                         <h3 class="font-display text-2xl font-bold text-primary mb-2 tracking-tight">Flexible EMI</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed max-w-[200px]">Tenures up to 30 years with step-up/step-down options.</p>
+                        <p class="text-sm text-gray-600 leading-relaxed max-w-[200px]">Tenures up to 30 years with
+                            step-up/step-down options.</p>
                     </div>
                 </div>
 
                 <!-- Personal Advisor (Wide Landscape) -->
-                <div class="group lg:col-span-5 row-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 flex items-center gap-6 relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden relative z-10 border-4 border-white shadow-lg">
-                        <img alt="Advisor" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                <div
+                    class="reveal-on-scroll reveal-from-bottom delay-250 group lg:col-span-5 row-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 flex items-center gap-6 relative overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <div
+                        class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden relative z-10 border-4 border-white shadow-lg">
+                        <img alt="Advisor"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                             src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop" />
                     </div>
                     <div class="flex-1 relative z-10">
-                        <div class="inline-block px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[10px] font-bold uppercase mb-2">Expert Concierge</div>
-                        <h3 class="font-display text-xl font-bold text-gray-900 mb-1 tracking-tight">Dedicated Advisor</h3>
-                        <p class="text-sm text-gray-500 mb-4">A single point of contact for legal, finance & paperwork.</p>
-                        <button class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
+                        <div
+                            class="inline-block px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[10px] font-bold uppercase mb-2">
+                            Expert Concierge</div>
+                        <h3 class="font-display text-xl font-bold text-gray-900 mb-1 tracking-tight">Dedicated Advisor
+                        </h3>
+                        <p class="text-sm text-gray-500 mb-4">A single point of contact for legal, finance & paperwork.
+                        </p>
+                        <button
+                            class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
                             Book Free Call <span class="material-icons-outlined text-sm">east</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- 100% Online (Small Square/Visual) -->
-                <div class="group lg:col-span-3 row-span-1 bg-[#FDF6F0] border border-[#E8D8C4] rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:bg-white">
+                <div
+                    class="reveal-on-scroll reveal-from-bottom-right delay-300 group lg:col-span-3 row-span-1 bg-[#FDF6F0] border border-[#E8D8C4] rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:bg-white">
                     <div class="relative z-10">
-                        <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-4">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-4">
                             <span class="material-icons-outlined text-2xl">smartphone</span>
                         </div>
                         <h3 class="font-display text-xl font-bold text-gray-900 mb-1 tracking-tight">100% Online</h3>
                         <p class="text-xs text-gray-500">Apply from anywhere, track in real-time.</p>
                     </div>
-                    <div class="absolute bottom-0 right-0 w-24 h-24 translate-x-8 translate-y-8 opacity-10 group-hover:opacity-20 transition-all duration-500 group-hover:scale-125">
+                    <div
+                        class="absolute bottom-0 right-0 w-24 h-24 translate-x-8 translate-y-8 opacity-10 group-hover:opacity-20 transition-all duration-500 group-hover:scale-125">
                         <span class="material-icons-outlined text-[120px] text-primary">public</span>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
         </div>
     </section>
     <!-- Testimonial Section: Redesigned to match website theme -->
-    <section
-        class="relative py-24 bg-gradient-to-b from-[#F7F0F1] via-white to-white overflow-hidden">
+    <section class="relative py-24 bg-gradient-to-b from-[#F7F0F1] via-white to-white overflow-hidden">
         <!-- Decorative Elements matching site theme -->
         <div
             class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-br from-primary/3 via-secondary/10 to-transparent -skew-x-12 transform origin-top-right">
@@ -759,7 +972,8 @@
                     Real Results from <span class="text-primary">Real Homebuyers</span>
                 </h2>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto font-body leading-relaxed">
-                    Families across Gujarat who saved more, paid less interest, and earned cashback — all through Taathya.
+                    Families across Gujarat who saved more, paid less interest, and earned cashback — all through
+                    Taathya.
                 </p>
             </div>
 
@@ -779,128 +993,151 @@
                 <div class="relative min-h-[400px] md:min-h-[350px] flex items-center justify-center overflow-visible">
 
                     <!-- Card 1: Rahul Shah -->
-                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out" data-index="0">
-                        <div class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
+                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out"
+                        data-index="0">
+                        <div
+                            class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
                             <div class="testimonial-content">
-                            <div class="flex justify-center gap-1 mb-6">
-                                ⭐⭐⭐⭐⭐
-                            </div>
-                            <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
-                                "I never thought getting a home loan could be this fast. Taathya got me approved in less than 18 hours — and I saved more than I expected."
-                            </p>
-                            <div class="flex items-center justify-center gap-4">
-                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul Shah" class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
-                                <div class="text-left">
-                                    <div class="font-bold text-gray-900 text-base">Rahul Shah</div>
-                                    <div class="text-sm text-gray-500">Ahmedabad</div>
+                                <div class="flex justify-center gap-1 mb-6">
+                                    ⭐⭐⭐⭐⭐
                                 </div>
-                            </div>
+                                <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
+                                    "I never thought getting a home loan could be this fast. Taathya got me approved in
+                                    less than 18 hours — and I saved more than I expected."
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul Shah"
+                                        class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
+                                    <div class="text-left">
+                                        <div class="font-bold text-gray-900 text-base">Rahul Shah</div>
+                                        <div class="text-sm text-gray-500">Ahmedabad</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 2: Neha Joshi -->
-                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out" data-index="1">
-                        <div class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
+                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out"
+                        data-index="1">
+                        <div
+                            class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
                             <div class="testimonial-content">
-                            <div class="flex justify-center gap-1 mb-6">
-                                ⭐⭐⭐⭐⭐
-                            </div>
-                            <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
-                                "Their advisor handled everything — from paperwork to the bank meeting. We moved into our home without a single stressful day."
-                            </p>
-                            <div class="flex items-center justify-center gap-4">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Neha Joshi" class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
-                                <div class="text-left">
-                                    <div class="font-bold text-gray-900 text-base">Neha Joshi</div>
-                                    <div class="text-sm text-gray-500">Gandhinagar</div>
+                                <div class="flex justify-center gap-1 mb-6">
+                                    ⭐⭐⭐⭐⭐
                                 </div>
-                            </div>
+                                <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
+                                    "Their advisor handled everything — from paperwork to the bank meeting. We moved
+                                    into our home without a single stressful day."
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Neha Joshi"
+                                        class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
+                                    <div class="text-left">
+                                        <div class="font-bold text-gray-900 text-base">Neha Joshi</div>
+                                        <div class="text-sm text-gray-500">Gandhinagar</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 3: Vikram Desai -->
-                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out" data-index="2">
-                        <div class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
+                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out"
+                        data-index="2">
+                        <div
+                            class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
                             <div class="testimonial-content">
-                            <div class="flex justify-center gap-1 mb-6">
-                                ⭐⭐⭐⭐⭐
-                            </div>
-                            <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
-                                "The rate they got me was 1.4% lower than what my bank quoted. On a ₹1.2Cr loan, that adds up to lakhs saved. Absolutely worth it."
-                            </p>
-                            <div class="flex items-center justify-center gap-4">
-                                <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Vikram Desai" class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
-                                <div class="text-left">
-                                    <div class="font-bold text-gray-900 text-base">Vikram Desai</div>
-                                    <div class="text-sm text-gray-500">Surat</div>
+                                <div class="flex justify-center gap-1 mb-6">
+                                    ⭐⭐⭐⭐⭐
                                 </div>
-                            </div>
+                                <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
+                                    "The rate they got me was 1.4% lower than what my bank quoted. On a ₹1.2Cr loan,
+                                    that adds up to lakhs saved. Absolutely worth it."
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Vikram Desai"
+                                        class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
+                                    <div class="text-left">
+                                        <div class="font-bold text-gray-900 text-base">Vikram Desai</div>
+                                        <div class="text-sm text-gray-500">Surat</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Card 4: Ananya Patel -->
-                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out" data-index="3">
-                        <div class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
+                    <div class="testimonial-slide absolute w-full max-w-2xl transition-all duration-700 ease-out"
+                        data-index="3">
+                        <div
+                            class="testimonial-card rounded-[2rem] p-8 md:p-12 text-center shadow-lg shadow-black/5 hover:shadow-xl transition-shadow duration-300">
                             <div class="testimonial-content">
-                            <div class="flex justify-center gap-1 mb-6">
-                                <span class="material-icons text-primary">⭐⭐⭐⭐⭐</span>
-                                <span class="material-icons text-primary"></span>
-                                <span class="material-icons text-primary"></span>
-                                <span class="material-icons text-primary"></span>
-                                <span class="material-icons text-primary"></span>
-                            </div>
-                            <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
-                                "As a first-time buyer, I was overwhelmed. Taathya’s advisor walked me through every step. The cashback was a lovely bonus on top!"
-                            </p>
-                            <div class="flex items-center justify-center gap-4">
-                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ananya Patel" class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
-                                <div class="text-left">
-                                    <div class="font-bold text-gray-900 text-base">Ananya Patel</div>
-                                    <div class="text-sm text-gray-500">Vadodara</div>
+                                <div class="flex justify-center gap-1 mb-6">
+                                    <span class="material-icons text-primary">⭐⭐⭐⭐⭐</span>
+                                    <span class="material-icons text-primary"></span>
+                                    <span class="material-icons text-primary"></span>
+                                    <span class="material-icons text-primary"></span>
+                                    <span class="material-icons text-primary"></span>
                                 </div>
-                            </div>
+                                <p class="text-xl md:text-2xl font-body text-gray-800 leading-relaxed mb-8">
+                                    "As a first-time buyer, I was overwhelmed. Taathya’s advisor walked me through every
+                                    step. The cashback was a lovely bonus on top!"
+                                </p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ananya Patel"
+                                        class="w-12 h-12 rounded-full object-cover shadow-sm bg-gray-100" />
+                                    <div class="text-left">
+                                        <div class="font-bold text-gray-900 text-base">Ananya Patel</div>
+                                        <div class="text-sm text-gray-500">Vadodara</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                </div>
             </div>
+        </div>
         </div>
     </section>
 
     <!-- EMI Calculator Section -->
     <section class="py-24 bg-white relative border-t border-gray-100 overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none"></div>
+        <div
+            class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent pointer-events-none">
+        </div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                 <!-- Text / Info Side -->
                 <div class="lg:col-span-5">
-                    <h2 class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+                    <h2
+                        class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
                         Plan your finances <span class="text-primary">intelligently.</span>
                     </h2>
                     <p class="text-gray-600 text-lg mb-8 font-body leading-relaxed">
-                        Use our premium EMI calculator to estimate your monthly commitments. Get instant insights into your principal vs. interest breakdown.
+                        Use our premium EMI calculator to estimate your monthly commitments. Get instant insights into
+                        your principal vs. interest breakdown.
                     </p>
                     <ul class="space-y-4 mb-10">
                         <li class="flex items-center gap-3 text-gray-700">
-                            <div class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <div
+                                class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
                                 <span class="material-icons-outlined text-sm">check</span>
                             </div>
                             <span class="font-medium">Real-time updates</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-700">
-                            <div class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <div
+                                class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
                                 <span class="material-icons-outlined text-sm">check</span>
                             </div>
                             <span class="font-medium">No hidden variables</span>
                         </li>
                         <li class="flex items-center gap-3 text-gray-700">
-                            <div class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                            <div
+                                class="w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
                                 <span class="material-icons-outlined text-sm">check</span>
                             </div>
                             <span class="font-medium">Compare instantly with market rates</span>
@@ -916,29 +1153,34 @@
                 <div class="lg:col-span-7">
                     <div class="bg-[#FBF7F1] rounded-[2.5rem] p-8 md:p-10 border border-gray-200 shadow-2xl relative">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 min-h-[500px]">
-                            
+
                             <!-- Inputs -->
                             <div class="space-y-8 flex flex-col justify-center relative z-20">
                                 <!-- Loan Amount -->
                                 <div>
                                     <div class="flex justify-between mb-2">
                                         <label class="text-sm font-bold text-gray-700">Loan Amount</label>
-                                        <span id="loan-amount-val" class="text-sm font-bold text-primary font-display">₹50,00,000</span>
+                                        <span id="loan-amount-val"
+                                            class="text-sm font-bold text-primary font-display">₹50,00,000</span>
                                     </div>
-                                    <input type="range" id="loan-amount" min="1000000" max="100000000" step="100000" value="5000000" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
+                                    <input type="range" id="loan-amount" min="1000000" max="100000000" step="100000"
+                                        value="5000000"
+                                        class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
                                     <div class="flex justify-between mt-2 text-xs text-gray-500">
                                         <span>₹10L</span>
                                         <span>₹10Cr+</span>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Interest Rate -->
                                 <div>
                                     <div class="flex justify-between mb-2">
                                         <label class="text-sm font-bold text-gray-700">Interest Rate</label>
-                                        <span id="interest-rate-val" class="text-sm font-bold text-primary font-display">8.5%</span>
+                                        <span id="interest-rate-val"
+                                            class="text-sm font-bold text-primary font-display">8.5%</span>
                                     </div>
-                                    <input type="range" id="interest-rate" min="5" max="15" step="0.1" value="8.5" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
+                                    <input type="range" id="interest-rate" min="5" max="15" step="0.1" value="8.5"
+                                        class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
                                     <div class="flex justify-between mt-2 text-xs text-gray-500">
                                         <span>5%</span>
                                         <span>15%</span>
@@ -949,9 +1191,11 @@
                                 <div>
                                     <div class="flex justify-between mb-2">
                                         <label class="text-sm font-bold text-gray-700">Tenure (Years)</label>
-                                        <span id="tenure-val" class="text-sm font-bold text-primary font-display">20 Yrs</span>
+                                        <span id="tenure-val" class="text-sm font-bold text-primary font-display">20
+                                            Yrs</span>
                                     </div>
-                                    <input type="range" id="tenure" min="1" max="30" value="20" class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
+                                    <input type="range" id="tenure" min="1" max="30" value="20"
+                                        class="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
                                     <div class="flex justify-between mt-2 text-xs text-gray-500">
                                         <span>1 Yr</span>
                                         <span>30 Yrs</span>
@@ -961,20 +1205,27 @@
 
                             <!-- Results -->
                             <div class="flex flex-col justify-center">
-                                <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-inner mb-6 min-h-[300px] flex flex-col justify-center">
+                                <div
+                                    class="bg-white p-8 rounded-3xl border border-gray-100 shadow-inner mb-6 min-h-[300px] flex flex-col justify-center">
                                     <p class="text-sm font-medium text-gray-500 mb-2">Your Monthly EMI</p>
-                                    <h4 id="emi-result" class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-6">
+                                    <h4 id="emi-result"
+                                        class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-6">
                                         ₹43,391
                                     </h4>
-                                    
+
                                     <div class="space-y-4 pt-6 border-t border-gray-100">
                                         <div class="flex justify-between items-center text-sm">
-                                            <span class="flex items-center gap-2 text-gray-600"><div class="w-3 h-3 rounded-full bg-primary/20"></div> Principal Amount</span>
+                                            <span class="flex items-center gap-2 text-gray-600">
+                                                <div class="w-3 h-3 rounded-full bg-primary/20"></div> Principal Amount
+                                            </span>
                                             <span id="principal-val" class="font-bold text-gray-900">₹50,00,000</span>
                                         </div>
                                         <div class="flex justify-between items-center text-sm">
-                                            <span class="flex items-center gap-2 text-gray-600"><div class="w-3 h-3 rounded-full bg-primary"></div> Interest Amount</span>
-                                            <span id="interest-amt-val" class="font-bold text-gray-900">₹54,13,879</span>
+                                            <span class="flex items-center gap-2 text-gray-600">
+                                                <div class="w-3 h-3 rounded-full bg-primary"></div> Interest Amount
+                                            </span>
+                                            <span id="interest-amt-val"
+                                                class="font-bold text-gray-900">₹54,13,879</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1174,30 +1425,42 @@
 
     <!-- Lead Generation Form Section -->
     <section class="py-24 bg-white relative border-t border-gray-100">
-        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-[0.015] pointer-events-none"></div>
+        <div
+            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-[0.015] pointer-events-none">
+        </div>
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="bg-[#8C274C]/5 border border-primary/10 rounded-[2.5rem] p-8 md:p-14 shadow-2xl relative overflow-hidden ring-1 ring-white/10">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none"></div>
-                <div class="absolute bottom-0 left-0 w-72 h-72 bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
-                
+            <div
+                class="bg-[#8C274C]/5 border border-primary/10 rounded-[2.5rem] p-8 md:p-14 shadow-2xl relative overflow-hidden ring-1 ring-white/10">
+                <div
+                    class="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[120px] pointer-events-none">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-72 h-72 bg-primary/10 rounded-full blur-[100px] pointer-events-none">
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center relative z-10">
                     <!-- Text side -->
                     <div>
-                        <h2 class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
-                            Ready to unlock your <span class="text-primary italic" style="color: #8C274C;">dream home?</span>
+                        <h2
+                            class="font-display text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+                            Ready to unlock your <span class="text-primary italic" style="color: #8C274C;">dream
+                                home?</span>
                         </h2>
                         <p class="text-gray-600 text-lg mb-8 leading-relaxed">
-                            Share your requirements and let our advisory team engineer the perfect property and finance solution for you. 
+                            Share your requirements and let our advisory team engineer the perfect property and finance
+                            solution for you.
                         </p>
                         <div class="space-y-4">
                             <div class="flex items-center gap-4 text-gray-700">
-                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/10 shrink-0">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/10 shrink-0">
                                     <span class="material-icons-outlined text-sm">rocket_launch</span>
                                 </div>
                                 <span class="text-sm font-medium">Assigned expert within 2 Hours</span>
                             </div>
                             <div class="flex items-center gap-4 text-gray-700">
-                                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/10 shrink-0">
+                                <div
+                                    class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/10 shrink-0">
                                     <span class="material-icons-outlined text-sm">description</span>
                                 </div>
                                 <span class="text-sm font-medium">No obligation advisory</span>
@@ -1209,66 +1472,100 @@
                     <div class="bg-white p-6 md:p-8 rounded-2xl border border-primary/10 shadow-xl shadow-primary/5">
                         <form class="space-y-5" onsubmit="event.preventDefault();">
                             <div>
-                                <label class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Full Name</label>
-                                <input type="text" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="John Doe" />
+                                <label
+                                    class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Full
+                                    Name</label>
+                                <input type="text"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                    placeholder="John Doe" />
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Phone Number</label>
-                                <input type="tel" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all" placeholder="+91 98765 43210" />
+                                <label
+                                    class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Phone
+                                    Number</label>
+                                <input type="tel"
+                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                    placeholder="+91 98765 43210" />
                             </div>
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Custom Select: I'm looking for -->
-                                <div class="relative w-full" x-data="{ open: false, selected: 'Property to Buy' }" id="dropdown-looking-for">
-                                    <label class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">I'm looking for</label>
+                                <div class="relative w-full" x-data="{ open: false, selected: 'Property to Buy' }"
+                                    id="dropdown-looking-for">
+                                    <label
+                                        class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">I'm
+                                        looking for</label>
                                     <button type="button" @click="open = !open" @click.away="open = false"
                                         class="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all flex justify-between items-center outline-none">
                                         <span x-text="selected" class="truncate text-sm"></span>
-                                        <span class="material-icons-outlined text-gray-400 text-sm transition-transform duration-300 shrink-0 ml-2" :class="open ? 'rotate-180' : ''">expand_more</span>
+                                        <span
+                                            class="material-icons-outlined text-gray-400 text-sm transition-transform duration-300 shrink-0 ml-2"
+                                            :class="open ? 'rotate-180' : ''">expand_more</span>
                                     </button>
-                                    <div x-show="open" 
-                                        x-transition:enter="transition ease-out duration-200"
+                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
                                         x-transition:enter-start="opacity-0 translate-y-[-10px] scale-95"
                                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
                                         x-transition:leave="transition ease-in duration-150"
                                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                                         x-transition:leave-end="opacity-0 translate-y-[-10px] scale-95"
-                                        class="absolute z-50 w-full mt-2 bg-white backdrop-blur-xl border border-gray-100 rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden" 
+                                        class="absolute z-50 w-full mt-2 bg-white backdrop-blur-xl border border-gray-100 rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden"
                                         style="display: none;">
                                         <ul class="py-1 m-0 list-none">
-                                            <li @click="selected = 'Property to Buy'; open = false" class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0" :class="selected === 'Property to Buy' ? 'bg-primary/5 text-primary font-bold' : ''">Property to Buy</li>
-                                            <li @click="selected = 'Home Loan'; open = false" class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0" :class="selected === 'Home Loan' ? 'bg-primary/5 text-primary font-bold' : ''">Home Loan</li>
-                                            <li @click="selected = 'Both Property & Loan'; open = false" class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0" :class="selected === 'Both Property & Loan' ? 'bg-primary/5 text-primary font-bold' : ''">Both Property & Loan</li>
+                                            <li @click="selected = 'Property to Buy'; open = false"
+                                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0"
+                                                :class="selected === 'Property to Buy' ? 'bg-primary/5 text-primary font-bold' : ''">
+                                                Property to Buy</li>
+                                            <li @click="selected = 'Home Loan'; open = false"
+                                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0"
+                                                :class="selected === 'Home Loan' ? 'bg-primary/5 text-primary font-bold' : ''">
+                                                Home Loan</li>
+                                            <li @click="selected = 'Both Property & Loan'; open = false"
+                                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0"
+                                                :class="selected === 'Both Property & Loan' ? 'bg-primary/5 text-primary font-bold' : ''">
+                                                Both Property & Loan</li>
                                         </ul>
                                     </div>
                                     <input type="hidden" name="looking_for" :value="selected">
                                 </div>
                                 <!-- Custom Select: Timeline -->
-                                <div class="relative w-full" x-data="{ open: false, selected: 'Immediate' }" id="dropdown-timeline">
-                                    <label class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Timeline</label>
+                                <div class="relative w-full" x-data="{ open: false, selected: 'Immediate' }"
+                                    id="dropdown-timeline">
+                                    <label
+                                        class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Timeline</label>
                                     <button type="button" @click="open = !open" @click.away="open = false"
                                         class="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all flex justify-between items-center outline-none">
                                         <span x-text="selected" class="truncate text-sm"></span>
-                                        <span class="material-icons-outlined text-gray-400 text-sm transition-transform duration-300 shrink-0 ml-2" :class="open ? 'rotate-180' : ''">expand_more</span>
+                                        <span
+                                            class="material-icons-outlined text-gray-400 text-sm transition-transform duration-300 shrink-0 ml-2"
+                                            :class="open ? 'rotate-180' : ''">expand_more</span>
                                     </button>
-                                    <div x-show="open" 
-                                        x-transition:enter="transition ease-out duration-200"
+                                    <div x-show="open" x-transition:enter="transition ease-out duration-200"
                                         x-transition:enter-start="opacity-0 translate-y-[-10px] scale-95"
                                         x-transition:enter-end="opacity-100 translate-y-0 scale-100"
                                         x-transition:leave="transition ease-in duration-150"
                                         x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                                         x-transition:leave-end="opacity-0 translate-y-[-10px] scale-95"
-                                        class="absolute z-50 w-full mt-2 bg-white backdrop-blur-xl border border-gray-100 rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden" 
+                                        class="absolute z-50 w-full mt-2 bg-white backdrop-blur-xl border border-gray-100 rounded-2xl shadow-2xl shadow-primary/10 overflow-hidden"
                                         style="display: none;">
                                         <ul class="py-1 m-0 list-none">
-                                            <li @click="selected = 'Immediate'; open = false" class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0" :class="selected === 'Immediate' ? 'bg-primary/5 text-primary font-bold' : ''">Immediate</li>
-                                            <li @click="selected = '1-3 Months'; open = false" class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0" :class="selected === '1-3 Months' ? 'bg-primary/5 text-primary font-bold' : ''">1-3 Months</li>
-                                            <li @click="selected = '3+ Months'; open = false" class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0" :class="selected === '3+ Months' ? 'bg-primary/5 text-primary font-bold' : ''">3+ Months</li>
+                                            <li @click="selected = 'Immediate'; open = false"
+                                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0"
+                                                :class="selected === 'Immediate' ? 'bg-primary/5 text-primary font-bold' : ''">
+                                                Immediate</li>
+                                            <li @click="selected = '1-3 Months'; open = false"
+                                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0"
+                                                :class="selected === '1-3 Months' ? 'bg-primary/5 text-primary font-bold' : ''">
+                                                1-3 Months</li>
+                                            <li @click="selected = '3+ Months'; open = false"
+                                                class="px-4 py-3 hover:bg-gray-50 cursor-pointer text-gray-600 text-sm transition-colors border-b border-gray-100 last:border-0"
+                                                :class="selected === '3+ Months' ? 'bg-primary/5 text-primary font-bold' : ''">
+                                                3+ Months</li>
                                         </ul>
                                     </div>
                                     <input type="hidden" name="timeline" :value="selected">
                                 </div>
                             </div>
-                            <button type="submit" class="w-full mt-4 bg-primary hover:bg-accent-plum text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                            <button type="submit"
+                                class="w-full mt-4 bg-primary hover:bg-accent-plum text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 transition-all hover:-translate-y-0.5 flex justify-center items-center gap-2">
                                 Request Callback <span class="material-icons-outlined text-lg">arrow_forward</span>
                             </button>
                         </form>
@@ -1292,106 +1589,151 @@
         </svg>
     </div>
     <footer class="bg-white border-t border-gray-100 pt-24 pb-12 relative overflow-hidden">
-    <!-- Sophisticated Abstract Background -->
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/[0.02] rounded-full blur-[100px] -mr-64 -mt-64"></div>
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/[0.01] rounded-full blur-[80px] -ml-64 -mb-64"></div>
+        <!-- Sophisticated Abstract Background -->
+        <div
+            class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/[0.02] rounded-full blur-[100px] -mr-64 -mt-64">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/[0.01] rounded-full blur-[80px] -ml-64 -mb-64">
+        </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
-            <!-- Brand & Mission -->
-            <div class="lg:col-span-5 space-y-10">
-                <div class="flex items-center gap-4">
-                    <img src="assets/logo.png" alt="Taathya Logo" class="h-16" />
-                    <div class="h-12 w-px bg-primary/20"></div>
-                    <div>
-                        <h3 class="font-display text-2xl font-bold text-gray-900 tracking-tight leading-none italic">Taathya</h3>
-                        <p class="text-primary text-[10px] uppercase tracking-[0.3em] font-bold mt-1.5 ml-0.5">Real Estate & Finance</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-20">
+                <!-- Brand & Mission -->
+                <div class="lg:col-span-5 space-y-10">
+                    <div class="flex items-center gap-4">
+                        <img src="assets/logo.png" alt="Taathya Logo" class="h-16" />
+                        <div class="h-12 w-px bg-primary/20"></div>
+                        <div>
+                            <h3
+                                class="font-display text-2xl font-bold text-gray-900 tracking-tight leading-none italic">
+                                Taathya</h3>
+                            <p class="text-primary text-[10px] uppercase tracking-[0.3em] font-bold mt-1.5 ml-0.5">Real
+                                Estate & Finance</p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="space-y-6">
-                    <h4 class="font-display text-3xl font-bold text-gray-900 leading-tight max-w-md">
-                        Transforming the landscape of <span class="text-primary font-serif italic">Ahmedabad</span> luxury.
-                    </h4>
-                    <p class="text-gray-600 leading-relaxed max-w-sm text-sm">
-                        With over two decades of excellence, Taathya Group specializes in bespoke residential search and strategic financial planning for high-net-worth individuals.
-                    </p>
-                </div>
 
-                <div class="flex items-center gap-6">
-                    <a href="#" class="group relative p-3">
-                        <div class="absolute inset-0 bg-primary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-                        <i class="fab fa-instagram text-xl text-gray-400 group-hover:text-primary transition-colors"></i>
-                    </a>
-                    <a href="#" class="group relative p-3">
-                        <div class="absolute inset-0 bg-primary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-                        <i class="fab fa-linkedin-in text-xl text-gray-400 group-hover:text-primary transition-colors"></i>
-                    </a>
-                    <a href="#" class="group relative p-3">
-                        <div class="absolute inset-0 bg-primary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300"></div>
-                        <i class="fab fa-facebook-f text-xl text-gray-400 group-hover:text-primary transition-colors"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Navigation Grid -->
-            <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
-                <div class="space-y-8">
-                    <h5 class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">Curated Assets</h5>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Sky Suites</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Garden Penthouses</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Commercial Land</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Investment Portfolio</a></li>
-                    </ul>
-                </div>
-
-                <div class="space-y-8">
-                    <h5 class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">Intelligence</h5>
-                    <ul class="space-y-4">
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Market Trends</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Loan Calculator</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Advisory Board</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Legal Support</a></li>
-                    </ul>
-                </div>
-
-                <div class="space-y-8 col-span-2 md:col-span-1">
-                    <h5 class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">The Studio</h5>
                     <div class="space-y-6">
-                        <div class="flex items-start gap-4">
-                            <span class="material-icons-outlined text-primary mt-0.5">place</span>
-                            <div>
-                                <p class="text-xs font-bold text-gray-900 uppercase tracking-tighter">Ahmedabad HQ</p>
-                                <p class="text-xs text-gray-500 mt-1 leading-relaxed">Stellar Business Hub,<br>Ambli Road, 380015</p>
+                        <h4 class="font-display text-3xl font-bold text-gray-900 leading-tight max-w-md">
+                            Revolutionizing <span class="text-primary font-serif italic text-4xl">Finance & Luxury
+                                Estate.</span>
+                        </h4>
+                        <p class="text-gray-600 leading-relaxed max-w-sm text-sm">
+                            With over two decades of excellence, Taathya Group bridge the gap between bespoke
+                            residential search and elite financial engineering.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <a href="#" class="group relative p-3">
+                            <div
+                                class="absolute inset-0 bg-primary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300">
                             </div>
-                        </div>
-                        <div class="flex items-start gap-4">
-                            <span class="material-icons-outlined text-primary mt-0.5">headset_mic</span>
-                            <div>
-                                <p class="text-xs font-bold text-gray-900 uppercase tracking-tighter">Private Line</p>
-                                <p class="text-xs text-gray-500 mt-1">+91 99000 00000</p>
+                            <i
+                                class="fab fa-instagram text-xl text-gray-400 group-hover:text-primary transition-colors"></i>
+                        </a>
+                        <a href="#" class="group relative p-3">
+                            <div
+                                class="absolute inset-0 bg-primary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300">
+                            </div>
+                            <i
+                                class="fab fa-linkedin-in text-xl text-gray-400 group-hover:text-primary transition-colors"></i>
+                        </a>
+                        <a href="#" class="group relative p-3">
+                            <div
+                                class="absolute inset-0 bg-primary/5 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300">
+                            </div>
+                            <i
+                                class="fab fa-facebook-f text-xl text-gray-400 group-hover:text-primary transition-colors"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation Grid -->
+                <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
+                    <div class="space-y-8">
+                        <h5
+                            class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">
+                            Curated Assets</h5>
+                        <ul class="space-y-4">
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Sky
+                                    Suites</a></li>
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Garden
+                                    Penthouses</a></li>
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Commercial
+                                    Land</a></li>
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Investment
+                                    Portfolio</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-8">
+                        <h5
+                            class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">
+                            Intelligence</h5>
+                        <ul class="space-y-4">
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Market
+                                    Trends</a></li>
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Loan
+                                    Calculator</a></li>
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Advisory
+                                    Board</a></li>
+                            <li><a href="#"
+                                    class="text-gray-500 hover:text-primary transition-colors text-sm font-medium">Legal
+                                    Support</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-8 col-span-2 md:col-span-1">
+                        <h5
+                            class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">
+                            The Studio</h5>
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <span class="material-icons-outlined text-primary mt-0.5">place</span>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-900 uppercase tracking-tighter">Ahmedabad HQ
+                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1 leading-relaxed">Stellar Business Hub,<br>Ambli
+                                        Road, 380015</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-icons-outlined text-primary mt-0.5">headset_mic</span>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-900 uppercase tracking-tighter">Private Line
+                                    </p>
+                                    <p class="text-xs text-gray-500 mt-1">+91 99000 00000</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Professional Credits -->
-        <div class="pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
-            <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-medium">
-                © 2026 Taathya Group. Built with Integrity.
-            </p>
-            <div class="flex items-center gap-10">
-                <a href="#" class="text-[10px] text-gray-400 hover:text-primary uppercase tracking-[0.2em] font-medium transition-colors">Privacy</a>
-                <a href="#" class="text-[10px] text-gray-400 hover:text-primary uppercase tracking-[0.2em] font-medium transition-colors">Terms</a>
-                <div class="h-4 w-px bg-gray-200"></div>
-                <p class="text-[10px] text-primary/60 uppercase tracking-[0.2em] font-bold">Studio Alpha</p>
+            <!-- Professional Credits -->
+            <div class="pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
+                <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-medium">
+                    © 2026 Taathya Group. Built with Integrity.
+                </p>
+                <div class="flex items-center gap-10">
+                    <a href="#"
+                        class="text-[10px] text-gray-400 hover:text-primary uppercase tracking-[0.2em] font-medium transition-colors">Privacy</a>
+                    <a href="#"
+                        class="text-[10px] text-gray-400 hover:text-primary uppercase tracking-[0.2em] font-medium transition-colors">Terms</a>
+                    <div class="h-4 w-px bg-gray-200"></div>
+                    <p class="text-[10px] text-primary/60 uppercase tracking-[0.2em] font-bold">Studio Alpha</p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
     <a class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-green-600 transition hover:-translate-y-1"
         href="#">
         <i class="fab fa-whatsapp text-3xl"></i>
@@ -1417,7 +1759,7 @@
         const toggleTheme = () => {
             document.documentElement.classList.toggle('dark');
             const isDark = document.documentElement.classList.contains('dark');
-            
+
             if (isDark) {
                 localStorage.theme = 'dark';
                 if (darkIcon) darkIcon.classList.remove('hidden');
@@ -1437,44 +1779,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
