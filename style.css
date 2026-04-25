@@ -1,8 +1,11 @@
-/* Force high-visibility light-maroon for Dark Mode/Dark Backgrounds */
-html,
+html {
+    /* scroll-behavior: smooth; - Removed to prevent conflict with Lenis */
+}
+
 body {
-    overflow-x: clip;
-    scroll-behavior: smooth;
+    min-height: 100vh;
+    overflow-x: hidden;
+    margin: 0;
 }
 
 
@@ -34,8 +37,8 @@ body {
 /* Section Transitions & Reveal System */
 .reveal-on-scroll {
     opacity: 0;
-    transform: translateY(30px) scale(0.98);
-    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: translateY(24px) scale(0.995);
+    transition: all 1.4s cubic-bezier(0.19, 1, 0.22, 1);
     will-change: transform, opacity;
 }
 
@@ -174,31 +177,52 @@ h1 {
 
 .partner-logo-card {
     flex: 0 0 auto;
-    width: 220px;
-    height: 64px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    box-shadow: none;
-    overflow: hidden;
-    transition: all 250ms ease;
+    width: auto;
+    height: 52px;
+    padding: 0 20px 0 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
 }
 
 .partner-logo-card:hover {
-    background: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.9);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.08);
+    border-color: rgba(140, 39, 76, 0.2);
+    box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
+}
+
+.partner-logo-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    flex-shrink: 0;
 }
 
 .partner-logo-img {
-    width: 85%;
-    height: 85%;
-    max-height: 48px;
-    display: block;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
+}
+
+.partner-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #2D1B1B;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
 }
 
 @keyframes marquee-scroll {
@@ -717,8 +741,6 @@ section {
 /* The expanding body â€” closed by default */
 .faq-body {
     max-height: 0;
-    overflow: hidden;
-    opacity: 0;
     transition:
         max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
         opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -794,6 +816,347 @@ section {
 
 /* Dark mode overrides */
 
+/* ================================================================
+   DYNAMIC NAVBAR — Transparent, Adaptive, Hover Effects
+   ================================================================ */
 
+/* Base: always fixed, 80px tall, full-width, uniform across all pages */
+header.dynamic-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    z-index: 9999;
 
+    /* Smooth transition for all states */
+    transition:
+        background 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        backdrop-filter 0.5s ease;
 
+    /* Start fully transparent */
+    background: transparent !important;
+    border-bottom: 1px solid transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+header.dynamic-navbar nav {
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+/* STATE 1: Top of page / dark hero section — fully transparent */
+header.dynamic-navbar[data-navbar-mode="transparent"] {
+    background: transparent !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* Transparent mode defaults to strong dark text; dark theme overrides below */
+header.dynamic-navbar[data-navbar-mode="transparent"] .navbar-text-adaptive {
+    color: #5D122E !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: none;
+}
+header.dynamic-navbar[data-navbar-mode="transparent"][data-navbar-theme="dark"] .navbar-text-adaptive {
+    color: #F4C2D3 !important; /* light pinkish */
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+header.dynamic-navbar[data-navbar-mode="transparent"] .navbar-border-adaptive {
+    border-left-color: currentColor !important;
+    opacity: 0.4;
+}
+
+header.dynamic-navbar[data-navbar-mode="transparent"] .navbar-text-active {
+    color: #8C274C !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+header.dynamic-navbar[data-navbar-mode="transparent"][data-navbar-theme="dark"] .navbar-text-active {
+    color: #FF8E8E !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+}
+
+/* Logo specific tinting based on theme */
+header.dynamic-navbar[data-navbar-theme="light"] img.navbar-logo-adaptive {
+    filter: brightness(0) saturate(100%) invert(21%) sepia(85%) saturate(1469%) hue-rotate(314deg) brightness(85%) contrast(98%) !important;
+}
+header.dynamic-navbar[data-navbar-theme="dark"] img.navbar-logo-adaptive {
+    filter: brightness(0) invert(1) !important;
+}
+
+/* STATE 2: Scrolled over white/light backgrounds — white frosted glass */
+header.dynamic-navbar[data-navbar-mode="light"] {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-bottom: 1px solid rgba(220, 210, 215, 0.5) !important;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+header.dynamic-navbar[data-navbar-mode="light"] .navbar-text-adaptive {
+    color: #5D122E !important; /* Deep Plum/Maroon for maximum contrast */
+    opacity: 1 !important;
+    text-shadow: none;
+}
+header.dynamic-navbar[data-navbar-mode="light"] .navbar-border-adaptive {
+    border-left-color: rgba(93, 18, 46, 0.2) !important;
+}
+header.dynamic-navbar[data-navbar-mode="light"] .navbar-text-active {
+    color: #8C274C !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+}
+
+/* STATE 3: Scrolled over dark/brand backgrounds — dark frosted glass */
+header.dynamic-navbar[data-navbar-mode="dark"] {
+    background: rgba(20, 8, 14, 0.75) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+
+header.dynamic-navbar[data-navbar-mode="dark"] .navbar-text-adaptive {
+    color: #F4C2D3 !important; /* contrast pinkish */
+    opacity: 1 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+header.dynamic-navbar[data-navbar-mode="dark"] .navbar-border-adaptive {
+    border-left-color: rgba(255, 255, 255, 0.2) !important;
+}
+header.dynamic-navbar[data-navbar-mode="dark"] .navbar-text-active {
+    color: #FF8E8E !important;
+    font-weight: 800 !important;
+    opacity: 1 !important;
+}
+
+/* ── Hover Effects on nav links ── */
+header.dynamic-navbar .navbar-link {
+    position: relative;
+    transition: color 0.25s ease;
+    padding-bottom: 2px;
+    opacity: 1 !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+
+header.dynamic-navbar .navbar-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+header.dynamic-navbar .navbar-link:hover::after,
+header.dynamic-navbar .navbar-link.active::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* ── Contact Us / CTA Button hover effects ── */
+header.dynamic-navbar .navbar-cta {
+    transition: 
+        background-color 0.3s ease,
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s ease;
+}
+
+header.dynamic-navbar .navbar-cta:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 28px rgba(140, 39, 76, 0.35);
+}
+
+header.dynamic-navbar .navbar-cta:active {
+    transform: translateY(0);
+}
+
+/* === PHONE RIPPLE ANIMATION === */
+.ripple-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1.5px solid rgba(140, 39, 76, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    animation: phoneRipple 8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+@keyframes phoneRipple {
+    0% {
+        width: 300px;
+        height: 300px;
+        opacity: 0.6;
+    }
+    100% {
+        width: 1200px;
+        height: 1200px;
+        opacity: 0;
+    }
+}
+/* ═══════════════════════════════════════════════════
+   SITE-WIDE LOAD SCREEN — Kinetic Reveal
+   ═══════════════════════════════════════════════════ */
+body.is-loading, 
+body.loading-lock {
+    overflow: clip !important;
+}
+
+#vanilla-loader {
+    visibility: visible !important;
+    opacity: 1 !important;
+    background-color: #601931; /* Authoritative Maroon */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Premium Typography for Loader */
+.loader-signature-text {
+    font-family: 'Sora', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    margin-top: 2rem;
+}
+
+/* Clean Logo Vessel */
+.loader-vessel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Concentric Orbital Motion */
+.loader-orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+}
+
+.orbit-1 { width: 400px; height: 400px; animation: orbit-rotate 28s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; border-top-color: rgba(255, 255, 255, 0.08); }
+.orbit-2 { width: 600px; height: 600px; animation: orbit-rotate 42s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite reverse; border-bottom-color: rgba(255, 255, 255, 0.08); }
+.orbit-3 { width: 850px; height: 850px; animation: orbit-rotate 56s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; border-left-color: rgba(255, 255, 255, 0.08); }
+
+@keyframes orbit-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Cinematic Entrance */
+body.is-loading > section, 
+body.is-loading > footer,
+body.is-loading > main,
+body.is-loading > header,
+body.is-loading > div:not(#vanilla-loader):not(#filtersOverlay):not(#filtersDrawer) {
+    transform: scale(1.05); /* Slight zoom out for premium feel */
+    opacity: 0 !important;
+    visibility: hidden;
+    filter: blur(12px) brightness(0.6);
+    pointer-events: none;
+    transition: all 1.4s cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+body.loader-done > section,
+body.loader-done > footer,
+body.loader-done > main,
+body.loader-done > header,
+body.loader-done > div:not(#vanilla-loader):not(#filtersOverlay):not(#filtersDrawer) {
+    transform: scale(1);
+    opacity: 1 !important;
+    visibility: visible;
+    filter: blur(0px) brightness(1);
+    transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1) 0.1s;
+}
+
+#loader-logo {
+    height: 45px;
+    filter: brightness(0) invert(1);
+    opacity: 0;
+    transform: translateY(15px);
+    animation: loader-logo-reveal 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.3s;
+}
+
+@keyframes loader-logo-reveal {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (min-width: 768px) {
+    #loader-logo {
+        height: 50px;
+    }
+}
+
+@keyframes fade-in-up {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-150%); }
+    100% { transform: translateX(150%); }
+}
+
+@keyframes spin-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse-slow {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes progress-indeterminate {
+    0% { left: -30%; width: 30%; }
+    50% { left: 40%; width: 50%; }
+    100% { left: 100%; width: 30%; }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 12s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+    animation: spin-reverse-slow 18s linear infinite;
+}

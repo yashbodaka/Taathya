@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Shivalik Harmony - Taathya Premium Properties</title>
+    
+    <!-- Core Performance & Preconnects -->
+    <link rel="preconnect" href="https://api.mapbox.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Mapbox GL JS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@800&family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@700;800&display=swap" rel="stylesheet" />
+
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Tailwind Framework -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link rel="stylesheet" href="assets/global-booking.css" />
+    <script defer src="assets/global-booking.js"></script>
+    <link rel="stylesheet" href="shared-footer.css" />
+    <script defer src="shared-footer.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: false,
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8C274C",
+                        "primary-light": "#B03366",
+                        "primary-dark": "#6B1D3A",
+                        "bg-page": "#F8F2F4",
+                        "text-main": "#1A1A2E",
+                        "text-sub": "#6B7280",
+                    },
+                    fontFamily: {
+                        display: ["'Sora'", "sans-serif"],
+                        body: ["'Inter'", "sans-serif"],
+                        ui: ["'Inter'", "sans-serif"],
+                        headline: ["Epilogue", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'soft': '0 10px 40px -10px rgba(140, 39, 76, 0.08)',
+                        'glow': '0 0 20px rgba(140, 39, 76, 0.15)',
+                    }
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body { background: #F8F2F4; overflow-x: hidden; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(140, 39, 76, 0.2); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(140, 39, 76, 0.4); }
+
+        /* Image Grid Hover Effects */
+        .img-grid-item { overflow: hidden; position: relative; border-radius: 16px; cursor: pointer; }
+        .img-grid-item img { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); width: 100%; height: 100%; object-fit: cover; }
+        .img-grid-item:hover img { transform: scale(1.05); }
+        .img-grid-item::after { content: ''; position: absolute; inset: 0; background: black; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .img-grid-item:hover::after { opacity: 0.1; }
+
+        /* Feature Chips */
+        .feature-chip {
+            background: rgba(140, 39, 76, 0.04);
+            border: 1px solid rgba(140, 39, 76, 0.1);
+            color: #8C274C;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Sticky Form */
+        .sticky-contact { position: sticky; top: 100px; }
+
+        /* Custom Map Marker */
+        .main-property-marker {
+            width: 48px;
+            height: 48px;
+            background: #8C274C;
+            border: 3px solid white;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 10px 20px rgba(140, 39, 76, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-property-marker span {
+            transform: rotate(45deg);
+            color: white;
+            font-size: 20px;
+        }
+
+        .poi-marker {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            border: 1px solid rgba(140, 39, 76, 0.1);
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        /* Wrap the inner icon to scale it instead of the mapbox parent */
+        .poi-marker span {
+            transition: transform 0.2s;
+        }
+        .poi-marker:hover span {
+            transform: scale(1.2);
+        }
+        .poi-marker:hover {
+            background: #8C274C;
+            color: white;
+        }
+        .poi-marker[data-type="school"] { color: #f59e0b; }
+        .poi-marker[data-type="hospital"] { color: #ef4444; }
+        .poi-marker[data-type="restaurant"] { color: #8b5cf6; }
+        
+        .poi-marker:hover[data-type] { color: white; }
+
+        /* Map Toggle Buttons */
+        .map-toggle-btn {
+            border: 1px solid #E5E7EB;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4B5563;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .map-toggle-btn.active {
+            background: #1A1A2E;
+            color: white;
+            border-color: #1A1A2E;
+        }
+
+        /* Route Label Styling - Simple & Elegant */
+        .route-label-container {
+            background: #1A1A2E;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            pointer-events: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .route-label-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphic Map Form - Enhanced & Toggleable */
+        .map-overlay-form {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transform-origin: bottom right;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .map-overlay-form.hidden {
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+            pointer-events: none;
+        }
+
+        .concierge-fab {
+            background: #1A1A2E;
+            color: white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .concierge-fab:hover {
+            transform: scale(1.05) translateY(-2px);
+            background: black;
+        }
+
+        /* Custom Scrollbar for POI list */
+        .poi-scroll-area::-webkit-scrollbar { width: 4px; }
+        .poi-scroll-area::-webkit-scrollbar-thumb { background: rgba(140, 39, 76, 0.15); border-radius: 10px; }
+
+        /* Shared kinetic loading screen */
+        body.is-loading,
+        body.loading-lock {
+            overflow: clip !important;
+        }
+
+        #vanilla-loader {
+            visibility: visible !important;
+            opacity: 1 !important;
+            background-color: #601931;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .loader-signature-text {
+            font-family: 'Sora', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 10px;
+            margin-top: 2rem;
+        }
+
+        .loader-vessel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+        }
+
+        .orbit-1 { width: 400px; height: 400px; animation: orbit-rotate 28s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; border-top-color: rgba(255, 255, 255, 0.08); }
+        .orbit-2 { width: 600px; height: 600px; animation: orbit-rotate 42s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite reverse; border-bottom-color: rgba(255, 255, 255, 0.08); }
+        .orbit-3 { width: 850px; height: 850px; animation: orbit-rotate 56s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite; border-left-color: rgba(255, 255, 255, 0.08); }
+
+        @keyframes orbit-rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        body.is-loading > section,
+        body.is-loading > footer,
+        body.is-loading > main,
+        body.is-loading > header,
+        body.is-loading > div:not(#vanilla-loader) {
+            transform: scale(1.05);
+            opacity: 0 !important;
+            visibility: hidden;
+            filter: blur(12px) brightness(0.6);
+            pointer-events: none;
+            transition: all 1.4s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        body.loader-done > section,
+        body.loader-done > footer,
+        body.loader-done > main,
+        body.loader-done > header,
+        body.loader-done > div:not(#vanilla-loader) {
+            transform: scale(1);
+            opacity: 1 !important;
+            visibility: visible;
+            filter: blur(0px) brightness(1);
+            transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1) 0.1s;
+        }
+
+        #loader-logo {
+            height: 45px;
+            filter: brightness(0) invert(1);
+            opacity: 0;
+            transform: translateY(15px);
+            animation: loader-logo-reveal 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            #loader-logo {
+                height: 50px;
+            }
+        }
+
+        @keyframes loader-logo-reveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes progress-indeterminate {
+            0% { left: -30%; width: 30%; }
+            50% { left: 40%; width: 50%; }
+            100% { left: 100%; width: 30%; }
+        }
+        
+    </style>
+</head>
+<body class="text-text-main font-body pt-24 pb-20 is-loading">
+
+    <!-- --------------------------------------------------------------
+         VANILLA JS KINETIC LOADING SCREEN (Global)
+    -------------------------------------------------------------- -->
+    <div id="vanilla-loader"
+        class="fixed inset-0 z-[99999] bg-[#601931] flex flex-col items-center justify-center overflow-hidden"
+        style="transition: clip-path 1.6s cubic-bezier(0.16, 1, 0.3, 1); clip-path: circle(150% at 50% 50%); pointer-events: all; touch-action: none;">
+
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+            <div class="loader-orbit orbit-1"></div>
+            <div class="loader-orbit orbit-2"></div>
+            <div class="loader-orbit orbit-3"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="loader-vessel mb-6">
+                <img src="assets/logo.png" alt="Taathya Logo" id="loader-logo">
+            </div>
+            <div class="h-6 overflow-hidden">
+                <p class="loader-signature-text" id="loader-status">FORGING FINANCIAL FUTURES</p>
+            </div>
+            <div class="w-32 h-[1px] bg-white/10 mt-12 relative overflow-hidden rounded-full">
+                <div class="absolute top-0 left-0 h-full bg-white/40 w-[40%] animate-[progress-indeterminate_5s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+    </div>
+
+    <header class="fixed top-0 left-0 right-0 h-20 bg-white/95 backdrop-blur-md border-b border-gray-200/50 z-[100] flex items-center justify-between px-8">
+        <div class="flex items-center gap-6 h-full">
+            <a href="index.html" class="flex-shrink-0 flex items-center h-full group">
+                <img src="assets/logo.png" alt="Taathya Logo" class="h-10 w-auto object-contain transition-transform group-hover:scale-105 duration-500 origin-left" />
+            </a>
+            <nav class="hidden lg:flex items-center gap-8 pl-8 border-l border-gray-200 h-6">
+                <a href="index.html" class="text-gray-500 hover:text-primary text-[14.5px] font-bold transition">Home</a>
+                <a href="property-search.html" class="text-gray-500 hover:text-primary text-[14.5px] font-bold transition">Properties</a>
+                <a href="finance.html" class="text-gray-500 hover:text-primary text-[14.5px] font-bold transition">Finance</a>
+            </nav>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="flex items-center gap-2 text-sm font-semibold text-gray-700 hover:text-[#8C274C] transition">
+                <span class="material-icons-outlined text-xl">favorite_border</span> Saved
+            </button>
+            <div class="w-px h-5 bg-gray-200 mx-2"></div>
+            <button @click="window.dispatchEvent(new CustomEvent('open-advisor-form'))" class="px-6 py-2.5 rounded-full bg-[#8c274c] text-white text-sm font-semibold hover:bg-[#6d0c35] shadow-md transition">Contact Agent</button>
+        </div>
+    </header>
+
+    <!-- Content Wrap -->
+    <main class="max-w-7xl mx-auto px-6 lg:px-8 pt-8">
+        
+        <!-- Breadcrumbs & Actions -->
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2 text-sm font-medium text-gray-500">
+                <a href="property-search.html" class="hover:text-primary transition">Ahmedabad</a>
+                <span class="material-icons-outlined text-xs">chevron_right</span>
+                <a href="#" class="hover:text-primary transition">Ambli Road</a>
+                <span class="material-icons-outlined text-xs">chevron_right</span>
+                <span class="text-gray-900 font-semibold">Shivalik Harmony</span>
+            </div>
+            <div class="flex gap-3">
+                <button class="flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-gray-200 hover:border-primary hover:text-primary transition shadow-sm font-semibold text-sm text-gray-700 hover:bg-primary/5">
+                    <span class="material-icons-outlined text-[18px]">ios_share</span> Share
+                </button>
+                <button class="flex items-center gap-2 px-5 py-2 rounded-full bg-white border border-gray-200 hover:border-[crimson] hover:text-[crimson] transition shadow-sm font-semibold text-sm text-gray-700 hover:bg-[crimson]/5">
+                    <span class="material-icons-outlined text-[18px]">favorite_border</span> Save
+                </button>
+            </div>
+        </div>
+
+        <!-- Image Gallery Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-3 h-[450px] md:h-[550px] mb-12">
+            <div class="img-grid-item md:col-span-2 md:row-span-2">
+                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&h=800&fit=crop" alt="Main View" />
+                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-bold text-gray-900 border border-white/20 shadow-sm flex items-center gap-1">
+                    <span class="material-icons-outlined text-primary text-[14px]">verified</span> Verified Listing
+                </div>
+            </div>
+            <div class="img-grid-item md:col-span-1 md:row-span-1">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop" alt="Living Room" />
+            </div>
+            <div class="img-grid-item md:col-span-1 md:row-span-1">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop" alt="Bedroom" />
+            </div>
+            <div class="img-grid-item md:col-span-2 md:row-span-1 relative">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1000&h=400&fit=crop" alt="Property Amenities" />
+                <button class="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-5 py-2.5 rounded-full text-sm font-bold shadow-md hover:bg-white transition flex items-center gap-2 border border-gray-100">
+                    <span class="material-icons-outlined text-[18px]">grid_view</span> Show all photos
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Split -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16">
+            
+            <!-- Left: Property Details (2/3) -->
+            <div class="lg:col-span-2 space-y-12">
+                
+                <!-- Title & High Level Stats -->
+                <div>
+                    <h1 class="font-headline text-4xl lg:text-5xl tracking-tight text-[#1A1A2E] mb-2 leading-tight">Shivalik Harmony</h1>
+                    <p class="text-lg text-gray-500 flex items-center gap-1 relative -left-1 mb-6">
+                        <span class="material-icons-outlined shrink-0">location_on</span> Ambli Road, Ahmedabad
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 pt-6 border-t border-gray-200">
+                        <div class="feature-chip">
+                            <span class="material-icons-outlined text-[18px]">king_bed</span> 4 BHK Villa
+                        </div>
+                        <div class="feature-chip">
+                            <span class="material-icons-outlined text-[18px]">square_foot</span> 4,200 sq.ft
+                        </div>
+                        <div class="feature-chip">
+                            <span class="material-icons-outlined text-[18px]">explore</span> East Facing
+                        </div>
+                        <div class="feature-chip bg-green-50 text-green-700 border-green-200">
+                            <span class="material-icons-outlined text-[18px]">check_circle</span> Ready to Move
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Summary / Highlights -->
+                <section class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm">
+                    <h2 class="text-xl font-bold font-headline mb-6 border-b border-gray-100 pb-4 text-[#1A1A2E]">Project Overview</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Status</div>
+                            <div class="font-bold text-gray-900">Ready to Move</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Possession</div>
+                            <div class="font-bold text-gray-900">Immediate</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Total Units</div>
+                            <div class="font-bold text-gray-900">48 Villas</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-gray-400 mb-1">Project Area</div>
+                            <div class="font-bold text-gray-900">2.5 Acres</div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-5 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="material-icons-outlined text-gray-400 text-[20px]">verified_user</span>
+                            <span class="text-sm text-gray-600">RERA: <strong class="text-gray-900">PR/GJ/AHMEDABAD/AUDA/RAA12345</strong></span>
+                        </div>
+                        <a href="#" class="text-primary text-sm font-bold hover:underline">View Certificate</a>
+                    </div>
+                </section>
+
+                <!-- Why buy here (USPs) -->
+                <section>
+                    <h2 class="text-2xl font-bold font-headline mb-6">Why buy in this project?</h2>
+                    <div class="space-y-5">
+                        <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-white transition cursor-default">
+                            <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0 mt-0.5 border border-green-100">
+                                <span class="material-icons-outlined text-[20px]">check</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg">Premium Italian Marble Flooring</h4>
+                                <p class="text-sm text-gray-500 mt-1 leading-relaxed">Export quality materials used across all living, dining spaces and primary bedrooms to give a seamless palatial feel.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-white transition cursor-default">
+                            <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0 mt-0.5 border border-green-100">
+                                <span class="material-icons-outlined text-[20px]">check</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg">Private Plunge Pool</h4>
+                                <p class="text-sm text-gray-500 mt-1 leading-relaxed">Every individual villa unit comes with an exclusive temperature-controlled pool nestled within your own private garden.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-4 rounded-xl hover:bg-white transition cursor-default">
+                            <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center shrink-0 mt-0.5 border border-green-100">
+                                <span class="material-icons-outlined text-[20px]">check</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-lg">IGBC Gold Certified</h4>
+                                <p class="text-sm text-gray-500 mt-1 leading-relaxed">Sustainable architecture and design ensuring lower utility costs, fresh air circulation, and incredibly eco-friendly living.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configurations / Floor Plan -->
+                <section>
+                    <h2 class="text-2xl font-bold font-headline mb-6">Floor Plans & Pricing</h2>
+                    <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm" id="floorplan-section">
+                        <!-- Tabs -->
+                        <div class="flex border-b border-gray-200 bg-gray-50 overflow-x-auto hide-scrollbar">
+                            <button onclick="switchFloorPlan(4, this)" class="floor-tab px-8 py-4 text-sm font-bold border-b-2 border-primary text-primary bg-white whitespace-nowrap transition-all">4 BHK Villa</button>
+                            <button onclick="switchFloorPlan(3, this)" class="floor-tab px-8 py-4 text-sm font-semibold text-gray-500 hover:text-gray-800 transition whitespace-nowrap transition-all">3 BHK Villa</button>
+                        </div>
+
+                        <!-- Content wrapper to enable transitions -->
+                        <div id="floorplan-content">
+                            <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8">
+                                <!-- Floorplan Image Area -->
+                                <div class="w-full md:w-1/2 bg-surface rounded-xl p-4 flex items-center justify-center border border-gray-100 relative group cursor-default overflow-hidden min-h-[300px]">
+                                    <img id="fp-image" src="https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=600&h=600&fit=crop" alt="Floorplan Mockup" class="w-full h-auto max-h-[400px] object-contain rounded-lg group-hover:scale-105 transition-transform duration-500">
+                                </div>
+                                
+                                <!-- Pricing Details Area -->
+                                <div class="w-full md:w-1/2 flex flex-col justify-center">
+                                    <h3 id="fp-price" class="font-headline tracking-tight text-3xl font-extrabold text-primary mb-1">₹4.50 Cr <span class="text-sm text-gray-400 font-ui font-normal tracking-normal text-text-main">onwards</span></h3>
+                                    <p id="fp-emi" class="text-[13px] text-gray-500 mb-6 font-medium">Estimated EMI: ₹3.15 L/month</p>
+                                    
+                                    <div class="space-y-4 border-t border-b border-gray-100 py-5 mb-6">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm text-gray-500">Super Built-up Area</span>
+                                            <span id="fp-sbu" class="text-sm font-bold text-gray-900">4,200 sq.ft</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm text-gray-500">Carpet Area</span>
+                                            <span id="fp-carpet" class="text-sm font-bold text-gray-900">3,450 sq.ft</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-sm text-gray-500">Bathrooms</span>
+                                            <span id="fp-baths" class="text-sm font-bold text-gray-900">5 + 1 Powder Room</span>
+                                        </div>
+                                    </div>
+
+                                    <button class="w-full border-2 border-primary text-primary font-bold py-3.5 rounded-xl hover:bg-primary/5 transition flex justify-center items-center gap-2">
+                                        <span class="material-icons-outlined text-[18px]">file_download</span> Download Brochure
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <script>
+                    const floorData = {
+                        4: {
+                            price: "₹4.50 Cr",
+                            emi: "Estimated EMI: ₹3.15 L/month",
+                            sbu: "4,200 sq.ft",
+                            carpet: "3,450 sq.ft",
+                            baths: "5 + 1 Powder Room",
+                            image: "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=600&h=600&fit=crop"
+                        },
+                        3: {
+                            price: "₹3.20 Cr",
+                            emi: "Estimated EMI: ₹2.25 L/month",
+                            sbu: "3,100 sq.ft",
+                            carpet: "2,550 sq.ft",
+                            baths: "4 Bathrooms",
+                            image: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?w=600&h=600&fit=crop"
+                        }
+                    };
+
+                    function switchFloorPlan(bhk, btn) {
+                        // Update tabs
+                        document.querySelectorAll('.floor-tab').forEach(t => {
+                            t.classList.remove('font-bold', 'border-b-2', 'border-primary', 'text-primary', 'bg-white');
+                            t.classList.add('font-semibold', 'text-gray-500');
+                        });
+                        btn.classList.add('font-bold', 'border-b-2', 'border-primary', 'text-primary', 'bg-white');
+                        btn.classList.remove('font-semibold', 'text-gray-500');
+
+                        // Animate content change
+                        const content = document.getElementById('floorplan-content');
+                        content.style.opacity = '0.5';
+                        content.style.transform = 'translateY(10px)';
+                        content.style.transition = 'all 0.3s ease';
+
+                        setTimeout(() => {
+                            const data = floorData[bhk];
+                            document.getElementById('fp-price').innerHTML = `${data.price} <span class="text-sm text-gray-400 font-ui font-normal tracking-normal text-text-main">onwards</span>`;
+                            document.getElementById('fp-emi').innerText = data.emi;
+                            document.getElementById('fp-sbu').innerText = data.sbu;
+                            document.getElementById('fp-carpet').innerText = data.carpet;
+                            document.getElementById('fp-baths').innerText = data.baths;
+                            document.getElementById('fp-image').src = data.image;
+
+                            content.style.opacity = '1';
+                            content.style.transform = 'translateY(0)';
+                        }, 200);
+                    }
+                </script>
+
+                <!-- Amenities -->
+                <section>
+                    <h2 class="text-2xl font-bold font-headline mb-6">Premium Amenities</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-6">
+                        <div class="flex items-center gap-3 text-gray-700 font-medium">
+                            <div class="w-10 h-10 rounded-full bg-surface border border-gray-200 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">pool</span>
+                            </div>
+                            Private Pool
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-700 font-medium">
+                            <div class="w-10 h-10 rounded-full bg-surface border border-gray-200 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">fitness_center</span>
+                            </div>
+                            Gymnasium
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-700 font-medium">
+                            <div class="w-10 h-10 rounded-full bg-surface border border-gray-200 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">park</span>
+                            </div>
+                            Landscaped Garden
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-700 font-medium">
+                            <div class="w-10 h-10 rounded-full bg-surface border border-gray-200 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">directions_car</span>
+                            </div>
+                            3 Car Parking
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-700 font-medium">
+                            <div class="w-10 h-10 rounded-full bg-surface border border-gray-200 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">security</span>
+                            </div>
+                            24/7 Security
+                        </div>
+                        <div class="flex items-center gap-3 text-gray-700 font-medium">
+                            <div class="w-10 h-10 rounded-full bg-surface border border-gray-200 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">power</span>
+                            </div>
+                            100% Power Backup
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Right: Project Snapshot (1/3) -->
+            <div class="lg:col-span-1">
+                <div class="sticky-contact bg-white border border-gray-200 p-6 md:p-8 rounded-2xl shadow-soft">
+                    <div class="mb-6 pb-6 border-b border-gray-100">
+                        <span class="text-sm font-bold text-gray-400 uppercase tracking-widest">Offered At</span>
+                        <div class="font-headline tracking-tighter text-4xl font-extrabold text-primary mt-1">₹4.50 Cr</div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center shrink-0">
+                                <span class="material-icons-outlined text-primary">person</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-gray-900">Rajesh Mehta</div>
+                                <div class="text-xs text-gray-500">Premium Relationship Manager</div>
+                            </div>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 rounded-xl shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <span class="material-icons-outlined text-[20px]">call</span> Call Manager
+                        </button>
+                        <button class="w-full bg-white border-2 border-primary text-primary hover:bg-primary/5 font-bold py-3.5 rounded-xl shadow-sm transition flex justify-center items-center gap-2">
+                            <span class="material-icons-outlined text-[20px]">chat</span> WhatsApp
+                        </button>
+                    </div>
+
+                    <!-- Finance Integration Hook -->
+                    <div class="mt-8 p-5 rounded-2xl bg-gray-50 border border-primary/10">
+                        <div class="flex items-center gap-2 text-primary font-bold text-sm mb-2">
+                            <span class="material-icons-outlined text-[20px]">savings</span> Lifestyle Finance
+                        </div>
+                        <div class="text-xs text-gray-600 leading-relaxed mb-4">Unlock curated home loan deals starting at 8.4% and get up to ₹2.25L cashback.</div>
+                        <a href="finance.html" class="block w-full py-2.5 bg-white border border-gray-200 rounded-lg text-center text-xs font-bold text-gray-700 hover:border-primary transition">Explore Options</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FULL-WIDTH: Cinematic Neighborhood Map Area -->
+        <section class="border-t border-gray-200 pt-20 mb-20">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold font-headline mb-3 text-[#1A1A2E]">Neighborhood & Connectivity</h2>
+                    <p class="text-gray-500 font-ui text-sm max-w-xl">A home is more than just walls; it's the ecosystem around it. Explore the curated lifestyle hubs near Shivalik Harmony.</p>
+                </div>
+                <!-- POI Toggles -->
+                <div class="flex flex-wrap gap-2 p-1.5 bg-white border border-gray-200 rounded-full shadow-sm" id="poi-toggles">
+                    <button class="map-toggle-btn active" data-type="all">All</button>
+                    <button class="map-toggle-btn" data-type="school">
+                        <span class="material-icons-outlined text-[16px]">school</span> Schools
+                    </button>
+                    <button class="map-toggle-btn" data-type="hospital">
+                        <span class="material-icons-outlined text-[16px]">local_hospital</span> Hospitals
+                    </button>
+                    <button class="map-toggle-btn" data-type="restaurant">
+                        <span class="material-icons-outlined text-[16px]">restaurant</span> Dining
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row w-full h-[650px] rounded-[32px] overflow-hidden border border-gray-200 shadow-soft bg-white relative">
+                
+                <!-- NEW: Integrated Glassmorphic Form Overlay (Now Toggleable & Bottom-Right) -->
+                <div class="absolute right-8 bottom-8 w-[380px] z-[30] flex flex-col pointer-events-none">
+                    <!-- The Panel -->
+                    <div id="visit-form-panel" class="map-overlay-form hidden p-8 rounded-[28px] shadow-2xl pointer-events-auto overflow-y-auto max-h-[500px]">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h3 class="text-xl font-bold font-headline text-[#1A1A2E]">Private Site Visit</h3>
+                                <p class="text-xs text-gray-500 mt-1">Book a curated home tour.</p>
+                            </div>
+                            <button onclick="toggleVisitForm()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+                                <span class="material-icons-outlined text-sm">close</span>
+                            </button>
+                        </div>
+                        
+                        <form class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Date</label>
+                                    <input type="date" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-100 outline-none text-sm font-ui">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1 ml-1">Time</label>
+                                    <input type="time" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-100 outline-none text-sm font-ui">
+                                </div>
+                            </div>
+                            <div>
+                                <input type="text" placeholder="Full Name" class="w-full px-5 py-4 rounded-xl bg-white border border-gray-100 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition font-ui text-sm">
+                            </div>
+                            <div>
+                                <input type="tel" placeholder="Mobile Number" class="w-full px-5 py-4 rounded-xl bg-white border border-gray-100 focus:border-primary focus:ring-4 focus:ring-primary/5 outline-none transition font-ui text-sm">
+                            </div>
+                            
+                            <button type="button" class="w-full bg-[#1A1A2E] hover:bg-black text-white font-bold py-4 rounded-xl shadow-lg transition mt-2 flex items-center justify-center gap-2">
+                                <span class="material-icons-outlined text-[18px]">calendar_month</span> Confirm Appointment
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Trigger FAB -->
+                    <div class="flex justify-end mt-4">
+                        <button id="concierge-trigger" onclick="toggleVisitForm()" class="concierge-fab px-7 py-4 rounded-full flex items-center gap-3 font-bold pointer-events-auto">
+                            <span class="material-icons-outlined text-[20px]">handshake</span>
+                            <span>Request Site Visit</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mini Legend / POI List -->
+                <div class="w-full lg:w-80 border-r border-gray-100 flex flex-col bg-white overflow-hidden shrink-0 z-10 relative">
+                    <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-white">
+                        <h4 class="font-bold text-sm text-[#1A1A2E] flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Nearest Hubs
+                        </h4>
+                    </div>
+                    <div class="poi-scroll-area overflow-y-auto flex-1 p-4 space-y-2 bg-gray-50/30" id="poi-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Map Container -->
+                <div class="flex-1 relative group w-full">
+                    <div id="neighborhood-map" class="w-full h-full"></div>
+                    
+                    <!-- Map View Toggle -->
+                    <div class="absolute top-8 left-8 flex bg-white/90 backdrop-blur-md p-1.5 rounded-2xl shadow-xl border border-white/20 z-10 transition-all hover:bg-white">
+                        <button id="style-streets-btn" class="px-4 py-2 rounded-xl text-[13px] font-bold transition-all bg-[#1A1A2E] text-white shadow-sm" data-style="mapbox://styles/mapbox/light-v11">
+                            Streets
+                        </button>
+                        <button id="style-satellite-btn" class="px-4 py-2 rounded-xl text-[13px] font-bold text-gray-500 hover:text-[#1A1A2E] transition-all" data-style="mapbox://styles/mapbox/satellite-v9">
+                            Satellite
+                        </button>
+                    </div>
+                    
+                    <!-- Recenter Button -->
+                    <button id="recenter-map-btn" class="absolute top-8 right-8 bg-white p-3.5 rounded-2xl shadow-xl border border-gray-100 text-gray-700 hover:text-primary hover:scale-105 active:scale-95 transition-all z-10" title="Recenter to Property">
+                        <span class="material-icons-outlined text-[22px]">center_focus_strong</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-20 border-t border-gray-200 bg-white py-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <img src="assets/logo.png" alt="Taathya" class="h-8 filter max-w-[150px] object-contain">
+            <div class="text-sm font-ui text-gray-500">
+                © 2026 Taathya. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Map & Logical Scritps -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ---- Initialize Neighborhood Map ----
+            if (!mapboxgl.accessToken) {
+                // IMPORTANT: Replace the dummy key below with your actual Mapbox public token
+                mapboxgl.accessToken = 'REPLACE_WITH_YOUR_MAPBOX_PUBLIC_TOKEN';
+            }
+
+            // Property location (Shivalik Harmony)
+            const MAIN_COORDS = [72.5065, 23.0258];
+
+            const nMap = new mapboxgl.Map({
+                container: 'neighborhood-map',
+                style: 'mapbox://styles/mapbox/light-v11',
+                center: MAIN_COORDS,
+                zoom: 14.5,
+                pitch: 45,
+                bearing: -10,
+                antialias: true
+            });
+
+            nMap.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
+
+            // Add the main property pin
+            const mainEl = document.createElement('div');
+            mainEl.className = 'main-property-marker';
+            mainEl.innerHTML = '<span class="material-icons-outlined">home</span>';
+            
+            new mapboxgl.Marker({ element: mainEl, anchor: 'bottom' })
+                .setLngLat(MAIN_COORDS)
+                .addTo(nMap);
+
+            // ---- Prefetched Coordinate Data for Neighborhood Explorer ----
+            const POIs = [
+                // Schools
+                { id: 'p1', type: 'school', name: 'Zydus School for Excellence', dist: '1.2 km', coords: [72.5020, 23.0310], icon: 'school' },
+                { id: 'p2', type: 'school', name: 'DPS Bopal', dist: '2.5 km', coords: [72.4950, 23.0200], icon: 'school' },
+                { id: 'p7', type: 'school', name: 'Tulip International School', dist: '3.0 km', coords: [72.4880, 23.0300], icon: 'school' },
+                { id: 'p8', type: 'school', name: 'Satyamev Jayate Intl School', dist: '4.2 km', coords: [72.4700, 23.0210], icon: 'school' },
+                // Hospitals
+                { id: 'p3', type: 'hospital', name: 'Zydus Hospital', dist: '1.8 km', coords: [72.5180, 23.0350], icon: 'local_hospital' },
+                { id: 'p4', type: 'hospital', name: 'CIMS Hospital', dist: '3.1 km', coords: [72.5250, 23.0410], icon: 'local_hospital' },
+                { id: 'p9', type: 'hospital', name: 'Sterling Hospital', dist: '4.5 km', coords: [72.5250, 23.0510], icon: 'local_hospital' },
+                // Restaurants
+                { id: 'p5', type: 'restaurant', name: 'Rajwadu', dist: '0.8 km', coords: [72.5110, 23.0220], icon: 'restaurant' },
+                { id: 'p6', type: 'restaurant', name: 'The Green Roasts', dist: '1.5 km', coords: [72.4980, 23.0280], icon: 'restaurant' },
+                { id: 'p10', type: 'restaurant', name: 'Mocha Cafe', dist: '2.2 km', coords: [72.5050, 23.0400], icon: 'restaurant' }
+            ];
+
+            let poiMarkers = [];
+            
+            // Recenter Functionality
+            document.getElementById('recenter-map-btn').addEventListener('click', () => {
+                nMap.flyTo({ center: MAIN_COORDS, zoom: 14.5, pitch: 45, duration: 1000 });
+            });
+
+            // Map Style Toggling Logic
+            const streetsBtn = document.getElementById('style-streets-btn');
+            const satelliteBtn = document.getElementById('style-satellite-btn');
+
+            function setMapStyle(style, activeBtn, inactiveBtn) {
+                if (nMap.getStyle().sprite.includes('satellite') && style.includes('satellite')) return;
+                if (!nMap.getStyle().sprite.includes('satellite') && style.includes('light')) return;
+
+                nMap.setStyle(style);
+                
+                // Update UI buttons
+                activeBtn.classList.add('bg-[#1A1A2E]', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-gray-500', 'hover:text-[#1A1A2E]');
+                
+                inactiveBtn.classList.remove('bg-[#1A1A2E]', 'text-white', 'shadow-sm');
+                inactiveBtn.classList.add('text-gray-500', 'hover:text-[#1A1A2E]');
+            }
+
+            streetsBtn.addEventListener('click', () => {
+                setMapStyle('mapbox://styles/mapbox/light-v11', streetsBtn, satelliteBtn);
+            });
+
+            satelliteBtn.addEventListener('click', () => {
+                setMapStyle('mapbox://styles/mapbox/satellite-v9', satelliteBtn, streetsBtn);
+            });
+
+            // Re-apply route source/layer and fog after style change
+            nMap.on('style.load', () => {
+                if (!nMap.getSource('route')) {
+                    nMap.addSource('route', {
+                        type: 'geojson',
+                        data: { type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [] } }
+                    });
+                }
+                if (!nMap.getLayer('route')) {
+                    const isSatellite = nMap.getStyle().sprite && nMap.getStyle().sprite.includes('satellite');
+                    nMap.addLayer({
+                        id: 'route',
+                        type: 'line',
+                        source: 'route',
+                        layout: { 'line-join': 'round', 'line-cap': 'round' },
+                        paint: {
+                            'line-color': isSatellite ? '#FFFDD0' : '#8C274C', // Cream color for satellite, Maroon for streets
+                            'line-width': 4,
+                            'line-opacity': 0.85,
+                            'line-dasharray': [1, 2]
+                        }
+                    });
+                }
+                
+                // Add Fog for cinematic depth on style reload
+                nMap.setFog({
+                    'color': 'rgb(186, 210, 235)',
+                    'high-color': 'rgb(36, 92, 223)',
+                    'horizon-blend': 0.02,
+                    'space-color': 'rgb(11, 11, 25)',
+                    'star-intensity': 0.6
+                });
+            });
+
+            // ---- Directions API for Hover Routing ----
+            nMap.on('load', () => {
+                // Initialize fog on first load
+                nMap.dispatchEvent(new Event('style.load'));
+                
+                // Source for the moving distance label
+                nMap.addSource('route-label', {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: []
+                    }
+                });
+                
+                // Add the actual label layer
+                nMap.addLayer({
+                    id: 'route-label-layer',
+                    type: 'symbol',
+                    source: 'route-label',
+                    layout: {
+                        'text-field': ['get', 'title'],
+                        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+                        'text-size': 12,
+                        'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+                        'text-radial-offset': 1.5,
+                        'text-justify': 'auto'
+                    },
+                    paint: {
+                        'text-color': '#ffffff',
+                        'text-halo-color': '#8C274C',
+                        'text-halo-width': 2
+                    }
+                });
+            });
+
+            let currentHoverCoords = null;
+            let animationFrameId = null;
+            let routeLabelMarker = null;
+
+            window.hoverPOI = async (coords) => {
+                const hoverId = coords.join(',');
+                currentHoverCoords = hoverId;
+                
+                if(!nMap.getSource('route')) return;
+                
+                // Clear any existing route and animation immediately
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
+                if(routeLabelMarker) routeLabelMarker.remove();
+                
+                nMap.getSource('route').setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [] } });
+
+                try {
+                    const res = await fetch(`https://api.mapbox.com/directions/v5/mapbox/driving/${MAIN_COORDS[0]},${MAIN_COORDS[1]};${coords[0]},${coords[1]}?geometries=geojson&access_token=${mapboxgl.accessToken}`);
+                    const json = await res.json();
+                    
+                    if (currentHoverCoords !== hoverId) return;
+
+                    if(json.routes && json.routes.length > 0) {
+                        const fullCoords = json.routes[0].geometry.coordinates;
+                        const distance = (json.routes[0].distance / 1000).toFixed(1) + ' km';
+                        const duration = Math.ceil(json.routes[0].duration / 60) + ' min';
+                        
+                        // Create custom HTML element for route label (Fixed position at destination)
+                        const labelEl = document.createElement('div');
+                        labelEl.className = 'route-label-container shadow-2xl';
+                        labelEl.innerHTML = `<span class="material-icons-outlined text-[12px] opacity-70 mt-0.5 inline-block align-top mr-1.5">directions_car</span> ${distance} • ${duration}`;
+                        
+                        routeLabelMarker = new mapboxgl.Marker({ element: labelEl, anchor: 'bottom', offset: [0, -35] })
+                            .setLngLat(coords)
+                            .addTo(nMap);
+
+                        let currentFrame = 0;
+                        const totalFrames = 60; // 1 second animation @ 60fps
+
+                        function animateLine() {
+                            if (currentHoverCoords !== hoverId) return;
+
+                            currentFrame++;
+                            
+                            // Cubic-Bezier easing (equivalent to ease-in-out)
+                            const progress = currentFrame / totalFrames;
+                            const ease = progress < 0.5 
+                                ? 4 * progress * progress * progress 
+                                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                            
+                            const pointCount = Math.floor(ease * fullCoords.length);
+                            
+                            if (currentFrame < totalFrames) {
+                                const partial = fullCoords.slice(0, Math.max(1, pointCount));
+                                nMap.getSource('route').setData({
+                                    type: 'Feature',
+                                    properties: {},
+                                    geometry: { type: 'LineString', coordinates: partial }
+                                });
+                                animationFrameId = requestAnimationFrame(animateLine);
+                            } else {
+                                // Animation Finished
+                                nMap.getSource('route').setData({
+                                    type: 'Feature',
+                                    properties: {},
+                                    geometry: { type: 'LineString', coordinates: fullCoords }
+                                });
+                                // Fade in the label now
+                                labelEl.classList.add('visible');
+                            }
+                        }
+                        
+                        animateLine();
+                    }
+                } catch(e) { console.error("Routing error:", e); }
+            };
+
+            window.leavePOI = () => {
+                currentHoverCoords = null;
+                if(animationFrameId) cancelAnimationFrame(animationFrameId);
+                if(routeLabelMarker) routeLabelMarker.remove();
+                if(nMap.getSource('route')) {
+                    nMap.getSource('route').setData({ type: 'Feature', properties: {}, geometry: { type: 'LineString', coordinates: [] } });
+                }
+            };
+
+            function renderPOIs(filterType) {
+                const listContainer = document.getElementById('poi-list');
+                listContainer.innerHTML = '';
+                
+                // Clear existing
+                poiMarkers.forEach(m => m.remove());
+                poiMarkers = [];
+                
+                const bounds = new mapboxgl.LngLatBounds();
+                bounds.extend(MAIN_COORDS); // Always ensure home is in view
+
+                let displayed = 0;
+
+                POIs.forEach((poi) => {
+                    if (filterType !== 'all' && poi.type !== filterType) return;
+
+                    // Create marker
+                    const el = document.createElement('div');
+                    el.className = 'poi-marker';
+                    el.dataset.type = poi.type;
+                    el.innerHTML = `<span class="material-icons-outlined text-[18px]">${poi.icon}</span>`;
+                    
+                    // Add routing on hover for map markers
+                    el.addEventListener('mouseenter', () => window.hoverPOI(poi.coords));
+                    el.addEventListener('mouseleave', () => window.leavePOI());
+                    
+                    const m = new mapboxgl.Marker({ element: el })
+                        .setLngLat(poi.coords)
+                        .setPopup(new mapboxgl.Popup({ offset: 15 }).setHTML(`<div class="font-bold text-sm text-gray-900 font-ui p-1">${poi.name}</div>`))
+                        .addTo(nMap);
+                    
+                    poiMarkers.push(m);
+                    bounds.extend(poi.coords);
+
+                    // List item
+                    if(displayed < 12) { // show more now that we have space
+                        listContainer.innerHTML += `
+                            <div class="flex items-center justify-between group cursor-pointer p-3 rounded-xl border border-transparent hover:border-gray-100 hover:bg-surface transition" 
+                                onclick="mapFlyTo([${poi.coords}])" 
+                                onmouseenter="hoverPOI([${poi.coords}])" 
+                                onmouseleave="leavePOI()">
+                                <div class="flex items-center gap-3 w-5/6">
+                                    <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center border border-gray-100 group-hover:border-primary group-hover:bg-primary/5 transition shrink-0">
+                                        <span class="material-icons-outlined text-[18px] text-gray-500 group-hover:text-primary transition">${poi.icon}</span>
+                                    </div>
+                                    <span class="text-sm font-semibold text-gray-800 break-words group-hover:text-primary transition">${poi.name}</span>
+                                </div>
+                                <span class="text-xs font-bold text-gray-400 group-hover:text-primary whitespace-nowrap bg-white px-2 py-1 rounded shadow-sm border border-gray-100 group-hover:border-primary/20 transition">${poi.dist}</span>
+                            </div>
+                        `;
+                        displayed++;
+                    }
+                });
+
+                if (displayed === 0 && filterType !== 'all') {
+                    listContainer.innerHTML = `<div class="text-sm text-gray-500 italic">No locations found nearby.</div>`;
+                }
+
+                // Fit to ensure Home + POIs are visible
+                if (filterType !== 'all' && displayed > 0) {
+                    nMap.fitBounds(bounds, { padding: 80, duration: 1200, maxZoom: 15 });
+                }
+            }
+
+            // Expose for inline click event
+            window.mapFlyTo = (coords) => {
+                nMap.flyTo({ center: coords, zoom: 15.5, pitch: 0, duration: 800 });
+            };
+
+            // Handle toggle bindings
+            document.querySelectorAll('.map-toggle-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.map-toggle-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    const type = btn.dataset.type;
+                    
+                    if (type === 'all') {
+                        // Clear markers and go home
+                        poiMarkers.forEach(m => m.remove());
+                        poiMarkers = [];
+                        document.getElementById('poi-list').innerHTML = `<div class="text-sm text-gray-500">Select a category to explore nearby places.</div>`;
+                        nMap.flyTo({ center: MAIN_COORDS, zoom: 14.5, pitch: 45, duration: 1000 });
+                    } else {
+                        renderPOIs(type);
+                    }
+                });
+            });
+            
+            // Initialize with "All" View
+            document.getElementById('poi-list').innerHTML = `<div class="text-sm text-gray-500">Select a category to explore nearby places.</div>`;
+
+            window.toggleVisitForm = () => {
+                const panel = document.getElementById('visit-form-panel');
+                const trigger = document.getElementById('concierge-trigger');
+                if(panel.classList.contains('hidden')) {
+                    panel.classList.remove('hidden');
+                    if(trigger) trigger.classList.add('hidden');
+                } else {
+                    panel.classList.add('hidden');
+                    if(trigger) trigger.classList.remove('hidden');
+                }
+            };
+        });
+    </script>
+    <script>
+        (function initGlobalLoader() {
+            const MIN_LOADING_TIME = 1300;
+            let isPageLoaded = false;
+            let minTimeElapsed = false;
+
+            window.addEventListener('load', () => {
+                isPageLoaded = true;
+                checkAndRemoveLoader();
+            });
+
+            setTimeout(() => {
+                minTimeElapsed = true;
+                checkAndRemoveLoader();
+            }, MIN_LOADING_TIME);
+
+            function checkAndRemoveLoader() {
+                if (!isPageLoaded || !minTimeElapsed) return;
+
+                const loaderView = document.getElementById('vanilla-loader');
+                if (!loaderView) return;
+
+                loaderView.style.clipPath = 'circle(0% at 50% 50%)';
+                loaderView.style.pointerEvents = 'none';
+
+                document.body.classList.remove('is-loading');
+                document.body.classList.add('loader-done', 'loading-lock');
+                window.dispatchEvent(new Event('resize'));
+
+                sessionStorage.removeItem('scrollPosition');
+
+                setTimeout(() => {
+                    loaderView.remove();
+                    document.body.classList.remove('loading-lock');
+                    window.dispatchEvent(new Event('resize'));
+                }, 1200);
+            }
+        })();
+    </script>
+</body>
+</html>

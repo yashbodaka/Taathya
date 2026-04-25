@@ -1,0 +1,341 @@
+/* ================================================================
+   Taathya — Property Search Page Styles (Hero & Transitions)
+   ================================================================ */
+
+/* ---- Core Reset for Dual-View Layout ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ================================================================
+   HERO STATE STYLES (Phase 1)
+   ================================================================ */
+.hero-view {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+    background: #F8F2F4;
+    overflow: visible; /* Prevent clipping of dropdowns */
+}
+
+body.searched .hero-view {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.hero-map-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: #F8F2F4; /* Fallback */
+    transition: opacity 1.5s ease;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    /* Soft gradient to protect text legibility */
+    background: linear-gradient(to bottom, 
+        rgba(255, 255, 255, 0.4) 0%, 
+        rgba(255, 255, 255, 0) 40%, 
+        rgba(255, 255, 255, 0) 60%, 
+        rgba(255, 255, 255, 0.4) 100%);
+    pointer-events: none;
+}
+
+/* Premium Map Pins (Price Pills) */
+.price-marker-pill {
+    background: white;
+    padding: 8px 16px;
+    border-radius: 999px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(140, 39, 76, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    white-space: nowrap;
+    z-index: 5;
+}
+
+.price-marker-pill span {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: #8C274C;
+}
+
+.price-marker-pill::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid white;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 0 24px;
+    max-width: 1100px;
+    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease;
+}
+
+body.searched .hero-content {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.95); /* Floats up and out */
+}
+
+/* --- Clean Typography --- */
+.hero-title {
+    font-family: 'Epilogue', sans-serif;
+    font-size: clamp(3rem, 7.5vw, 6rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: #1A1A2E; /* Switched to Dark for a 'Light' Modern feel */
+    margin-bottom: 24px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.05); /* Minimal shadow */
+}
+
+.hero-title-accent {
+    color: #8C274C;
+}
+
+.hero-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 21px;
+    font-weight: 500;
+    color: rgba(26, 26, 46, 0.7); /* Darker subtitle */
+    margin-bottom: 64px;
+    max-width: 680px;
+    margin-inline: auto;
+    line-height: 1.6;
+}
+
+/* ================================================================
+   MODERN LIGHT CONSOLE (Solid Card Style - COMPACT)
+   ================================================================ */
+.glass-search-console {
+    background: #FFFFFF; 
+    border: 1px solid rgba(140, 39, 76, 0.08); /* Even softer border */
+    border-radius: 36px;
+    padding: 6px 6px 6px 32px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 880px;
+    margin-inline: auto;
+    /* Much more subtle, professional shadow */
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 10px 30px -10px rgba(140, 39, 76, 0.06);
+    position: relative;
+    z-index: 100;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease;
+}
+
+.glass-search-console:hover {
+    transform: translateY(-2px); /* Subtle lift */
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 20px 50px -15px rgba(140, 39, 76, 0.1);
+}
+
+.console-segment {
+    display: flex;
+    align-items: center;
+    gap: 18px; /* Tighter gap */
+    padding: 10px 24px; /* Reduced vertical padding */
+    flex: 1;
+    cursor: pointer;
+    position: relative;
+    border-radius: 24px;
+    transition: background 0.2s ease;
+}
+
+.price-marker-container {
+    height: 0;
+    width: 0;
+    position: relative;
+    pointer-events: none; /* Make markers purely ambient, blocking accidental interactions */
+}
+
+.console-segment:hover {
+    background: rgba(140, 39, 76, 0.03);
+}
+
+.segment-icon {
+    font-size: 22px; /* Dscaled icons */
+    color: #8C274C;
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+.segment-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.segment-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(26, 26, 46, 0.5);
+}
+
+.custom-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.selected-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px; /* Downscaled font size */
+    font-weight: 700;
+    color: #1A1A2E;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.arrow {
+    font-size: 18px; /* Slightly smaller arrow */
+    color: rgba(26, 26, 46, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.console-segment:hover .arrow {
+    color: #8C274C;
+    transform: rotate(180deg);
+}
+
+/* --- Dropdown Menu (Universal Scroll Fix) --- */
+.custom-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    min-width: 240px; 
+    background: #FFFFFF;
+    border: 1px solid rgba(140, 39, 76, 0.1);
+    border-radius: 20px;
+    padding: 12px 12px 20px 12px; /* Increased bottom padding for 'breathing room' */
+    box-shadow: 0 30px 60px rgba(140, 39, 76, 0.15);
+    z-index: 9999; 
+    max-height: 180px; /* Reduced further to guarantee a taskbar gap */
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch; /* Mobile momentum scroll */
+    touch-action: pan-y;
+    transform-origin: top;
+    animation: dropdown-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Custom Scrollbar for Luxury Menus */
+.custom-dropdown-menu::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-dropdown-menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-dropdown-menu::-webkit-scrollbar-thumb {
+    background: rgba(140, 39, 76, 0.1);
+    border-radius: 10px;
+}
+.custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(140, 39, 76, 0.2);
+}
+
+@keyframes dropdown-in {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dropdown-item {
+    padding: 14px 24px;
+    border-radius: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgba(26, 26, 46, 0.7);
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:last-child {
+    margin-bottom: 8px; /* Extra cushion for the final item */
+}
+
+.dropdown-item:hover {
+    background: rgba(140, 39, 76, 0.08);
+    color: #8C274C;
+    transform: translateX(4px);
+}
+
+.console-divider {
+    width: 1px;
+    height: 32px; /* Shorter divider */
+    background: rgba(140, 39, 76, 0.08);
+    flex-shrink: 0;
+}
+
+.console-action-btn {
+    background: #8C274C;
+    color: white;
+    border-radius: 28px;
+    padding: 14px 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700; /* Slightly lighter weight */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(140, 39, 76, 0.2); /* Subtler button glow */
+    margin-left: 10px;
+}
+
+.console-action-btn:hover {
+    background: #6D0C35; /* Darker, more serious maroon */
+    transform: translateY(-1px); /* Subtle hover lift */
+    box-shadow: 0 8px 20px rgba(140, 39, 76, 0.3);
+}
+
+/* ================================================================
+   MOBILE FIXES
+   ================================================================ */
+@media (max-width: 960px) {
+    .hero-title { font-size: 3rem; }
+    .glass-search-console { 
+        flex-direction: column; 
+        border-radius: 36px; 
+        padding: 16px; 
+        gap: 8px; 
+        max-width: 500px;
+    }
+    .console-segment { width: 100%; border-radius: 20px; }
+    .console-divider { display: none; }
+    .console-action-btn { width: 100%; justify-content: center; margin-left: 0; margin-top: 12px; }
+}
+
+.custom-dropdown-menu.hidden { display: none !important; }
+
+/* Universal Header — search & filter slots always visible in new split navbar */
+#universal-filter-slot { transition: opacity 0.4s ease; }

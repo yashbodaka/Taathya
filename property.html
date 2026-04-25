@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Velvet Estate | High-End Property Search</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800&family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+    
+    <!-- Core External Styles -->
+    <link rel="stylesheet" href="style.css" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8C274C",
+                        "primary-container": "#8C274C",
+                        "on-primary": "#ffffff",
+                        "surface": "#faf9f9",
+                        "surface-container-low": "#f4f3f3",
+                        "on-surface": "#1a1c1c",
+                        "on-surface-variant": "#554246",
+                        "outline-variant": "#dbc0c5",
+                        "tertiary-fixed": "#ffdad8",
+                        "on-tertiary-fixed": "#410008",
+                    },
+                    fontFamily: {
+                        "headline": ["Epilogue", "Sora"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* ── HERO STATE ── */
+        #page-shell {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            transition: height 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        /* Map fills the entire hero background */
+        #map-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            transition:
+                width 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+                left 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+                top 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+                height 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+                border-radius 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        /* Gradient overlay on the map — hero state */
+        #map-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: linear-gradient(135deg,
+                    rgba(109, 12, 53, 0.72) 0%,
+                    rgba(26, 10, 16, 0.55) 40%,
+                    rgba(26, 10, 16, 0.15) 70%,
+                    transparent 100%);
+            transition: opacity 0.6s ease;
+            pointer-events: none;
+        }
+
+        /* Soft vignette edges */
+        #map-vignette {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(250, 249, 249, 0.35) 100%);
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+        }
+
+        /* Hero content layer */
+        #hero-content {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 24px;
+            transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        /* ── SEARCH BAR ── */
+        .glass-panel {
+            background: rgba(250, 249, 249, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(219, 192, 197, 0.3);
+        }
+
+        #search-bar {
+            transition: all 0.7s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        /* ── SEARCHED STATE ── */
+
+        /* When searched: page-shell shrinks to nav height */
+        body.searched #page-shell {
+            height: 72px;
+        }
+
+        /* Map moves to right panel */
+        body.searched #map-bg {
+            position: fixed;
+            left: 50%;
+            top: 72px;
+            width: 50%;
+            height: calc(100vh - 72px);
+            z-index: 50;
+            border-radius: 0;
+        }
+
+        /* Fade out hero overlay when transitioning */
+        body.searched #map-overlay {
+            opacity: 0;
+        }
+
+        body.searched #map-vignette {
+            opacity: 0;
+        }
+
+        /* Hero text fades out */
+        body.searched #hero-headline {
+            opacity: 0;
+            transform: translateY(-24px);
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        /* Search bar transitions to sticky top-nav position */
+        body.searched #hero-content {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Sticky search bar appears in nav */
+        #sticky-search {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            z-index: 200;
+            background: rgba(250, 249, 249, 0.97);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(219, 192, 197, 0.25);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            gap: 16px;
+            transform: translateY(-100%);
+            transition: transform 0.65s cubic-bezier(0.76, 0, 0.24, 1);
+            box-shadow: 0 2px 20px rgba(109, 12, 53, 0.07);
+        }
+
+        body.searched #sticky-search {
+            transform: translateY(0);
+        }
+
+        /* Results panel slides in from left */
+        #results-panel {
+            position: fixed;
+            top: 72px;
+            left: 0;
+            width: 50%;
+            height: calc(100vh - 72px);
+            z-index: 100;
+            background: #faf9f9;
+            overflow-y: auto;
+            padding: 24px;
+            transform: translateX(-100%);
+            transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+            scrollbar-width: thin;
+            scrollbar-color: #dbc0c5 transparent;
+        }
+
+        body.searched #results-panel {
+            transform: translateX(0);
+        }
+
+        #results-panel::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #results-panel::-webkit-scrollbar-thumb {
+            background: #dbc0c5;
+            border-radius: 99px;
+        }
+
+        /* Map price pin */
+        .price-pin {
+            background: #8C274C;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            box-shadow: 0 3px 12px rgba(140, 39, 76, 0.45);
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s;
+        }
+
+        .price-pin:hover,
+        .price-pin.hovered {
+            background: #601931;
+            transform: scale(1.12);
+        }
+
+        /* Mapbox popup */
+        .mapboxgl-popup-content {
+            padding: 0 !important;
+            border-radius: 14px !important;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.14) !important;
+        }
+
+        .mapboxgl-popup-tip {
+            display: none !important;
+        }
+
+        .mapboxgl-popup-close-button {
+            top: 7px !important;
+            right: 9px !important;
+            font-size: 15px !important;
+            color: #9B8088 !important;
+            background: none !important;
+        }
+
+        .mpop {
+            padding: 12px 14px;
+            background: white;
+            min-width: 170px;
+        }
+
+        .mpop-price {
+            font-family: 'Epilogue', sans-serif;
+            font-size: 15px;
+            font-weight: 800;
+            color: #8C274C;
+        }
+
+        .mpop-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1a0a10;
+            margin: 2px 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .mpop-loc {
+            font-size: 10px;
+            color: #9B8088;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Property card in list */
+        .prop-card {
+            display: flex;
+            gap: 14px;
+            padding: 14px;
+            border-radius: 18px;
+            background: white;
+            border: 1.5px solid #F0E8EB;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+            margin-bottom: 11px;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.4s ease both;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .prop-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #8c274c;
+            transform: scaleY(0);
+            border-radius: 0 2px 2px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .prop-card:hover,
+        .prop-card.active {
+            border-color: rgba(140, 39, 76, 0.4);
+            box-shadow: 0 6px 24px rgba(109, 12, 53, 0.1);
+            transform: translateY(-1px);
+            background: #fffafa;
+        }
+
+        .prop-card:hover::before,
+        .prop-card.active::before {
+            transform: scaleY(1);
+        }
+
+        .card-img {
+            width: 110px;
+            height: 96px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            transition: transform 0.5s ease;
+        }
+
+        .prop-card:hover .card-img {
+            transform: scale(1.04);
+        }
+
+        .card-img-wrap {
+            width: 110px;
+            height: 96px;
+            border-radius: 12px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-price {
+            font-family: 'Epilogue', sans-serif;
+            font-size: 17px;
+            font-weight: 800;
+            color: #8C274C;
+            letter-spacing: -0.02em;
+        }
+
+        .card-name {
+            font-family: 'Sora', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1a1c1c;
+            margin: 2px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-loc {
+            font-size: 10px;
+            color: #887176;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+
+        .card-loc .material-symbols-outlined {
+            font-size: 12px;
+            color: #8c274c;
+        }
+
+        .card-stats {
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-stat {
+            font-size: 10px;
+            font-weight: 600;
+            color: #554246;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card-stat .material-symbols-outlined {
+            font-size: 12px;
+            color: #8c274c;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 6px;
+        }
+
+        .card-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 999px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .wish-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1.5px solid #e8d8dc;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.18s;
+            color: #887176;
+            flex-shrink: 0;
+        }
+
+        .wish-btn:hover {
+            border-color: #8c274c;
+            color: #8c274c;
+        }
+
+        .wish-btn.loved {
+            background: #fdf2f2;
+            border-color: #8c274c;
+            color: #8c274c;
+        }
+
+        .wish-btn .material-symbols-outlined {
+            font-size: 12px;
+        }
+
+        /* Results header */
+        .res-header {
+            margin-bottom: 18px;
+        }
+
+        .res-count {
+            font-family: 'Epilogue', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: #1a1c1c;
+            letter-spacing: -0.02em;
+        }
+
+        .res-count span {
+            color: #8c274c;
+        }
+
+        .res-sub {
+            font-size: 13px;
+            color: #887176;
+            margin-top: 2px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Filter chips */
+        .fchip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            border: 1.5px solid #dbc0c5;
+            background: white;
+            font-size: 13px;
+            font-weight: 600;
+            color: #554246;
+            cursor: pointer;
+            transition: all 0.18s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .fchip:hover {
+            border-color: #8c274c;
+            color: #8c274c;
+        }
+
+        .fchip.active {
+            background: #8c274c;
+            color: white;
+            border-color: #8c274c;
+        }
+
+        .fchip .material-symbols-outlined {
+            font-size: 13px;
+        }
+
+        /* Sticky search compact */
+        .ss-input {
+            flex: 1;
+            max-width: 340px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1.5px solid #dbc0c5;
+            border-radius: 999px;
+            padding: 8px 16px;
+            transition: border-color 0.2s;
+        }
+
+        .ss-input:focus-within {
+            border-color: #8c274c;
+        }
+
+        .ss-input input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            color: #1a1c1c;
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .ss-input input::placeholder {
+            color: #887176;
+            font-weight: 400;
+        }
+
+        .ss-input .material-symbols-outlined {
+            font-size: 17px;
+            color: #887176;
+            flex-shrink: 0;
+        }
+
+        /* Map marker cluster */
+        .cluster-marker {
+            background: #8c274c;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            border: 3px solid white;
+            box-shadow: 0 4px 16px rgba(109, 12, 53, 0.4);
+        }
+
+        /* Map badge */
+        .map-badge-el {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 10;
+            background: white;
+            padding: 7px 13px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1c1c;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f0e8eb;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .map-badge-dot {
+            width: 7px;
+            height: 7px;
+            background: #8c274c;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.4)
+            }
+        }
+
+        /* Transition hint */
+        .scroll-hint {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(6px)
+            }
+        }
+
+        /* FADE UP */
+        .fu {
+            animation: fu 0.6s ease both;
+        }
+
+        .fu1 {
+            animation-delay: 0.1s;
+        }
+
+        .fu2 {
+            animation-delay: 0.2s;
+        }
+
+        .fu3 {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fu {
+            from {
+                opacity: 0;
+                transform: translateY(18px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        /* Map container needs resize after transition */
+        .mapboxgl-map {
+            transition: none !important;
+        }
+
+        /* Hide below-fold content when in search mode */
+        #below-fold {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        body.searched #below-fold {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        /* Lock scroll in searched state */
+        body.searched {
+            overflow: hidden;
+        }
+
+        @media(max-width: 768px) {
+            body.searched #map-bg {
+                display: none;
+            }
+
+            body.searched #results-panel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface font-body is-loading">
+    <!-- ══════════════════════════════════════════════════════════════
+         VANILLA JS KINETIC LOADING SCREEN (Global)
+    ══════════════════════════════════════════════════════════════ -->
+    <div id="vanilla-loader"
+        class="fixed inset-0 z-[99999] bg-[#601931] flex flex-col items-center justify-center overflow-hidden"
+        style="transition: clip-path 1.6s cubic-bezier(0.16, 1, 0.3, 1); clip-path: circle(150% at 50% 50%); pointer-events: all; touch-action: none;">
+
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+            <div class="loader-orbit orbit-1"></div>
+            <div class="loader-orbit orbit-2"></div>
+            <div class="loader-orbit orbit-3"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="loader-vessel mb-6">
+                <img src="assets/logo.png" alt="Taathya Logo" id="loader-logo">
+            </div>
+            <div class="h-6 overflow-hidden">
+                <p class="loader-signature-text" id="loader-status">FORGING FINANCIAL FUTURES</p>
+            </div>
+            <div class="w-32 h-[1px] bg-white/10 mt-12 relative overflow-hidden rounded-full">
+                <div class="absolute top-0 left-0 h-full bg-white/40 w-[40%] animate-[progress-indeterminate_5s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── HERO SHELL (full viewport) ── -->
+    <div id="page-shell">
+
+        <!-- LIVE MAP — fills entire hero background -->
+        <div id="map-bg"></div>
+
+        <!-- Gradient overlay -->
+        <div id="map-overlay"></div>
+
+        <!-- Soft vignette -->
+        <div id="map-vignette"></div>
+
+        <!-- Hero Content -->
+        <div id="hero-content">
+
+    <!-- Common Nav -->
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-[999] bg-white/80 backdrop-blur-xl border border-white/50 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.05)] px-6 md:px-8 py-3 flex justify-between items-center transition-all duration-500">
+        <!-- Logo Overhang container -->
+        <a href="index.html" class="flex-shrink-0 relative flex items-center h-full group">
+            <img src="assets/logo.png" alt="Taathya Logo" 
+                class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105 duration-500 origin-left" />
+        </a>
+        
+        <div class="hidden md:flex items-center gap-8 lg:gap-12 pl-12 lg:pl-20">
+            <a href="index.html" class="text-[13px] font-bold text-gray-800 hover:text-[#8C274C] transition-colors duration-300 relative group" style="font-family: 'Inter', sans-serif;">
+                Home
+                <span class="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#8C274C] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="property.html" class="text-[13px] font-bold text-gray-800 hover:text-[#8C274C] transition-colors duration-300 relative group" style="font-family: 'Inter', sans-serif;">
+                Properties
+                <span class="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#8C274C] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="finance.html" class="text-[13px] font-bold text-gray-800 hover:text-[#8C274C] transition-colors duration-300 relative group" style="font-family: 'Inter', sans-serif;">
+                Finance
+                <span class="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#8C274C] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#" class="text-[13px] font-bold text-gray-800 hover:text-[#8C274C] transition-colors duration-300 relative group" style="font-family: 'Inter', sans-serif;">
+                About Us
+                <span class="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#8C274C] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <a href="#" class="hidden lg:flex px-8 py-3 rounded-full bg-[#8C274C] text-white text-[13px] font-bold hover:bg-[#601931] transition-all duration-300 shadow-lg hover:-translate-y-0.5 shadow-[#8C274C]/30" style="font-family: 'Inter', sans-serif;">
+                Contact Us
+            </a>
+            <button class="md:hidden text-gray-900 focus:outline-none">
+                <span class="material-icons-outlined text-2xl">menu</span>
+            </button>
+        </div>
+    </nav>
+
+            <!-- Headline -->
+            <div id="hero-headline"
+                style="text-align:center;margin-bottom:40px;max-width:820px;transition:opacity 0.35s ease, transform 0.35s ease;">
+                <div class="fu fu1"
+                    style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);padding:5px 14px;border-radius:999px;margin-bottom:18px;">
+                    <div style="width:6px;height:6px;background:#ffa6bd;border-radius:50%;animation:pulse 2s infinite;">
+                    </div>
+                    <span
+                        style="font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);">Live
+                        Property Map · Ahmedabad</span>
+                </div>
+                <h1 class="fu fu2"
+                    style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:clamp(42px,6vw,78px);color:white;letter-spacing:-0.03em;line-height:0.95;margin:0 0 16px;text-shadow:0 4px 24px rgba(0,0,0,0.2);">
+                    Discover Your<br /><em style="color:#ffa6bd;">Signature</em> Space
+                </h1>
+                <p class="fu fu3"
+                    style="font-family:'Inter',sans-serif;font-size:16px;color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto;line-height:1.6;">
+                    Premium properties on a live map. Search, explore, and find your next address.</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div id="search-bar" class="glass-panel fu fu3"
+                style="width:100%;max-width:860px;border-radius:28px;padding:8px;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;align-items:center;gap:0;">
+
+                    <!-- Location -->
+                    <div style="padding:12px 20px;border-right:1px solid rgba(219,192,197,0.3);">
+                        <div
+                            style="font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#887176;margin-bottom:5px;">
+                            Location</div>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <span class="material-symbols-outlined"
+                                style="font-size:17px;color:#8c274c;flex-shrink:0;">location_on</span>
+                            <input id="location-input" type="text" placeholder="Where to?"
+                                style="background:transparent;border:none;outline:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#1a1c1c;width:100%;"
+                                onkeydown="if(event.key==='Enter')triggerSearch()" />
+                        </div>
+                    </div>
+
+                    <!-- Type -->
+                    <div style="padding:12px 20px;border-right:1px solid rgba(219,192,197,0.3);">
+                        <div
+                            style="font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#887176;margin-bottom:5px;">
+                            Property Type</div>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <span class="material-symbols-outlined"
+                                style="font-size:17px;color:#8c274c;flex-shrink:0;">home_work</span>
+                            <select id="type-input"
+                                style="background:transparent;border:none;outline:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#1a1c1c;width:100%;-webkit-appearance:none;appearance:none;">
+                                <option>All Types</option>
+                                <option>Apartments</option>
+                                <option>Villas</option>
+                                <option>Penthouses</option>
+                                <option>Plots</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Budget -->
+                    <div style="padding:12px 20px;">
+                        <div
+                            style="font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#887176;margin-bottom:5px;">
+                            Budget</div>
+                        <div style="display:flex;align-items:center;gap:7px;">
+                            <span class="material-symbols-outlined"
+                                style="font-size:17px;color:#8c274c;flex-shrink:0;">payments</span>
+                            <select id="budget-input"
+                                style="background:transparent;border:none;outline:none;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#1a1c1c;width:100%;-webkit-appearance:none;appearance:none;">
+                                <option>Any Budget</option>
+                                <option>Under ₹1 Cr</option>
+                                <option>₹1–3 Cr</option>
+                                <option>₹3–6 Cr</option>
+                                <option>₹6 Cr+</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Search Button -->
+                    <div style="padding:8px;">
+                        <button onclick="triggerSearch()"
+                            style="background:#8c274c;color:white;padding:14px 28px;border-radius:22px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 4px 18px rgba(109,12,53,0.35);transition:all .2s;"
+                            onmouseover="this.style.background='#4A0E0E'" onmouseout="this.style.background='#8c274c'">
+                            <span class="material-symbols-outlined" style="font-size:18px;">search</span>
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- City pills -->
+            <div class="fu fu3"
+                style="display:flex;align-items:center;gap:10px;margin-top:24px;flex-wrap:wrap;justify-content:center;">
+                <span
+                    style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">Popular:</span>
+                <button onclick="setLocation('Ambli Road')"
+                    style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)'">Ambli Road</button>
+                <button onclick="setLocation('SG Highway')"
+                    style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)'">SG Highway</button>
+                <button onclick="setLocation('Prahlad Nagar')"
+                    style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)'">Prahlad Nagar</button>
+                <button onclick="setLocation('Bopal')"
+                    style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)'">Bopal</button>
+                <button onclick="setLocation('Vastrapur')"
+                    style="background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:999px;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all .2s;"
+                    onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                    onmouseout="this.style.background='rgba(255,255,255,0.1)'">Vastrapur</button>
+            </div>
+
+            <!-- Scroll hint -->
+            <div class="scroll-hint fu fu3" style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);">
+                <span
+                    style="font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.1em;">Search
+                    to explore</span>
+                <span class="material-symbols-outlined"
+                    style="color:rgba(255,255,255,0.3);font-size:18px;">keyboard_arrow_down</span>
+            </div>
+
+        </div><!-- /hero-content -->
+
+    </div><!-- /page-shell -->
+
+    <!-- ── STICKY SEARCH BAR (appears after search) ── -->
+    <div id="sticky-search">
+        <div
+            style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:18px;color:#6d0c35;letter-spacing:-0.02em;white-space:nowrap;">
+            Velvet Estate</div>
+        <div style="width:1px;height:24px;background:rgba(219,192,197,0.4);flex-shrink:0;"></div>
+        <!-- Compact search -->
+        <div class="ss-input">
+            <span class="material-symbols-outlined" style="color:#887176;font-size:16px;">search</span>
+            <input id="ss-location" type="text" placeholder="Location, project or BHK..."
+                onkeydown="if(event.key==='Enter')reSearch()" />
+        </div>
+        <select id="ss-type"
+            style="padding:8px 14px;border-radius:999px;border:1.5px solid #dbc0c5;background:white;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;color:#554246;outline:none;cursor:pointer;">
+            <option>All Types</option>
+            <option>Apartments</option>
+            <option>Villas</option>
+            <option>Penthouses</option>
+            <option>Plots</option>
+        </select>
+        <select id="ss-budget"
+            style="padding:8px 14px;border-radius:999px;border:1.5px solid #dbc0c5;background:white;font-size:12px;font-weight:600;font-family:'Space Grotesk',sans-serif;color:#554246;outline:none;cursor:pointer;">
+            <option>Any Budget</option>
+            <option>Under ₹1 Cr</option>
+            <option>₹1–3 Cr</option>
+            <option>₹3–6 Cr</option>
+            <option>₹6 Cr+</option>
+        </select>
+        <button onclick="reSearch()"
+            style="padding:8px 18px;background:#8c274c;color:white;border-radius:999px;border:none;font-size:12px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;white-space:nowrap;transition:background .2s;"
+            onmouseover="this.style.background='#4A0E0E'" onmouseout="this.style.background='#8c274c'">Search</button>
+        <button onclick="resetToHero()"
+            style="padding:8px 14px;border-radius:999px;border:1.5px solid #dbc0c5;background:white;font-size:12px;font-weight:600;color:#887176;font-family:'Space Grotesk',sans-serif;cursor:pointer;margin-left:auto;display:flex;align-items:center;gap:5px;transition:all .2s;"
+            onmouseover="this.style.borderColor='#8c274c';this.style.color='#8c274c'"
+            onmouseout="this.style.borderColor='#dbc0c5';this.style.color='#887176'">
+            <span class="material-symbols-outlined" style="font-size:14px;">arrow_back</span>Back
+        </button>
+    </div>
+
+    <!-- ── RESULTS PANEL (left, slides in) ── -->
+    <div id="results-panel">
+        <div class="res-header">
+            <div class="res-count"><span id="res-num">18</span> properties found</div>
+            <div class="res-sub" id="res-location-label">Showing results in Ahmedabad</div>
+        </div>
+
+        <!-- Filter chips -->
+        <div style="display:flex;gap:7px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;">
+            <button class="fchip active" onclick="filterType('all',this)" data-type="all"><span
+                    class="material-symbols-outlined">apps</span>All</button>
+            <button class="fchip" onclick="filterType('apartment',this)" data-type="apartment"><span
+                    class="material-symbols-outlined">apartment</span>Apartments</button>
+            <button class="fchip" onclick="filterType('villa',this)" data-type="villa"><span
+                    class="material-symbols-outlined">villa</span>Villas</button>
+            <button class="fchip" onclick="filterType('penthouse',this)" data-type="penthouse"><span
+                    class="material-symbols-outlined">roofing</span>Penthouses</button>
+            <button class="fchip" onclick="filterType('plot',this)" data-type="plot"><span
+                    class="material-symbols-outlined">landscape</span>Plots</button>
+        </div>
+
+        <!-- Cards -->
+        <div id="card-list"></div>
+    </div>
+
+    <!-- Map badge (shown in searched state) -->
+    <div class="map-badge-el" id="map-badge" style="display:none;position:fixed;">
+        <div class="map-badge-dot"></div>
+        <span id="map-badge-count">18 on map</span>
+    </div>
+
+    <script>
+        // IMPORTANT: Replace the dummy key below with your actual Mapbox public token
+        mapboxgl.accessToken = 'REPLACE_WITH_YOUR_MAPBOX_PUBLIC_TOKEN';
+
+        // ── DATA ──
+        const properties = [
+            { id: 1, name: "The Serene Meadows", loc: "Ambli Road", price: "₹4.50 Cr", priceN: 4.5, type: "villa", bhk: "4 BHK", area: "4,500 sq.ft", badge: "Premium", bBg: "#8c274c", bCol: "white", lat: 23.0395, lng: 72.5048, img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=400&auto=format&fit=crop", tag: "Ready to Move", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 2, name: "Skyline Heights", loc: "SG Highway", price: "₹2.85 Cr", priceN: 2.85, type: "apartment", bhk: "3 BHK", area: "2,800 sq.ft", badge: "Hot", bBg: "#DC2626", bCol: "white", lat: 23.0225, lng: 72.5068, img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=400&auto=format&fit=crop", tag: "High Yield", tCol: "#7C2D12", tBg: "#FEF2F2", verified: true },
+            { id: 3, name: "The Azure Estancia", loc: "Sindhu Bhavan", price: "₹6.20 Cr", priceN: 6.2, type: "penthouse", bhk: "5 BHK", area: "6,000 sq.ft", badge: "Upcoming", bBg: "#7C3AED", bCol: "white", lat: 23.0520, lng: 72.5180, img: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=400&auto=format&fit=crop", tag: "Rare", tCol: "#1D4ED8", tBg: "#EFF6FF", verified: true },
+            { id: 4, name: "Verdant Residences", loc: "Bopal", price: "₹1.80 Cr", priceN: 1.8, type: "apartment", bhk: "2 BHK", area: "1,450 sq.ft", badge: "New", bBg: "#059669", bCol: "white", lat: 23.0302, lng: 72.4680, img: "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 5, name: "Crown Imperial Tower", loc: "Prahlad Nagar", price: "₹3.40 Cr", priceN: 3.4, type: "apartment", bhk: "3 BHK", area: "2,200 sq.ft", badge: "Premium", bBg: "#8c274c", bCol: "white", lat: 23.0145, lng: 72.5090, img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?q=80&w=400&auto=format&fit=crop", tag: "Verified", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 6, name: "Ellora Palms", loc: "Shela", price: "₹5.10 Cr", priceN: 5.1, type: "villa", bhk: "4 BHK", area: "5,200 sq.ft", badge: "Luxury", bBg: "#92400E", bCol: "white", lat: 23.0021, lng: 72.4730, img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=400&auto=format&fit=crop", tag: "Pre-launch", tCol: "#92400E", tBg: "#FFFBEB", verified: false },
+            { id: 7, name: "The Prestige Enclave", loc: "Thaltej", price: "₹2.20 Cr", priceN: 2.2, type: "apartment", bhk: "3 BHK", area: "1,900 sq.ft", badge: "Trending", bBg: "#0284C7", bCol: "white", lat: 23.0601, lng: 72.5110, img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 8, name: "Riviera Grand Villas", loc: "South Bopal", price: "₹7.80 Cr", priceN: 7.8, type: "villa", bhk: "5 BHK", area: "7,500 sq.ft", badge: "Ultra", bBg: "#1A0A10", bCol: "white", lat: 23.0180, lng: 72.4610, img: "https://images.unsplash.com/photo-1576941089067-2de3c901e126?q=80&w=400&auto=format&fit=crop", tag: "Ultra Premium", tCol: "#6D28D9", tBg: "#F5F3FF", verified: true },
+            { id: 9, name: "The Lotus Signature", loc: "Vastrapur", price: "₹1.45 Cr", priceN: 1.45, type: "apartment", bhk: "2 BHK", area: "1,100 sq.ft", badge: "Affordable", bBg: "#059669", bCol: "white", lat: 23.0334, lng: 72.5295, img: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 10, name: "Meridian Sky Suites", loc: "Bodakdev", price: "₹9.20 Cr", priceN: 9.2, type: "penthouse", bhk: "5 BHK", area: "8,000 sq.ft", badge: "Penthouse", bBg: "#8c274c", bCol: "white", lat: 23.0432, lng: 72.5230, img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=400&auto=format&fit=crop", tag: "Exclusive", tCol: "#7C2D12", tBg: "#FEF2F2", verified: true },
+            { id: 11, name: "Green Haven Apts", loc: "Satellite", price: "₹2.65 Cr", priceN: 2.65, type: "apartment", bhk: "3 BHK", area: "2,100 sq.ft", badge: "Eco", bBg: "#15803D", bCol: "white", lat: 23.0268, lng: 72.5360, img: "https://images.unsplash.com/photo-1459767129954-1b1c1f9b9ace?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: false },
+            { id: 12, name: "Crystal Park Residency", loc: "Gota", price: "₹1.20 Cr", priceN: 1.2, type: "apartment", bhk: "2 BHK", area: "950 sq.ft", badge: "Value", bBg: "#D97706", bCol: "white", lat: 23.0880, lng: 72.5440, img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 13, name: "Oakwood Estate", loc: "Navarangpura", price: "₹4.90 Cr", priceN: 4.9, type: "villa", bhk: "4 BHK", area: "4,800 sq.ft", badge: "Classic", bBg: "#78350F", bCol: "white", lat: 23.0392, lng: 72.5626, img: "https://images.unsplash.com/photo-1598228723793-52759bba239c?q=80&w=400&auto=format&fit=crop", tag: "Heritage", tCol: "#92400E", tBg: "#FFFBEB", verified: true },
+            { id: 14, name: "Aqua Horizon Towers", loc: "Chandkheda", price: "₹0.95 Cr", priceN: 0.95, type: "apartment", bhk: "1 BHK", area: "680 sq.ft", badge: "Starter", bBg: "#0369A1", bCol: "white", lat: 23.1030, lng: 72.5750, img: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?q=80&w=400&auto=format&fit=crop", tag: "Pre-launch", tCol: "#92400E", tBg: "#FFFBEB", verified: false },
+            { id: 15, name: "Majestic Gardens", loc: "Jodhpur Cross Rd", price: "₹3.75 Cr", priceN: 3.75, type: "villa", bhk: "4 BHK", area: "3,800 sq.ft", badge: "Garden", bBg: "#166534", bCol: "white", lat: 23.0165, lng: 72.5495, img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: true },
+            { id: 16, name: "Zenith Sky Residences", loc: "Naroda", price: "₹0.85 Cr", priceN: 0.85, type: "apartment", bhk: "1 BHK", area: "600 sq.ft", badge: "Budget", bBg: "#475569", bCol: "white", lat: 23.0741, lng: 72.6397, img: "https://images.unsplash.com/photo-1561753757-d8880c5a3551?q=80&w=400&auto=format&fit=crop", tag: "Ready", tCol: "#166534", tBg: "#F0FDF4", verified: false },
+            { id: 17, name: "Imperial Court", loc: "Ellis Bridge", price: "₹5.50 Cr", priceN: 5.5, type: "penthouse", bhk: "4 BHK", area: "5,600 sq.ft", badge: "Heritage+", bBg: "#8c274c", bCol: "white", lat: 23.0283, lng: 72.5732, img: "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=400&auto=format&fit=crop", tag: "River View", tCol: "#1D4ED8", tBg: "#EFF6FF", verified: true },
+            { id: 18, name: "Pristine Valley Homes", loc: "Sanand", price: "₹2.10 Cr", priceN: 2.1, type: "plot", bhk: "Plot", area: "2,400 sq.ft", badge: "Plot", bBg: "#B45309", bCol: "white", lat: 22.9852, lng: 72.3912, img: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=400&auto=format&fit=crop", tag: "Land", tCol: "#92400E", tBg: "#FFFBEB", verified: false },
+        ];
+
+        let map, markersMap = {}, filtered = [...properties], activeType = 'all', activeCard = null, curPopup = null, searched = false;
+
+        // ── INIT MAP ──
+        function initMap() {
+            map = new mapboxgl.Map({
+                container: 'map-bg',
+                style: 'mapbox://styles/mapbox/light-v11',
+                center: [72.5479, 23.0225],
+                zoom: 11.5,
+                interactive: false  // hero state — decorative, not interactive
+            });
+
+            map.on('load', () => {
+                // Slightly fade the map in hero mode — very subtle
+                renderHeroMarkers();
+            });
+        }
+
+        // Subtle ghost markers for hero state
+        function renderHeroMarkers() {
+            properties.forEach(p => {
+                const el = document.createElement('div');
+                el.style.cssText = `
+            background: rgba(109,12,53,0.6);
+            color: white;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+            white-space: nowrap;
+            border: 1.5px solid rgba(255,255,255,0.5);
+            pointer-events: none;
+            opacity: 0.7;
+        `;
+                el.textContent = p.price;
+                new mapboxgl.Marker({ element: el, anchor: 'center' })
+                    .setLngLat([p.lng, p.lat])
+                    .addTo(map);
+            });
+        }
+
+        // ── TRIGGER SEARCH (hero → split view) ──
+        function triggerSearch() {
+            if (searched) return;
+            searched = true;
+
+            const loc = document.getElementById('location-input').value || 'Ahmedabad';
+            document.getElementById('ss-location').value = loc;
+            document.getElementById('res-location-label').textContent = `Showing results in ${loc}`;
+
+            // Add searched class — triggers all CSS transitions
+            document.body.classList.add('searched');
+
+            // Make map interactive after transition
+            setTimeout(() => {
+                map.setInteractive(true);
+                map.resize();
+                upgradeToFullMarkers();
+                document.getElementById('map-badge').style.display = 'flex';
+                document.getElementById('map-badge').style.top = '86px';
+                document.getElementById('map-badge').style.left = 'calc(50% + 14px)';
+            }, 750);
+
+            renderCards(filtered);
+        }
+
+        function reSearch() {
+            const loc = document.getElementById('ss-location').value || 'Ahmedabad';
+            document.getElementById('res-location-label').textContent = `Showing results in ${loc}`;
+            renderCards(filtered);
+        }
+
+        function resetToHero() {
+            searched = false;
+            document.body.classList.remove('searched');
+            document.getElementById('map-badge').style.display = 'none';
+
+            // Re-disable interactions (hero is decorative)
+            map.setInteractive(false);
+
+            // Remove all interactive markers and restore ghost markers
+            Object.values(markersMap).forEach(m => m.remove());
+            markersMap = {};
+            if (curPopup) { curPopup.remove(); curPopup = null; }
+
+            // Fly back to overview
+            map.flyTo({ center: [72.5479, 23.0225], zoom: 11.5, duration: 900 });
+            setTimeout(() => {
+                map.resize();
+                renderHeroMarkers();
+            }, 50);
+        }
+
+        // Enable proper interaction + replace ghost markers with clickable ones
+        function upgradeToFullMarkers() {
+            // Clear ghost markers (re-init map markers)
+            Object.values(markersMap).forEach(m => m.remove());
+            markersMap = {};
+            if (curPopup) { curPopup.remove(); curPopup = null; }
+
+            filtered.forEach(p => {
+                const el = document.createElement('div');
+                el.className = 'price-pin';
+                el.textContent = p.price;
+
+                el.addEventListener('mouseenter', () => {
+                    el.classList.add('hovered');
+                    highlightCard(p.id);
+                });
+                el.addEventListener('mouseleave', () => {
+                    el.classList.remove('hovered');
+                });
+                el.addEventListener('click', () => openPopup(p));
+
+                const m = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
+                    .setLngLat([p.lng, p.lat])
+                    .addTo(map);
+
+                markersMap[p.id] = m;
+            });
+
+            document.getElementById('map-badge-count').textContent = `${filtered.length} on map`;
+        }
+
+        function openPopup(p) {
+            if (curPopup) curPopup.remove();
+            curPopup = new mapboxgl.Popup({ closeButton: true, maxWidth: '200px', offset: 12 })
+                .setLngLat([p.lng, p.lat])
+                .setHTML(`<div class="mpop">
+            <div class="mpop-price">${p.price}</div>
+            <div class="mpop-name">${p.name}</div>
+            <div class="mpop-loc">${p.loc} · ${p.bhk} · ${p.area}</div>
+            <button onclick="window.location='property-v1.html'" style="margin-top:8px;width:100%;padding:7px;background:#8c274c;color:white;border:none;border-radius:8px;font-size:11px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;">View Details →</button>
+        </div>`)
+                .addTo(map);
+            map.flyTo({ center: [p.lng, p.lat], zoom: 14, duration: 600 });
+            highlightCard(p.id);
+        }
+
+        function highlightCard(id) {
+            document.querySelectorAll('.prop-card').forEach(c => c.classList.remove('active'));
+            const c = document.getElementById(`pc-${id}`);
+            if (c) { c.classList.add('active'); c.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); activeCard = id; }
+        }
+
+        // ── RENDER CARDS ──
+        function renderCards(props) {
+            const list = document.getElementById('card-list');
+            document.getElementById('res-num').textContent = props.length;
+            if (!props.length) { list.innerHTML = `<div style="text-align:center;padding:40px;color:#887176;font-family:'Space Grotesk',sans-serif;font-size:13px;">No properties found</div>`; return; }
+            list.innerHTML = props.map((p, i) => `
+        <div class="prop-card" id="pc-${p.id}" style="animation-delay:${i * 30}ms"
+            onmouseenter="onHover(${p.id})"
+            onmouseleave="onLeave(${p.id})"
+            onclick="onCardClick(${p.id})">
+            <div class="card-img-wrap">
+                <img class="card-img" src="${p.img}" alt="${p.name}" loading="lazy" />
+                <div class="card-badge" style="background:${p.bBg};color:${p.bCol};">${p.badge}</div>
+            </div>
+            <div style="flex:1;min-width:0;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px;">
+                    <div class="card-price">${p.price}</div>
+                    <button class="wish-btn" id="w-${p.id}" onclick="toggleWish(event,${p.id})">
+                        <span class="material-symbols-outlined">favorite</span>
+                    </button>
+                </div>
+                <div class="card-name">${p.name}</div>
+                <div class="card-loc"><span class="material-symbols-outlined">location_on</span>${p.loc}</div>
+                <div class="card-stats">
+                    <div class="card-stat"><span class="material-symbols-outlined">king_bed</span>${p.bhk}</div>
+                    <div class="card-stat"><span class="material-symbols-outlined">square_foot</span>${p.area}</div>
+                </div>
+                <div class="card-footer">
+                    <span class="card-tag" style="color:${p.tCol};background:${p.tBg};">${p.tag}</span>
+                    ${p.verified ? '<span style="font-size:9px;font-weight:700;color:#16A34A;background:#F0FDF4;padding:2px 7px;border-radius:999px;font-family:Space Grotesk,sans-serif;">✓ Verified</span>' : ''}
+                </div>
+            </div>
+        </div>`).join('');
+        }
+
+        function onHover(id) {
+            const el = markersMap[id]?.getElement();
+            if (el) el.classList.add('hovered');
+            const p = properties.find(x => x.id === id);
+            if (p && searched) map.easeTo({ center: [p.lng, p.lat], duration: 350 });
+        }
+        function onLeave(id) {
+            if (id !== activeCard) {
+                const el = markersMap[id]?.getElement();
+                if (el) el.classList.remove('hovered');
+            }
+        }
+        function onCardClick(id) {
+            const p = properties.find(x => x.id === id);
+            if (p && searched) { map.flyTo({ center: [p.lng, p.lat], zoom: 15, duration: 700 }); setTimeout(() => openPopup(p), 400); }
+            highlightCard(id);
+        }
+
+        function toggleWish(e, id) {
+            e.stopPropagation();
+            const b = document.getElementById(`w-${id}`);
+            b.classList.toggle('loved');
+        }
+
+        // ── FILTER ──
+        function filterType(type, el) {
+            document.querySelectorAll('[data-type]').forEach(b => b.classList.remove('active'));
+            el.classList.add('active'); activeType = type;
+            filtered = type === 'all' ? [...properties] : properties.filter(p => p.type === type);
+            renderCards(filtered);
+            if (searched) upgradeToFullMarkers();
+        }
+
+        // ── HELPERS ──
+        function setLocation(loc) {
+            document.getElementById('location-input').value = loc;
+            triggerSearch();
+        }
+
+        // Make map non-interactive initially (decorative hero mode)
+        mapboxgl.Map.prototype.setInteractive = function (on) {
+            const handlers = ['scrollZoom', 'boxZoom', 'dragRotate', 'dragPan', 'keyboard', 'doubleClickZoom', 'touchZoomRotate'];
+            handlers.forEach(h => on ? this[h].enable() : this[h].disable());
+        };
+
+        // ── BOOT ──
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+        });
+    </script>
+
+    <!-- ── REST OF PAGE (below hero, only visible in hero state) ── -->
+    <div id="below-fold" style="background:#faf9f9;">
+
+        <!-- Curated Property Types -->
+        <section style="padding:96px 48px;background:#f4f3f3;">
+            <div style="max-width:1280px;margin:0 auto;">
+                <div
+                    style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;gap:20px;flex-wrap:wrap;">
+                    <div>
+                        <span
+                            style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;color:#8c274c;display:block;margin-bottom:12px;">The
+                            Portfolio</span>
+                        <h2
+                            style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:clamp(32px,4vw,52px);letter-spacing:-0.03em;color:#1a1c1c;margin:0;">
+                            Curated Collections</h2>
+                    </div>
+                    <p
+                        style="font-family:'Inter',sans-serif;color:#554246;max-width:280px;text-align:right;font-size:14px;line-height:1.7;">
+                        Explore architectural excellence across our global network of refined residences.</p>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:14px;height:600px;">
+                    <div style="grid-column:1/9;border-radius:24px;overflow:hidden;position:relative;cursor:pointer;">
+                        <img style="width:100%;height:100%;object-fit:cover;transition:transform .7s ease;"
+                            onmouseover="this.style.transform='scale(1.06)'"
+                            onmouseout="this.style.transform='scale(1)'"
+                            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop"
+                            alt="Villa" />
+                        <div
+                            style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,16,0.75),transparent);">
+                        </div>
+                        <div style="position:absolute;bottom:32px;left:32px;">
+                            <span
+                                style="background:#ffdad8;color:#410008;padding:3px 10px;border-radius:4px;font-size:10px;font-weight:700;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;letter-spacing:.05em;display:inline-block;margin-bottom:10px;">Exclusive</span>
+                            <h3
+                                style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:32px;color:white;margin:0 0 5px;">
+                                Grand Villas</h3>
+                            <p
+                                style="color:rgba(255,255,255,.65);font-size:13px;font-family:'Inter',sans-serif;margin:0;">
+                                246 Properties Available</p>
+                        </div>
+                    </div>
+                    <div style="grid-column:9/13;display:grid;grid-template-rows:1fr 1fr;gap:14px;">
+                        <div style="border-radius:24px;overflow:hidden;position:relative;cursor:pointer;">
+                            <img style="width:100%;height:100%;object-fit:cover;transition:transform .7s ease;"
+                                onmouseover="this.style.transform='scale(1.06)'"
+                                onmouseout="this.style.transform='scale(1)'"
+                                src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=600&auto=format&fit=crop"
+                                alt="Apartment" />
+                            <div
+                                style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,16,0.6),transparent);">
+                            </div>
+                            <div style="position:absolute;bottom:20px;left:20px;">
+                                <h3
+                                    style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:20px;color:white;margin:0;">
+                                    Urban Apartments</h3>
+                            </div>
+                        </div>
+                        <div style="border-radius:24px;overflow:hidden;position:relative;cursor:pointer;">
+                            <img style="width:100%;height:100%;object-fit:cover;transition:transform .7s ease;"
+                                onmouseover="this.style.transform='scale(1.06)'"
+                                onmouseout="this.style.transform='scale(1)'"
+                                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=600&auto=format&fit=crop"
+                                alt="Penthouse" />
+                            <div
+                                style="position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,16,0.6),transparent);">
+                            </div>
+                            <div style="position:absolute;bottom:20px;left:20px;">
+                                <h3
+                                    style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:20px;color:white;margin:0;">
+                                    Signature Penthouses</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer style="padding:60px 48px;background:#f4f3f3;border-top:1px solid rgba(219,192,197,0.2);">
+            <div
+                style="max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+                <div style="font-family:'Epilogue',sans-serif;font-weight:800;font-size:18px;color:#6d0c35;">Velvet
+                    Estate</div>
+                <p style="font-family:'Inter',sans-serif;font-size:12px;color:#887176;text-align:center;">© 2024 Velvet
+                    Estate. Editorial Excellence in Architecture.</p>
+                <div style="display:flex;gap:20px;">
+                    <a style="font-size:11px;font-weight:600;color:#887176;text-decoration:none;font-family:'Space Grotesk',sans-serif;"
+                        href="#">Privacy</a>
+                    <a style="font-size:11px;font-weight:600;color:#887176;text-decoration:none;font-family:'Space Grotesk',sans-serif;"
+                        href="#">Terms</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+

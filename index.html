@@ -8,19 +8,21 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Sora:wght@100;200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
 
     <!-- External CSS -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="shared-footer.css" />
 
     <!-- Alpine.js must load before Tailwind for x-cloak and transitions to work reliably -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <!-- Step 1: Load Tailwind CDN after Alpine.js -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <!-- Step 2: THEN configure it &mdash; must come after the CDN script -->
+    <script defer src="shared-footer.js"></script>
     <script>
         tailwind.config = {
             darkMode: false,
@@ -43,13 +45,25 @@
                     fontFamily: {
                         display: ["'Sora'", "sans-serif"],
                         body: ["'Inter'", "sans-serif"],
-                        sans: ["'Space Grotesk'", "sans-serif"],
+                        sans: ["'Inter'", "sans-serif"],
                     },
                     fontSize: {
-                        'display-xl': ['5.5rem', { lineHeight: '1', letterSpacing: '-0.02em', fontWeight: '800' }],
-                        'display-lg': ['4.5rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '800' }],
-                        'display-md': ['3.5rem', { lineHeight: '1.1', letterSpacing: '-0.01em', fontWeight: '700' }],
-                        'display-sm': ['2.5rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '700' }],
+                        // Display - For Hero & Section Headers
+                        'display-2xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em', fontWeight: '800' }],
+                        'display-xl': ['5rem', { lineHeight: '1.05', letterSpacing: '-0.04em', fontWeight: '800' }],
+                        'display-lg': ['4rem', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '800' }],
+                        'display-md': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '700' }],
+                        'display-sm': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '700' }],
+
+                        // Text - For Content & Labels
+                        'text-xl': ['1.25rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+                        'text-lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+                        'text-md': ['1rem', { lineHeight: '1.5', letterSpacing: '0', fontWeight: '400' }],
+                        'text-sm': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0.01em', fontWeight: '500' }],
+                        'text-xs': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.02em', fontWeight: '600' }],
+
+                        // Specialized Labels (All-caps/Tracking)
+                        'overline': ['0.65rem', { lineHeight: '1', letterSpacing: '0.25em', fontWeight: '800' }],
                     },
                     borderRadius: {
                         DEFAULT: "0.5rem",
@@ -73,63 +87,80 @@
         };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+<style>
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+</style>
 </head>
 
-<body class="font-body bg-white text-text-light transition-colors duration-300 relative">
-    <div class="fixed inset-0 bg-gradient-to-b from-transparent via-white/30 to-white/40 pointer-events-none z-[-1]">
-    </div>
-    <nav
-        class="sticky top-0 z-[100] bg-white/80 backdrop-blur-2xl border-b border-primary/5 h-16 flex items-center transition-all duration-500 overflow-visible">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full overflow-visible">
-            <div class="flex justify-between items-center h-full overflow-visible">
-                <!-- Premium Logo Slot - Floating/Hanging Logo -->
-                <div class="flex-shrink-0 flex items-center relative w-48 h-full overflow-visible">
-                    <img src="assets/logo.png" alt="Taathya Logo"
-                        class="absolute left-0 top-1/2 -translate-y-1/2 w-auto transition-transform hover:scale-105 duration-500 drop-shadow-xl"
-                        style="height: 140px !important; max-height: none !important;">
-                </div>
+<body class="font-body bg-white text-text-light transition-colors duration-300 relative is-loading">
+    <!-- --------------------------------------------------------------
+         VANILLA JS KINETIC LOADING SCREEN (Global)
+    -------------------------------------------------------------- -->
+    <div id="vanilla-loader"
+        class="fixed inset-0 z-[99999] bg-[#601931] flex flex-col items-center justify-center overflow-hidden"
+        style="transition: clip-path 1.6s cubic-bezier(0.16, 1, 0.3, 1); clip-path: circle(150% at 50% 50%); pointer-events: all; touch-action: none;">
 
-                <!-- Refined Navigation Links -->
-                <div class="hidden md:flex space-x-10 items-center">
-                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
-                        href="#">
-                        Home
-                        <span
-                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
-                        href="#">
-                        Properties
-                        <span
-                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
-                        href="#">
-                        Finance
-                        <span
-                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </a>
-                    <a class="text-[13px] uppercase tracking-[0.15em] font-bold text-gray-800 hover:text-primary transition-colors duration-300 relative group"
-                        href="#">
-                        About Us
-                        <span
-                            class="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full"></span>
-                    </a>
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+            <div class="loader-orbit orbit-1"></div>
+            <div class="loader-orbit orbit-2"></div>
+            <div class="loader-orbit orbit-3"></div>
+        </div>
 
-                    <!-- Premium Styled Button -->
-                    <a class="ml-4 px-7 py-2 text-[12px] uppercase tracking-widest font-extrabold rounded-full bg-primary text-white hover:bg-[#A63B61] transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0"
-                        href="#">Contact Us</a>
-                </div>
-
-                <!-- Mobile Trigger -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-gray-900 focus:outline-none">
-                        <span class="material-icons-outlined text-2xl">menu</span>
-                    </button>
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="loader-vessel mb-6">
+                <img src="assets/logo.png" alt="Taathya Logo" id="loader-logo">
+            </div>
+            <div class="h-6 overflow-hidden">
+                <p class="loader-signature-text" id="loader-status">FORGING FINANCIAL FUTURES</p>
+            </div>
+            <div class="w-32 h-[1px] bg-white/10 mt-12 relative overflow-hidden rounded-full">
+                <div
+                    class="absolute top-0 left-0 h-full bg-white/40 w-[40%] animate-[progress-indeterminate_5s_ease-in-out_infinite]">
                 </div>
             </div>
         </div>
-    </nav>
+    </div>
+    <div class="fixed inset-0 bg-gradient-to-b from-transparent via-white/30 to-white/40 pointer-events-none z-[-1]">
+    </div>
+    <!-- Global Universal Header -->
+    <header class="dynamic-navbar" data-navbar-mode="transparent" id="site-header">
+        <div class="w-full px-8 lg:px-10 flex items-center justify-between h-full">
+            <!-- LEFT: Logo + Nav Links -->
+            <div class="flex items-center gap-6 h-full">
+                <a href="index.html" class="flex-shrink-0 flex items-center h-full group">
+                    <img src="assets/logo.png" alt="Taathya Logo"
+                        class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105 duration-500 origin-left navbar-logo-adaptive" />
+                </a>
+                <nav class="hidden lg:flex items-center gap-6 pl-6 border-l navbar-border-adaptive h-7"
+                    style="border-left-width:1px; border-left-style:solid;">
+                    <a href="index.html" class="navbar-text-active navbar-link subpixel-antialiased"
+                        style="font-family: 'Inter', sans-serif; font-size: 14.5px !important; font-weight: 700 !important; letter-spacing: 0.01em;">Home</a>
+                    <a href="property-search.html" class="navbar-text-adaptive navbar-link subpixel-antialiased"
+                        style="font-family: 'Inter', sans-serif; font-size: 14.5px !important; font-weight: 700 !important; letter-spacing: 0.01em;">Properties</a>
+                    <a href="finance.html" class="navbar-text-adaptive navbar-link subpixel-antialiased"
+                        style="font-family: 'Inter', sans-serif; font-size: 14.5px !important; font-weight: 700 !important; letter-spacing: 0.01em;">Finance</a>
+                </nav>
+            </div>
+
+            <div id="universal-search-slot" class="flex-1 max-w-2xl px-4 xl:px-8 hidden md:block">
+            </div>
+
+            <div class="flex items-center gap-3 md:gap-4 shrink-0">
+                <div id="universal-filter-slot">
+                </div>
+                <a href="#"
+                    class="navbar-cta hidden md:flex px-6 md:px-8 py-2.5 md:py-3 rounded-full bg-[#8c274c] text-white text-[13px] md:text-[14px] font-semibold hover:bg-[#6d0c35] shadow-lg shadow-[#8c274c]/20"
+                    style="font-family: 'Inter', sans-serif;">
+                    Contact Us
+                </a>
+                <button class="lg:hidden text-gray-800 p-2 focus:outline-none">
+                    <span class="material-icons-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
     <!-- Scroll-Driven Hero Wrapper (White background for partitions) -->
     <div id="hero-scroll-container" class="relative h-[400vh] z-10 bg-white cursor-default">
         <!-- Sticky Hub (White background for card container) -->
@@ -147,31 +178,29 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/35"></div>
 
                 <!-- Glassmorphic Content Card -->
-                <!-- Hero Content (Directly on Background) -->
                 <div class="relative z-10 flex flex-col items-center justify-center max-w-5xl mx-auto w-full px-4">
 
                     <h1
-                        class="text-6xl md:text-7xl lg:text-8xl font-display font-extrabold tracking-tight leading-[1.05] mb-8 text-white drop-shadow-2xl">
+                        class="text-display-xl font-display font-extrabold tracking-tighter leading-none mb-8 text-white drop-shadow-2xl">
                         You Find <br class="hidden md:block" />
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8E8E] to-[#FFBABA]">
-                            We Fund.
+                            We Fund
                         </span>
                     </h1>
                     <p class="text-xl text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed font-body">
-                        Unlock instant loan approvals with 0.5% cashback on disbursement, while you browse verified
-                        premium estates.
+                        Get your loan approved quickly with 0.5% cashback, while you browse trusted premium homes.
                     </p>
                     <!-- Glassmorphic CTA Buttons -->
                     <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-                        <a href="#"
-                            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-[13px] font-extrabold uppercase tracking-widest rounded-full text-white backdrop-blur-xl bg-primary/80 border border-primary/50 hover:bg-primary transition-all duration-300 shadow-2xl shadow-primary/40 hover:-translate-y-1">
-                            Get a Home
-                            <span class="material-icons-outlined text-[18px]">arrow_forward</span>
+                        <a href="property-search.html"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-overline font-extrabold uppercase rounded-full text-white backdrop-blur-xl bg-primary/80 border border-primary/50 hover:bg-primary transition-all duration-300 shadow-2xl shadow-primary/40 hover:-translate-y-1">
+                            Get a Property
+                            <span class="material-icons-outlined text-md">arrow_forward</span>
                         </a>
-                        <a href="#"
-                            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-[13px] font-extrabold uppercase tracking-widest rounded-full text-white backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-1">
+                        <a href="#how-it-works"
+                            class="inline-flex items-center justify-center gap-2 px-8 py-4 text-overline font-extrabold uppercase rounded-full text-white backdrop-blur-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-1">
                             Get a Loan
-                            <span class="material-icons-outlined text-[18px]">account_balance</span>
+                            <span class="material-icons-outlined text-md">account_balance</span>
                         </a>
                     </div>
                 </div>
@@ -229,9 +258,9 @@
                     <div id="hero-text-3"
                         class="absolute bottom-[10%] left-1/2 -translate-x-1/2 text-center transition-transform duration-200 opacity-0 transform translate-y-10 -translate-x-1/2">
                         <h2
-                            class="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold leading-tight tracking-tighter text-white drop-shadow-2xl">
-                            0.5% Cashback <br />
-                            <span class="text-white/80 font-display">On Disbursement</span>
+                            class="text-3xl md:text-5xl lg:text-6xl font-display font-extrabold leading-tight tracking-tighter text-white drop-shadow-2xl">
+                            Cashback Upto <br />
+                            <span class="text-white/80 font-display">₹10 Lakhs</span>
                         </h2>
                     </div>
                 </div>
@@ -278,41 +307,25 @@
                     Trusted Partners</p>
                 <div class="marquee-outer w-full">
                     <div class="marquee-track">
-                        <div class="flex items-center gap-4 pr-4">
-                            <div class="partner-logo-card"><img src="assets/partner-logos/hdfc-bank.svg" alt="HDFC Bank"
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/sbi.svg" alt="State Bank"
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/icici-bank.svg"
-                                    alt="ICICI Bank" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/axis-bank.svg" alt="Axis Bank"
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/kotak.svg" alt="Kotak"
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/bank-of-baroda.svg"
-                                    alt="Bank of Baroda" class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/lic-hfl.svg" alt="LIC Housing"
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/pnb.svg" alt="PNB"
-                                    class="partner-logo-img"></div>
+                        <div class="flex items-center gap-6 pr-6">
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/State-Bank-Of-India.svg" alt="SBI" class="partner-logo-img"></div><span class="partner-name">State Bank of India</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/HDFC-Bank.svg" alt="HDFC" class="partner-logo-img"></div><span class="partner-name">HDFC Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/ICICI.svg" alt="ICICI" class="partner-logo-img"></div><span class="partner-name">ICICI Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Axis-Bank.svg" alt="Axis" class="partner-logo-img"></div><span class="partner-name">Axis Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Kotak.svg" alt="Kotak" class="partner-logo-img"></div><span class="partner-name">Kotak Mahindra</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Bank-Of-Baroda.svg" alt="BOB" class="partner-logo-img"></div><span class="partner-name">Bank of Baroda</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Union-Bank.svg" alt="Union" class="partner-logo-img"></div><span class="partner-name">Union Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Yes-Bank.svg" alt="Yes Bank" class="partner-logo-img"></div><span class="partner-name">Yes Bank</span></div>
                         </div>
-                        <div class="flex items-center gap-4 pr-4" aria-hidden="true">
-                            <div class="partner-logo-card"><img src="assets/partner-logos/hdfc-bank.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/sbi.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/icici-bank.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/axis-bank.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/kotak.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/bank-of-baroda.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/lic-hfl.svg" alt=""
-                                    class="partner-logo-img"></div>
-                            <div class="partner-logo-card"><img src="assets/partner-logos/pnb.svg" alt=""
-                                    class="partner-logo-img"></div>
+                        <div class="flex items-center gap-6 pr-6" aria-hidden="true">
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/State-Bank-Of-India.svg" alt="SBI" class="partner-logo-img"></div><span class="partner-name">State Bank of India</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/HDFC-Bank.svg" alt="HDFC" class="partner-logo-img"></div><span class="partner-name">HDFC Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/ICICI.svg" alt="ICICI" class="partner-logo-img"></div><span class="partner-name">ICICI Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Axis-Bank.svg" alt="Axis" class="partner-logo-img"></div><span class="partner-name">Axis Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Kotak.svg" alt="Kotak" class="partner-logo-img"></div><span class="partner-name">Kotak Mahindra</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Bank-Of-Baroda.svg" alt="BOB" class="partner-logo-img"></div><span class="partner-name">Bank of Baroda</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Union-Bank.svg" alt="Union" class="partner-logo-img"></div><span class="partner-name">Union Bank</span></div>
+                            <div class="partner-logo-card"><div class="partner-logo-wrapper"><img src="assets/partner-logos/Yes-Bank.svg" alt="Yes Bank" class="partner-logo-img"></div><span class="partner-name">Yes Bank</span></div>
                         </div>
                     </div>
                 </div>
@@ -328,27 +341,27 @@
             <path class="layer-3" d="M0,60 C250,90 350,10 600,60 C850,110 950,10 1200,60 L1200,120 L0,120 Z"></path>
         </svg>
     </div>
+
     <!-- How It Works Section -->
     <section id="how-it-works" class="py-24 bg-warm-depth relative overflow-hidden">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2
-                    class="font-display text-6xl md:text-7xl font-extrabold text-primary mb-6 tracking-tight leading-[1.05]">
+                <h2 class="font-display text-display-xl font-extrabold text-primary mb-6 tracking-tighter leading-none">
                     How Taathya Works</h2>
-                <p class="text-gray-600 text-xl max-w-3xl mx-auto leading-relaxed mb-12 font-body">
-                    Whether you're scouting for prime real estate or securing high-leverage capital, we unify the entire
-                    journey under one roof with expert advisory and 0.5% instant cashback.
+                <p class="text-gray-600 text-lg max-w-3xl mx-auto leading-relaxed mb-12 font-body">
+                    Whether you're looking for a home or a loan, we bring everything together in one place with expert
+                    guidance—and 0.5% instant cashback.
                 </p>
                 <div class="flex justify-center">
                     <div class="inline-flex bg-white rounded-full p-2 shadow-lg border border-gray-200">
                         <button onclick="switchTab('property')" id="tab-property"
-                            class="tab-btn active flex items-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-300">
-                            <span class="material-icons-outlined text-lg">home</span>
+                            class="tab-btn active flex items-center gap-2 px-8 py-3 rounded-full font-bold text-md transition-all duration-300">
+                            <span class="material-icons-outlined text-md">home</span>
                             Start with a Property
                         </button>
                         <button onclick="switchTab('loan')" id="tab-loan"
-                            class="tab-btn flex items-center gap-2 px-8 py-3 rounded-full font-bold text-base transition-all duration-300">
-                            <span class="material-icons-outlined text-lg">account_balance</span>
+                            class="tab-btn flex items-center gap-2 px-8 py-3 rounded-full font-bold text-md transition-all duration-300">
+                            <span class="material-icons-outlined text-md">account_balance</span>
                             Start with a Loan
                         </button>
                     </div>
@@ -360,58 +373,100 @@
                     <div class="space-y-24">
                         <!-- Step 1 -->
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                            <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjO5OuMzo89YTsQaujqPZB1vHvfAF_GUUbMeGTd7yvZaxD6wqYEoL5GjQRwuetgKQr71EPdEJSsLVLevhpnLGp87urba4BAfrhuZuLf5yI5kDFh0VClqtB1SH2yz0RAKfUwjZnwurf31yNqDrwBvF_GpXZZuwSACf32UxeIDCnhvDYNVWdWDTbIbZr8iEuMRmOSOZKyJ0BqTaBCW3epXPukxOJ_chnyDtd6Im60Nkr-KBNvbR0pHiwScs46fUdY6J9O0TySqlxj_w"
-                                    alt="Selection" class="w-full h-full object-cover reveal-img" />
+                            <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden">
+                                <img src="assets/How-it-works-01.png" alt="Verified Listings"
+                                    class="w-full h-full object-cover reveal-img" />
                             </div>
                             <div class="col-span-12 lg:col-span-5 lg:pl-12">
-                                <span
-                                    class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">01.</span>
-                                <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
-                                    Discovery & Curation</h3>
-                                <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
-                                    Our portfolio is meticulously vetted. We present a selection that aligns with your
-                                    aesthetic and lifestyle, removing the clutter of the open market.</p>
+                                <span class="text-accent font-display text-2xl font-bold block mb-4">01.</span>
+                                <h3
+                                    class="text-3xl lg:text-4xl font-display font-bold mb-4 text-primary tracking-tight">
+                                    Verified Listings</h3>
+                                <p class="text-gray-500 font-body text-lg leading-relaxed mb-6">
+                                    Browse high-quality homes checked by us for pricing, trust, and quality.</p>
+                                <ul class="space-y-3">
+                                    <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                        <span class="material-icons-outlined text-sm">check_circle</span>
+                                        Safe and verified homes
+                                    </li>
+                                    <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                        <span class="material-icons-outlined text-sm">check_circle</span>
+                                        No guesswork, only quality
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <!-- Step 2 -->
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                             <div class="col-span-12 lg:col-span-5 lg:pr-12 order-2 lg:order-1 text-right">
-                                <span
-                                    class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">02.</span>
-                                <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
-                                    Financial Engineering</h3>
-                                <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
-                                    Concurrent with selection, our finance team structures your borrowing. We secure
-                                    rates that traditional banks reserve for elite institutional partners.</p>
+                                <span class="text-accent font-display text-2xl font-bold block mb-4">02.</span>
+                                <h3
+                                    class="text-3xl lg:text-4xl font-display font-bold mb-4 text-primary tracking-tight">
+                                    Personalised Guidance by Experts</h3>
+                                <p class="text-gray-500 font-body text-lg leading-relaxed mb-6">
+                                    Our advisors guide you through each and every step and choice to secure the best
+                                    deal as per your needs.</p>
+                                <ul class="flex flex-col gap-3 items-end">
+                                    <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                        Clear advice you can trust
+                                        <span class="material-icons-outlined text-sm">check_circle</span>
+                                    </li>
+                                    <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                        Better deals with full transparency
+                                        <span class="material-icons-outlined text-sm">check_circle</span>
+                                    </li>
+                                </ul>
                             </div>
-                            <div
-                                class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden order-1 lg:order-2 rounded-2xl shadow-lg">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDFN35yZz5V8CTtE67vgeF2f3RymcwCchT7TpWPbthMKpm_Izriefy1J_ba1yWcGt-sI_dIXOTu2mUYkj0B0WNpVuk--OY68WGHGZOx_PZcHKVVgUxAaPMe-vHCBK6FWtbpTDGxnMCnytMaaEO6OY5Go5ujuf-DYTr7TyBMqzCuk4MQFmINfB6o5ess2nzjSr-Xv6X2-ufL2FnYn12sPqe2JW-T36JWcxyVGlIeto6xJauv7tYou_JiA7UklfyFIBoQ2c_BQlycGE"
-                                    alt="Finance" class="w-full h-full object-cover reveal-img" />
+                            <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden order-1 lg:order-2">
+                                <img src="assets/How-it-works-02.png" alt="Expert Guidance"
+                                    class="w-full h-full object-cover reveal-img" />
                             </div>
                         </div>
                         <!-- Step 3 -->
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                            <div
-                                class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden relative rounded-2xl shadow-lg">
-                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqdfTbsGUaVRNPq84ftfcn-Q9cKSGePqWTqNHcXJ3-ml6CSdxiJv1BoAj437_t2YD5CHC18mb3Bs69b8wUrow7exCYiXaQ78ih07Y9cUBkXhO5wTiBPf3UKtrY2rkr2OSq9fvYc--cwZl-uvl55r6kPkVBuKDlzdJ4GogFkosnCD5V1F_yBfHg0vbvDnqWtWCmzoyMA-ChMYzPktekMAqIyc2FNBKDPsiHg2_piWwHZ4M-Oal9Xwhua2fjhymQjIbSPmc_otxw-N4"
-                                    alt="Arrival" class="w-full h-full object-cover reveal-img" />
-                                <div
-                                    class="absolute bottom-8 right-8 bg-accent text-white p-8 max-w-xs rounded-xl shadow-xl">
-                                    <p class="text-xs tracking-widest uppercase mb-2 font-bold">Benefit</p>
-                                    <p class="font-display text-2xl font-bold leading-tight">Receive 0.5% cashback on
-                                        final disbursal.</p>
-                                </div>
+                            <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden">
+                                <img src="assets/How-it-works-03.png" alt="Stress-Free Move"
+                                    class="w-full h-full object-cover reveal-img" />
                             </div>
                             <div class="col-span-12 lg:col-span-5 lg:pl-12">
-                                <span
-                                    class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">03.</span>
-                                <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
-                                    Seamless Transition</h3>
-                                <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
-                                    Closing is handled with absolute discretion and speed. We manage the documentation,
-                                    the signatures, and the welcome to your new residence.</p>
+                                <span class="text-accent font-display text-2xl font-bold block mb-4">03.</span>
+                                <h3
+                                    class="text-3xl lg:text-4xl font-display font-bold mb-4 text-primary tracking-tight">
+                                    Seamless Move-In</h3>
+                                <p class="text-gray-500 font-body text-lg leading-relaxed mb-6">
+                                    We manage the final details so you can enjoy your new home stress-free.</p>
+
+                                <!-- High-Impact Reward Banner -->
+                                <div
+                                    class="relative mb-8 p-6 bg-gradient-to-br from-[#8C274C] to-[#601931] rounded-2xl text-white shadow-2xl shadow-primary/20 overflow-hidden group">
+                                    <div
+                                        class="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
+                                    </div>
+                                    <div class="relative z-10 flex items-center gap-5">
+                                        <div
+                                            class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/20">
+                                            <span class="material-icons-outlined text-white text-2xl">stars</span>
+                                        </div>
+                                        <div>
+                                            <p
+                                                class="text-[10px] uppercase tracking-[0.2em] font-bold text-white/70 mb-1">
+                                                Exclusive Benefit</p>
+                                            <p class="text-2xl font-display font-black leading-none tracking-tight">0.5%
+                                                <span class="text-accent-plum italic">Cashback</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <ul class="space-y-3">
+                                    <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                        <span class="material-icons-outlined text-sm">check_circle</span>
+                                        No last-minute issues
+                                    </li>
+                                    <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                        <span class="material-icons-outlined text-sm">check_circle</span>
+                                        A comfortable move-in experience
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -424,56 +479,95 @@
                     <!-- Step 1 -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         <div class="col-span-12 lg:col-span-5 lg:pr-12 text-right">
-                            <span
-                                class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">01.</span>
-                            <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
-                                Capital Strategy</h3>
-                            <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
-                                Establish your purchasing power before you even step into a property. We evaluate your
-                                profile to unlock maximum leverage and optimal rates.</p>
+                            <span class="text-accent font-display text-2xl font-bold block mb-4">01.</span>
+                            <h3 class="text-3xl lg:text-4xl font-display font-bold mb-4 text-primary tracking-tight">
+                                Book a meeting at Your Comfort</h3>
+                            <p class="text-gray-500 font-body text-lg leading-relaxed mb-6">
+                                Talk to an expert at your preferred place and time, whenever it suits you.</p>
+                            <ul class="flex flex-col gap-3 items-end">
+                                <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                    Doorstep consultation
+                                    <span class="material-icons-outlined text-sm">check_circle</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                    Flexible scheduling
+                                    <span class="material-icons-outlined text-sm">check_circle</span>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDFN35yZz5V8CTtE67vgeF2f3RymcwCchT7TpWPbthMKpm_Izriefy1J_ba1yWcGt-sI_dIXOTu2mUYkj0B0WNpVuk--OY68WGHGZOx_PZcHKVVgUxAaPMe-vHCBK6FWtbpTDGxnMCnytMaaEO6OY5Go5ujuf-DYTr7TyBMqzCuk4MQFmINfB6o5ess2nzjSr-Xv6X2-ufL2FnYn12sPqe2JW-T36JWcxyVGlIeto6xJauv7tYou_JiA7UklfyFIBoQ2c_BQlycGE"
-                                alt="Loan Start" class="w-full h-full object-cover reveal-img" />
+                        <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden">
+                            <img src="assets/How-it-works-04.png" alt="Home Meeting"
+                                class="w-full h-full object-cover reveal-img" />
                         </div>
                     </div>
                     <!-- Step 2 -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                        <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden rounded-2xl shadow-lg">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqdfTbsGUaVRNPq84ftfcn-Q9cKSGePqWTqNHcXJ3-ml6CSdxiJv1BoAj437_t2YD5CHC18mb3Bs69b8wUrow7exCYiXaQ78ih07Y9cUBkXhO5wTiBPf3UKtrY2rkr2OSq9fvYc--cwZl-uvl55r6kPkVBuKDlzdJ4GogFkosnCD5V1F_yBfHg0vbvDnqWtWCmzoyMA-ChMYzPktekMAqIyc2FNBKDPsiHg2_piWwHZ4M-Oal9Xwhua2fjhymQjIbSPmc_otxw-N4"
-                                alt="Market Comparison" class="w-full h-full object-cover reveal-img" />
+                        <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden">
+                            <img src="assets/How-it-works-05.png" alt="Market Search"
+                                class="w-full h-full object-cover reveal-img" />
                         </div>
                         <div class="col-span-12 lg:col-span-5 lg:pl-12">
-                            <span
-                                class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">02.</span>
-                            <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
-                                Market Interrogation</h3>
-                            <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
-                                We pit 20+ lenders against each other. Our allegiance is to your balance sheet, ensuring
-                                the debt is as refined as the property it secures.</p>
+                            <span class="text-accent font-display text-2xl font-bold block mb-4">02.</span>
+                            <h3 class="text-3xl lg:text-4xl font-display font-bold mb-4 text-primary tracking-tight">
+                                Right Loan, Better Rates</h3>
+                            <p class="text-gray-500 font-body text-lg leading-relaxed mb-6">
+                                We compare offers from 20+ banks to find the best home loan for you.</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                    <span class="material-icons-outlined text-sm">check_circle</span>
+                                    Market-wide search
+                                </li>
+                                <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                    <span class="material-icons-outlined text-sm">check_circle</span>
+                                    Transparent options
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <!-- Step 3 -->
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         <div class="col-span-12 lg:col-span-5 lg:pr-12 order-2 lg:order-1 text-right">
-                            <span
-                                class="text-accent italic font-display text-5xl font-extrabold block mb-6 tracking-tight">03.</span>
-                            <h3 class="text-4xl font-display font-bold mb-6 text-primary tracking-tight">
-                                Funding & Loyalty</h3>
-                            <p class="text-gray-700 font-body text-base leading-relaxed font-normal">
-                                Disbursement is just the beginning. We credit 0.5% cashback instantly and provide
-                                ongoing property advisory for your new asset.</p>
-                        </div>
-                        <div
-                            class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden order-1 lg:order-2 relative rounded-2xl shadow-lg">
-                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjO5OuMzo89YTsQaujqPZB1vHvfAF_GUUbMeGTd7yvZaxD6wqYEoL5GjQRwuetgKQr71EPdEJSsLVLevhpnLGp87urba4BAfrhuZuLf5yI5kDFh0VClqtB1SH2yz0RAKfUwjZnwurf31yNqDrwBvF_GpXZZuwSACf32UxeIDCnhvDYNVWdWDTbIbZr8iEuMRmOSOZKyJ0BqTaBCW3epXPukxOJ_chnyDtd6Im60Nkr-KBNvbR0pHiwScs46fUdY6J9O0TySqlxj_w"
-                                alt="Funding" class="w-full h-full object-cover reveal-img" />
+                            <span class="text-accent font-display text-2xl font-bold block mb-4">03.</span>
+                            <h3 class="text-3xl lg:text-4xl font-display font-bold mb-4 text-primary tracking-tight">
+                                End-to-End Support</h3>
+                            <p class="text-gray-500 font-body text-lg leading-relaxed mb-6">
+                                We manage all paperwork and follow-ups until your loan is approved and also provide
+                                after loan services.</p>
+
+                            <!-- High-Impact Reward Banner (Right Aligned) -->
                             <div
-                                class="absolute bottom-8 left-8 bg-accent text-white p-8 max-w-xs rounded-xl shadow-xl">
-                                <p class="text-xs tracking-widest uppercase mb-2 font-bold">Rewards</p>
-                                <p class="font-display text-2xl font-bold leading-tight">Immediate 0.5% Cash Credit to
-                                    your account.</p>
+                                class="relative mb-8 p-6 bg-gradient-to-bl from-[#8C274C] to-[#601931] rounded-2xl text-white shadow-2xl shadow-primary/20 overflow-hidden group text-left">
+                                <div
+                                    class="absolute -left-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
+                                </div>
+                                <div class="relative z-10 flex items-center gap-5">
+                                    <div
+                                        class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md border border-white/20">
+                                        <span class="material-icons-outlined text-white text-2xl">stars</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] uppercase tracking-[0.2em] font-bold text-white/70 mb-1">
+                                            Exclusive Benefit</p>
+                                        <p class="text-2xl font-display font-black leading-none tracking-tight">0.5%
+                                            <span class="text-accent-plum italic">Cashback</span></p>
+                                    </div>
+                                </div>
                             </div>
+
+                            <ul class="flex flex-col gap-3 items-end">
+                                <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                    Zero running around
+                                    <span class="material-icons-outlined text-sm">check_circle</span>
+                                </li>
+                                <li class="flex items-center gap-3 text-sm font-semibold text-primary">
+                                    Fast, guided process
+                                    <span class="material-icons-outlined text-sm">check_circle</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-span-12 lg:col-span-7 aspect-[16/9] overflow-hidden order-1 lg:order-2">
+                            <img src="assets/How-it-works-06.png" alt="Full Support"
+                                class="w-full h-full object-cover reveal-img" />
                         </div>
                     </div>
                 </div>
@@ -492,8 +586,7 @@
                         class="font-display text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]">
                         Handpicked<br /><span class="text-primary">Featured Properties</span>
                     </h2>
-                    <p class="text-gray-600 text-lg max-w-xl font-body leading-relaxed">Vetted opportunities in premium
-                        locations. Every property comes with pre-approved financing and dedicated advisory support.</p>
+                    <p class="text-gray-600 text-lg max-w-xl font-body leading-relaxed">Explore trusted properties in premium locations. Each one comes with ready loan options and expert support.</p>
                 </div>
                 <div class="mt-8 md:mt-0 flex shrink-0">
                     <a class="group inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl text-primary border-2 border-primary hover:bg-primary hover:text-white transition-all duration-300 shadow-sm"
@@ -506,266 +599,221 @@
             </div>
 
             <!-- Property Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-[1100px] mx-auto relative content-center pb-8" id="featured-properties-grid">
+                
+                <script>
+                function updateProperty(btn, type, price, area) {
+                    const card = btn.closest('.property-card');
+                    
+                    // Identify if we clicked a Type or BHK button
+                    const isType = btn.classList.contains('type-btn');
+                    
+                    // Update active styles
+                    if (isType) {
+                        card.querySelectorAll('.type-btn').forEach(b => {
+                            b.classList.remove('bg-primary', 'text-white', 'shadow-sm');
+                            b.classList.add('text-primary/70', 'hover:text-primary');
+                        });
+                        btn.classList.add('bg-primary', 'text-white', 'shadow-sm');
+                        btn.classList.remove('text-primary/70', 'hover:text-primary');
+                    } else {
+                        card.querySelectorAll('.bhk-btn').forEach(b => {
+                            b.classList.remove('border-primary/50', 'bg-primary/5', 'text-primary');
+                            b.classList.add('border-primary/20', 'bg-white', 'text-gray-500');
+                        });
+                        btn.classList.add('border-primary/50', 'bg-primary/5', 'text-primary');
+                        btn.classList.remove('border-primary/20', 'bg-white', 'text-gray-500');
+                    }
+                    
+                    // Update content
+                    if (price) card.querySelector('.prop-price').innerText = price;
+                    if (area) card.querySelector('.prop-area').innerText = area;
+                }
+                </script>
+
                 <!-- Property Card 1 -->
-                <div
-                    class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-                    <div class="relative h-80 overflow-hidden">
-                        <div class="absolute top-4 left-4 z-10 flex gap-2">
-                            <div
-                                class="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm border border-gray-100">
-                                Ready to Move</div>
-                            <div
-                                class="bg-primary/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">
-                                Premium</div>
+                <div class="property-card bg-white flex flex-col rounded-[28px] p-[10px] border-[2px] border-primary/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group">
+                    <div class="relative h-[240px] rounded-[20px] overflow-hidden mb-4 isolate [transform:translateZ(0)] [mask-image:radial-gradient(white,black)] -webkit-mask-image:-webkit-radial-gradient(white,black) [mask-image:radial-gradient(white,black)] -webkit-mask-image:-webkit-radial-gradient(white,black)">
+                        <div class="absolute top-0 left-0 bg-primary/95 backdrop-blur-md text-white px-4 py-[6px] rounded-br-[16px] text-[13px] font-extrabold font-ui tracking-wide shadow-md z-10">
+                            Ambli Road
                         </div>
-                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop"
-                            alt="Premium Villa"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60">
+                        <div class="absolute top-[8px] right-[16px] flex items-center gap-1 z-10">
+                            <span class="text-[10px] font-extrabold text-white drop-shadow-md flex items-center tracking-widest uppercase bg-black/30 px-3 py-1 rounded-full backdrop-blur-md">Loan Available</span>
                         </div>
-                        <div class="absolute bottom-0 left-0 w-full p-6">
-                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹4.50
-                                <span class="text-lg font-bold opacity-90">Cr</span>
-                            </p>
-                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Starting
-                                Price</p>
-                        </div>
-                        <button
-                            class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
-                            <span class="material-icons-outlined">favorite_border</span>
-                        </button>
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" alt="The Serene Meadows" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 relative z-0">
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">The Serene Meadows
-                            </h3>
-                        </div>
-                        <p class="text-gray-500 text-sm mb-6 flex items-center gap-1.5 font-medium">
-                            <span class="material-icons-outlined text-primary text-lg">location_on</span> Ambli Road,
-                            Ahmedabad
-                        </p>
 
-                        <div class="grid grid-cols-3 gap-4 py-6 border-y border-gray-100 mb-6">
-                            <div class="flex flex-col gap-1">
-                                <span
-                                    class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
-                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">king_bed</span> 4
-                                    BHK</span>
-                            </div>
-                            <div class="flex flex-col gap-1 border-x border-gray-100 px-4">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Area</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">square_foot</span>
-                                    4,500</span>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Facing</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">explore</span> East</span>
+                    <div class="px-[8px] flex flex-col gap-[14px] pb-2 flex-1">
+                        <div class="bg-primary/5 text-primary text-center font-extrabold text-[15.5px] py-[12px] rounded-[16px] flex items-center justify-center font-display tracking-widest uppercase leading-none shadow-sm group-hover:bg-primary/10 transition-colors">
+                            THE SERENE MEADOWS
+                        </div>
+
+                        <!-- Type Badges -->
+                        <div class="flex justify-center h-[34px] w-full max-w-[280px] mx-auto">
+                            <div class="flex w-full bg-primary/5 rounded-full overflow-hidden text-[10px] font-extrabold shadow-inner p-[4px] shadow-sm">
+                                <button type="button" onclick="updateProperty(this, 'villa', null, null)" class="type-btn cursor-pointer flex-1 rounded-full bg-primary text-white py-1 shadow-sm transition-all duration-300">VILLA</button>
+                                <button type="button" onclick="updateProperty(this, 'apartment', null, null)" class="type-btn cursor-pointer flex-1 rounded-full text-primary/70 hover:text-primary py-1 transition-all duration-300">APARTMENT</button>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between mb-8">
-                            <div class="flex gap-2">
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Gym">🏋️</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Swimming Pool">🏊</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Garden">🌳</div>
-                                <div
-                                    class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">
-                                    +8</div>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Verified Listing
-                            </span>
+                        <!-- BHK Badge -->
+                        <div class="flex justify-center mt-[-8px] gap-2">
+                            <button type="button" onclick="updateProperty(this, 'bhk', '4.50 Cr', '4500')" class="bhk-btn cursor-pointer border-[1.5px] border-primary/50 text-primary bg-primary/5 px-4 py-[4px] rounded-full text-[10px] font-bold shadow-sm tracking-widest z-10 transition-colors">
+                                4 BHK
+                            </button>
+                            <button type="button" onclick="updateProperty(this, 'bhk', '5.20 Cr', '5500')" class="bhk-btn cursor-pointer border-[1.5px] border-primary/20 text-gray-500 bg-white px-4 py-[4px] rounded-full text-[10px] font-bold shadow-sm tracking-widest z-10 transition-colors hover:border-primary/50 hover:text-primary">
+                                5 BHK
+                            </button>
                         </div>
 
-                        <button
-                            class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
-                            Request Full Layout <span class="material-icons-outlined text-sm">arrow_forward</span>
-                        </button>
+                        <!-- Price & Area Box -->
+                        <div class="border border-primary/10 rounded-[12px] flex items-center justify-between shadow-sm bg-white h-[74px] px-2 mt-1">
+                            <div class="flex flex-col items-center justify-center flex-1 h-full relative">
+                                <div class="prop-price text-[18px] font-extrabold font-display text-gray-900 leading-none transition-all">4.50 Cr</div>
+                                <div class="text-[9px] font-bold text-gray-500 mt-[8px] uppercase tracking-[0.15em]">PRICE</div>
+                            </div>
+                            <div class="w-[1px] h-[40px] bg-primary/10"></div>
+                            <div class="flex flex-col items-center justify-center flex-1 h-full relative">
+                                <div class="text-[17px] font-extrabold font-display text-gray-900 leading-none transition-all"><span class="prop-area">4500</span> <span class="text-[11px] font-semibold text-gray-500 font-ui ml-[2px]">SQ.FT</span></div>
+                                <div class="text-[10.5px] font-medium text-gray-500 mt-[7px] tracking-wide uppercase">AREA</div>
+                            </div>
+                        </div>
+
+                        <ul class="flex flex-col gap-[8px] mt-[4px] px-2 flex-1">
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> East Facing</li>
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> Verified Listing</li>
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> 25+ Amenities</li>
+                        </ul>
+                        
+                        <a href="property-detail.html?id=1" class="w-full py-3.5 mt-2 rounded-[12px] bg-primary/10 text-primary font-extrabold hover:bg-primary hover:text-white transition-all duration-300 shadow-sm flex justify-center items-center gap-2 group-hover:shadow-md">
+                            View Property <span class="material-icons-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Property Card 2 -->
-                <div
-                    class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500">
-                    <div class="relative h-80 overflow-hidden">
-                        <div class="absolute top-4 left-4 z-10 flex gap-2">
-                            <div
-                                class="bg-primary/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">
-                                Hot Property</div>
-                            <div
-                                class="bg-gray-900/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-white shadow-sm">
-                                Trending</div>
+                <div class="property-card bg-white flex flex-col rounded-[28px] p-[10px] border-[2px] border-primary/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group">
+                    <div class="relative h-[240px] rounded-[20px] overflow-hidden mb-4 bg-gray-100 isolate [transform:translateZ(0)] [mask-image:radial-gradient(white,black)] -webkit-mask-image:-webkit-radial-gradient(white,black) [mask-image:radial-gradient(white,black)] -webkit-mask-image:-webkit-radial-gradient(white,black)">
+                        <div class="absolute top-0 left-0 bg-primary/95 backdrop-blur-md text-white px-4 py-[6px] rounded-br-[16px] text-[13px] font-extrabold font-ui tracking-wide shadow-md z-10">
+                            SG Highway
                         </div>
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop"
-                            alt="Luxury Apartment"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60">
+                        <div class="absolute top-[8px] right-[16px] flex items-center gap-1 z-10">
+                            <span class="text-[10px] font-extrabold text-white drop-shadow-md flex items-center tracking-widest uppercase bg-black/30 px-3 py-1 rounded-full backdrop-blur-md">Loan Available</span>
                         </div>
-                        <div class="absolute bottom-0 left-0 w-full p-6">
-                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹2.85
-                                <span class="text-lg font-bold opacity-90">Cr</span>
-                            </p>
-                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Investment
-                                Value</p>
-                        </div>
-                        <button
-                            class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
-                            <span class="material-icons-outlined">favorite_border</span>
-                        </button>
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop" alt="Skyline Heights" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 relative z-0">
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">Skyline Heights
-                            </h3>
-                        </div>
-                        <p class="text-gray-500 text-sm mb-6 flex items-center gap-1.5 font-medium">
-                            <span class="material-icons-outlined text-primary text-lg">location_on</span> SG Highway,
-                            Ahmedabad
-                        </p>
 
-                        <div class="grid grid-cols-3 gap-4 py-6 border-y border-gray-100 mb-6">
-                            <div class="flex flex-col gap-1">
-                                <span
-                                    class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
-                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">king_bed</span> 3
-                                    BHK</span>
-                            </div>
-                            <div class="flex flex-col gap-1 border-x border-gray-100 px-4">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Area</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">square_foot</span>
-                                    2,800</span>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Floor</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">layers</span> 12th</span>
+                    <div class="px-[8px] flex flex-col gap-[14px] pb-2 flex-1">
+                        <div class="bg-primary/5 text-primary text-center font-extrabold text-[15.5px] py-[12px] rounded-[16px] flex items-center justify-center font-display tracking-widest uppercase leading-none shadow-sm group-hover:bg-primary/10 transition-colors">
+                            SKYLINE HEIGHTS
+                        </div>
+
+                        <!-- Type Badges -->
+                        <div class="flex justify-center h-[34px] w-full max-w-[280px] mx-auto">
+                            <div class="flex w-full bg-primary/5 rounded-full overflow-hidden text-[10px] font-extrabold shadow-inner p-[4px] shadow-sm">
+                                <button type="button" onclick="updateProperty(this, 'apartment', null, null)" class="type-btn cursor-pointer flex-1 rounded-full bg-primary text-white py-1 shadow-sm transition-all duration-300">APARTMENT</button>
+                                <button type="button" onclick="updateProperty(this, 'penthouse', null, null)" class="type-btn cursor-pointer flex-1 rounded-full text-primary/70 hover:text-primary py-1 transition-all duration-300 text-[9.5px]">PENTHOUSE</button>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between mb-8">
-                            <div class="flex gap-2">
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Clubhouse">🏓</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Security">🛡️</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Parking">🅿️</div>
-                                <div
-                                    class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">
-                                    +5</div>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-red-800 bg-red-50 px-3 py-1 rounded-full flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> High yield
-                            </span>
+                        <!-- BHK Badge -->
+                        <div class="flex justify-center mt-[-8px] gap-2">
+                            <button type="button" onclick="updateProperty(this, 'bhk', '1.80 Cr', '1800')" class="bhk-btn cursor-pointer border-[1.5px] border-primary/20 text-gray-500 bg-white px-4 py-[4px] rounded-full text-[10px] font-bold shadow-sm tracking-widest z-10 transition-colors hover:border-primary/50 hover:text-primary">
+                                2 BHK
+                            </button>
+                            <button type="button" onclick="updateProperty(this, 'bhk', '2.85 Cr', '2800')" class="bhk-btn cursor-pointer border-[1.5px] border-primary/50 text-primary bg-primary/5 px-4 py-[4px] rounded-full text-[10px] font-bold shadow-sm tracking-widest z-10 transition-colors">
+                                3 BHK
+                            </button>
                         </div>
 
-                        <button
-                            class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
-                            Book Site Visit <span class="material-icons-outlined text-sm">arrow_forward</span>
-                        </button>
+                        <!-- Price & Area Box -->
+                        <div class="border border-primary/10 rounded-[12px] flex items-center justify-between shadow-sm bg-white h-[74px] px-2 mt-1">
+                            <div class="flex flex-col items-center justify-center flex-1 h-full relative">
+                                <div class="prop-price text-[18px] font-extrabold font-display text-gray-900 leading-none transition-all">2.85 Cr</div>
+                                <div class="text-[9px] font-bold text-gray-500 mt-[8px] uppercase tracking-[0.15em]">PRICE</div>
+                            </div>
+                            <div class="w-[1px] h-[40px] bg-primary/10"></div>
+                            <div class="flex flex-col items-center justify-center flex-1 h-full relative">
+                                <div class="text-[17px] font-extrabold font-display text-gray-900 leading-none transition-all"><span class="prop-area">2800</span> <span class="text-[11px] font-semibold text-gray-500 font-ui ml-[2px]">SQ.FT</span></div>
+                                <div class="text-[10.5px] font-medium text-gray-500 mt-[7px] tracking-wide uppercase">AREA</div>
+                            </div>
+                        </div>
+
+                        <ul class="flex flex-col gap-[8px] mt-[4px] px-2 flex-1">
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> 12th Floor</li>
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> High Yield</li>
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> 35+ Amenities</li>
+                        </ul>
+
+                        <a href="property-detail.html?id=2" class="w-full py-3.5 mt-2 rounded-[12px] bg-primary/10 text-primary font-extrabold hover:bg-primary hover:text-white transition-all duration-300 shadow-sm flex justify-center items-center gap-2 group-hover:shadow-md">
+                            View Property <span class="material-icons-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                        </a>
                     </div>
                 </div>
 
                 <!-- Property Card 3 -->
-                <div
-                    class="group flex flex-col rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 md:col-span-2 lg:col-span-1">
-                    <div class="relative h-80 overflow-hidden">
-                        <div class="absolute top-4 left-4 z-10 flex gap-2">
-                            <div
-                                class="bg-primary/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm">
-                                Upcoming</div>
-                            <div
-                                class="bg-white/95 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wider font-bold text-gray-900 shadow-sm border border-gray-100">
-                                Riverside</div>
+                <div class="property-card bg-white flex flex-col rounded-[28px] p-[10px] border-[2px] border-primary/10 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative group md:col-span-2 lg:col-span-1">
+                    <div class="relative h-[240px] rounded-[20px] overflow-hidden mb-4 bg-gray-100 isolate [transform:translateZ(0)] [mask-image:radial-gradient(white,black)] -webkit-mask-image:-webkit-radial-gradient(white,black) [mask-image:radial-gradient(white,black)] -webkit-mask-image:-webkit-radial-gradient(white,black)">
+                        <div class="absolute top-0 left-0 bg-primary/95 backdrop-blur-md text-white px-4 py-[6px] rounded-br-[16px] text-[13px] font-extrabold font-ui tracking-wide shadow-md z-10">
+                            Sindhu Bhavan
                         </div>
-                        <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=800&auto=format&fit=crop"
-                            alt="The Azure Estancia"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60">
+                        <div class="absolute top-[8px] right-[16px] flex items-center gap-1 z-10">
+                            <span class="text-[10px] font-extrabold text-white drop-shadow-md flex items-center tracking-widest uppercase bg-black/30 px-3 py-1 rounded-full backdrop-blur-md">Loan Available</span>
                         </div>
-                        <div class="absolute bottom-0 left-0 w-full p-6">
-                            <p class="text-white font-display font-extrabold text-3xl tracking-tight leading-none">₹6.20
-                                <span class="text-lg font-bold opacity-90">Cr</span>
-                            </p>
-                            <p class="text-white/80 text-[10px] uppercase tracking-[0.2em] font-bold mt-1">Pre-launch
-                                Price</p>
-                        </div>
-                        <button
-                            class="absolute bottom-6 right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white flex items-center justify-center hover:bg-white hover:text-primary transition-all duration-300">
-                            <span class="material-icons-outlined">favorite_border</span>
-                        </button>
+                        <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=800&auto=format&fit=crop" alt="The Azure Estancia" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 relative z-0">
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-display font-bold text-2xl text-gray-900 tracking-tight">The Azure Estancia
-                            </h3>
-                        </div>
-                        <p class="text-gray-500 text-sm mb-6 flex items-center gap-1.5 font-medium">
-                            <span class="material-icons-outlined text-primary text-lg">location_on</span> Sindhu Bhavan,
-                            Ahmedabad
-                        </p>
 
-                        <div class="grid grid-cols-3 gap-4 py-6 border-y border-gray-100 mb-6">
-                            <div class="flex flex-col gap-1">
-                                <span
-                                    class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Bedrooms</span>
-                                <span class="flex items-center gap-2 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">king_bed</span> 5
-                                    BHK</span>
-                            </div>
-                            <div class="flex flex-col gap-1 border-x border-gray-100 px-4">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Area</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold"><span
-                                        class="material-icons-outlined text-sm text-primary">square_foot</span>
-                                    6,000</span>
-                            </div>
-                            <div class="flex flex-col gap-1">
-                                <span class="text-[10px] uppercase tracking-wider font-bold text-gray-400">Status</span>
-                                <span class="flex items-center gap-1.5 text-gray-900 font-bold text-xs"><span
-                                        class="material-icons-outlined text-sm text-primary">pending</span> 2026</span>
+                    <div class="px-[8px] flex flex-col gap-[14px] pb-2 flex-1">
+                        <div class="bg-primary/5 text-primary text-center font-extrabold text-[15.5px] py-[12px] rounded-[16px] flex items-center justify-center font-display tracking-widest uppercase leading-none shadow-sm group-hover:bg-primary/10 transition-colors">
+                            THE AZURE ESTANCIA
+                        </div>
+
+                        <!-- Type Badges -->
+                        <div class="flex justify-center h-[34px] w-full max-w-[280px] mx-auto">
+                            <div class="flex w-full bg-primary/5 rounded-full overflow-hidden text-[10px] font-extrabold shadow-inner p-[4px] shadow-sm">
+                                <button type="button" onclick="updateProperty(this, 'penthouse', null, null)" class="type-btn cursor-pointer flex-1 rounded-full bg-primary text-white py-1 shadow-sm transition-all duration-300">PENTHOUSE</button>
+                                <button type="button" onclick="updateProperty(this, 'villa', null, null)" class="type-btn cursor-pointer flex-1 rounded-full text-primary/70 hover:text-primary py-1 transition-all duration-300 text-[9.5px]">VILLA</button>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between mb-8">
-                            <div class="flex gap-2">
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Smart Home">📱</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Spa">💆</div>
-                                <div class="w-8 h-8 rounded-full border border-gray-100 bg-gray-50 flex items-center justify-center text-sm shadow-sm"
-                                    title="Tennis Court">🎾</div>
-                                <div
-                                    class="w-8 h-8 rounded-full border border-gray-100 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-600">
-                                    +12</div>
-                            </div>
-                            <span
-                                class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Rare collection
-                            </span>
+                        <!-- BHK Badge -->
+                        <div class="flex justify-center mt-[-8px] gap-2">
+                            <button type="button" onclick="updateProperty(this, 'bhk', '4.80 Cr', '4800')" class="bhk-btn cursor-pointer border-[1.5px] border-primary/20 text-gray-500 bg-white px-4 py-[4px] rounded-full text-[10px] font-bold shadow-sm tracking-widest z-10 transition-colors hover:border-primary/50 hover:text-primary">
+                                4 BHK
+                            </button>
+                            <button type="button" onclick="updateProperty(this, 'bhk', '6.20 Cr', '6000')" class="bhk-btn cursor-pointer border-[1.5px] border-primary/50 text-primary bg-primary/5 px-4 py-[4px] rounded-full text-[10px] font-bold shadow-sm tracking-widest z-10 transition-colors">
+                                5 BHK
+                            </button>
                         </div>
 
-                        <button
-                            class="w-full py-4 rounded-xl bg-primary text-white font-bold hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/20 flex justify-center items-center gap-2 group-hover:scale-[1.02]">
-                            Get Brochure <span class="material-icons-outlined text-sm">arrow_forward</span>
-                        </button>
+                        <!-- Price & Area Box -->
+                        <div class="border border-primary/10 rounded-[12px] flex items-center justify-between shadow-sm bg-white h-[74px] px-2 mt-1">
+                            <div class="flex flex-col items-center justify-center flex-1 h-full relative px-1">
+                                <div class="prop-price text-[18px] font-extrabold font-display text-gray-900 leading-none whitespace-nowrap transition-all">6.20 Cr</div>
+                                <div class="text-[9px] font-bold text-gray-500 mt-[8px] uppercase tracking-[0.15em]">PRICE</div>
+                            </div>
+                            <div class="w-[1px] h-[40px] bg-primary/10"></div>
+                            <div class="flex flex-col items-center justify-center flex-1 h-full relative px-1">
+                                <div class="text-[17px] font-extrabold font-display text-gray-900 leading-none flex items-baseline whitespace-nowrap transition-all"><span class="prop-area">6000</span> <span class="text-[11px] font-semibold text-gray-500 font-ui ml-[2px]">SQ.FT</span></div>
+                                <div class="text-[10.5px] font-medium text-gray-500 mt-[7px] tracking-wide uppercase">AREA</div>
+                            </div>
+                        </div>
+
+                        <ul class="flex flex-col gap-[8px] mt-[4px] px-2 flex-1">
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> Rare Collection</li>
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> Early Access</li>
+                            <li class="flex items-start gap-2 text-[13px] text-gray-700 font-semibold font-body tracking-tight"><span class="text-primary text-[12px] relative top-[1px]">★</span> 30+ Amenities</li>
+                        </ul>
+
+                        <a href="property-detail.html?id=3" class="w-full py-3.5 mt-2 rounded-[12px] bg-primary/10 text-primary font-extrabold hover:bg-primary hover:text-white transition-all duration-300 shadow-sm flex justify-center items-center gap-2 group-hover:shadow-md">
+                            View Property <span class="material-icons-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+                        </a>
                     </div>
                 </div>
-            </div>
-        </div>
+
+            <!-- End Property Grid -->
+</div>
+
     </section>
 
     <!-- Loan Benefits Section (Joined) -->
@@ -774,176 +822,151 @@
         <div class="absolute top-20 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute bottom-20 left-0 w-72 h-72 bg-primary/8 rounded-full blur-[100px] pointer-events-none">
         </div>
-        <div class="max-w-7xl mx-auto relative z-10">
+        <div class="max-w-7xl mx-auto relative z-10 lg:[zoom:0.85] xl:[zoom:0.8]">
             <div class="mb-16 md:flex md:items-end md:justify-between">
                 <div class="max-w-2xl">
                     <h2
-                        class="font-display text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]">
+                        class="font-display text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.1]">
                         Your
                         Dream Home,<br /><span class="text-primary">Better Financed</span></h2>
-                    <p class="text-gray-600 text-lg">Every advantage designed to get you into your
+                    <p class="text-gray-600 text-xl">Every advantage designed to get you into your
                         dream home faster, cheaper, and stress-free.</p>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6 auto-rows-[200px]">
-                <!-- Hero Card: 24h Funding (L-Large) -->
+                <!-- Hero Card: Meet Anywhere (Col-6) -->
                 <div
                     class="reveal-on-scroll reveal-from-top-left group relative md:col-span-2 lg:col-span-6 row-span-2 rounded-3xl overflow-hidden bg-gray-900 border border-white/10 shadow-2xl transition-all duration-700 hover:shadow-primary/20">
-                    <img alt="Modern House"
-                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-40"
-                        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-                    <div class="relative z-20 p-10 h-full flex flex-col justify-between">
+                    <img alt="Professional Consultation"
+                        class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-50"
+                        src="https://images.unsplash.com/photo-1557425955-df376b5903c8?auto=format&fit=crop&q=80&w=1000" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+                    <div class="relative z-20 p-8 h-full flex flex-col justify-between">
                         <div>
                             <div
-                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-plum/20 backdrop-blur-md border border-accent-plum/30 text-accent-plum text-xs font-bold uppercase tracking-widest mb-6">
-                                <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span> Rapid
-                                Disbursement
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-plum/20 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold uppercase tracking-[0.2em] mb-6">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> On-Demand Service
                             </div>
                             <h3
-                                class="font-display text-5xl md:text-6xl font-extrabold text-white leading-[0.9] mb-4 tracking-tighter">
-                                Next-Day<br /><span class="text-accent-plum">Funding</span>
+                                class="font-display text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4 tracking-tighter">
+                                Meet Anywhere,<br /><span class="text-accent-plum">Anytime</span>
                             </h3>
+                            <p class="text-white/80 text-lg font-body max-w-sm leading-relaxed">Book a meeting at your convenience. Our expert comes to you — home, office, anywhere.</p>
                         </div>
-                        <div class="max-w-md">
-                            <div class="bg-white/10 backdrop-blur-xl p-6 rounded-2xl border border-white/20 shadow-2xl">
-                                <p class="text-white font-bold text-xl mb-2 flex items-center gap-2">
-                                    <span class="material-icons-outlined text-accent-plum">verified</span> Approved in
-                                    24
-                                    Hours
+                        <div class="mt-auto">
+                            <div class="bg-white/10 backdrop-blur-xl p-5 rounded-2xl border border-white/20 shadow-2xl group-hover:bg-white/15 transition-colors max-w-sm">
+                                <p class="text-white font-bold text-xl mb-1 flex items-center gap-2">
+                                    <span class="material-icons-outlined text-accent-plum text-sm">location_on</span> We Come to You
                                 </p>
-                                <p class="text-white/70 text-sm leading-relaxed">Skip the weeks of waiting. Our
-                                    proprietary AI vetting process gets you funded before the deal cools off.</p>
+                                <p class="text-white/70 text-sm leading-relaxed font-body">No travel, no waiting. Just pick a time and place.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Lowest Rates (Tall Card) -->
+                <!-- Handle Everything Card (Tall) -->
                 <div
                     class="reveal-on-scroll reveal-from-top delay-50 group lg:col-span-3 row-span-2 relative overflow-hidden rounded-[2rem] bg-[#FBF7F1] border border-primary/10 p-7 flex flex-col transition-all duration-500 hover:border-primary/40 hover:-translate-y-1">
-                    <div class="relative z-10 flex-1 flex flex-col justify-between h-full">
-                        <div>
+                    <div class="relative z-10 h-full flex flex-col">
+                        <div class="mb-6">
                             <div
-                                class="w-12 h-12 rounded-xl bg-white shadow-sm border border-black/5 flex items-center justify-center mb-5 group-hover:rotate-12 transition-transform duration-500">
-                                <span class="material-icons-outlined text-primary text-2xl">trending_down</span>
+                                class="w-10 h-10 rounded-xl bg-white shadow-sm border border-black/5 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-500">
+                                <span class="material-icons-outlined text-primary text-xl">architecture</span>
                             </div>
                             <h3
-                                class="font-display text-4xl font-extrabold text-gray-900 tracking-tight leading-[0.95]">
-                                Lowest<br />Rates</h3>
-                            <p class="text-primary italic font-display text-2xl font-bold mt-1 mb-3 tracking-tight">
-                                guaranteed.</p>
-                            <p class="text-gray-600 leading-relaxed text-[13px] opacity-90 max-w-[90%]">Compare 20+
-                                banks & lenders to beat any valid offer.</p>
+                                class="font-display text-4xl font-extrabold text-gray-900 tracking-tight leading-tight mb-3">
+                                We Handle<br />Everything</h3>
+                            <p class="text-gray-600 leading-relaxed text-sm font-body opacity-90">From paperwork to approvals — we manage it all.</p>
                         </div>
 
-                        <div class="flex flex-col gap-2 mt-4">
-                            <div
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/50 border border-gray-200/50 text-sm font-bold text-gray-800 backdrop-blur-sm transition-all hover:bg-white">
-                                <span
-                                    class="material-icons-outlined text-[16px] text-primary shrink-0 drop-shadow-sm">verified</span>
-                                HDFC Bank
-                            </div>
-                            <div
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white/50 border border-gray-200/50 text-sm font-bold text-gray-800 backdrop-blur-sm transition-all hover:bg-white">
-                                <span
-                                    class="material-icons-outlined text-[16px] text-primary shrink-0 drop-shadow-sm">verified</span>
-                                ICICI Bank
-                            </div>
-                        </div>
-                    </div>
-                    <div
-                        class="absolute -bottom-10 -right-10 w-48 h-48 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-colors pointer-events-none">
+                        <ul class="flex flex-col gap-2.5 mt-auto">
+                            <li class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-gray-200 shadow-sm text-[13px] font-bold text-gray-800">
+                                <span class="material-icons-outlined text-xs text-green-600">check_circle</span>
+                                Documentation
+                            </li>
+                            <li class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-gray-200 shadow-sm text-[13px] font-bold text-gray-800">
+                                <span class="material-icons-outlined text-xs text-green-600">check_circle</span>
+                                Verification
+                            </li>
+                            <li class="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-white border border-gray-200 shadow-sm text-[13px] font-bold text-gray-800">
+                                <span class="material-icons-outlined text-xs text-green-600">check_circle</span>
+                                Processing
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Hidden Fees (Small Card) -->
+                <!-- Zero Effort Card -->
                 <div
-                    class="reveal-on-scroll reveal-from-top-right delay-100 group lg:col-span-3 row-span-1 rounded-3xl bg-primary shadow-xl p-8 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:scale-[1.02]">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <span class="material-icons-outlined text-8xl text-white">account_balance_wallet</span>
+                    class="reveal-on-scroll reveal-from-top-right delay-100 group lg:col-span-3 row-span-1 rounded-3xl bg-primary shadow-xl p-7 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:scale-[1.03]">
+                    <div class="absolute -right-2 top-0 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+                        <span class="material-icons-outlined text-[100px] text-white">volunteer_activism</span>
                     </div>
                     <div class="relative z-10">
-                        <div
-                            class="text-7xl font-extrabold text-white mb-2 font-display tracking-tighter drop-shadow-lg">
-                            ₹0</div>
-                        <h3 class="text-xl font-bold text-white mb-1 tracking-tight">Hidden Fees</h3>
-                        <p class="text-white/70 text-sm">Full transparency, ALWAYS.</p>
+                        <h3 class="text-4xl font-display font-extrabold text-white mb-2 tracking-tighter leading-none">Zero Effort</h3>
+                        <p class="text-white/80 text-sm font-body max-w-[150px] leading-relaxed">You don’t have to do anything. We take care of it all.</p>
                     </div>
                 </div>
 
-                <!-- Minimal Docs (Small Card) -->
+                <!-- Simple for Everyone Card -->
                 <div
-                    class="reveal-on-scroll reveal-from-right delay-150 group lg:col-span-3 row-span-1 rounded-3xl bg-gray-900 border border-white/10 p-8 flex flex-col transition-all duration-500 hover:bg-gray-800">
-                    <div class="flex items-center justify-between mb-4">
+                    class="reveal-on-scroll reveal-from-right delay-150 group lg:col-span-3 row-span-1 rounded-3xl bg-gray-900 border border-white/10 p-7 flex flex-col transition-all duration-500 hover:bg-gray-800">
+                    <div class="flex items-center justify-between mb-3">
                         <div
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
-                            <span class="material-icons-outlined text-2xl text-accent-plum">description</span>
+                            class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10 group-hover:border-primary/50 transition-colors">
+                            <span class="material-icons-outlined text-xl text-accent-plum">family_restroom</span>
                         </div>
-                        <span
-                            class="text-accent-plum text-[10px] font-bold px-3 py-1 bg-accent-plum/10 rounded-full border border-accent-plum/20 uppercase tracking-tighter">100%
-                            Digital</span>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 tracking-tight">Minimal Docs</h3>
-                    <p class="text-gray-400 text-xs leading-relaxed">Upload everything from your phone. No physical
-                        visits required.</p>
+                    <h3 class="text-2xl font-display font-bold text-white mb-2 tracking-tight">Simple for Everyone</h3>
+                    <p class="text-gray-400 text-[13px] leading-relaxed font-body">So easy that anyone in your family can do it without stress.</p>
                 </div>
 
-                <!-- Flexible EMI (Medium Landscape) -->
+                <!-- No More Complexity Card -->
                 <div
-                    class="reveal-on-scroll reveal-from-bottom-left delay-200 group lg:col-span-4 row-span-1 rounded-3xl bg-gradient-to-br from-white to-primary/5 border border-primary/20 p-8 flex items-center gap-6 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40">
+                    class="reveal-on-scroll reveal-from-bottom-left delay-200 group lg:col-span-4 row-span-1 rounded-3xl bg-gradient-to-br from-white to-primary/5 border border-primary/20 p-7 flex items-center gap-5 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40">
                     <div
-                        class="w-20 h-20 shrink-0 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-[#A63B61] group-hover:text-white transition-all duration-500 shadow-sm">
-                        <span class="material-icons-outlined text-4xl">calendar_month</span>
+                        class="w-16 h-16 shrink-0 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                        <span class="material-icons-outlined text-3xl">rule</span>
                     </div>
                     <div>
-                        <h3 class="font-display text-2xl font-bold text-primary mb-2 tracking-tight">Flexible EMI</h3>
-                        <p class="text-sm text-gray-600 leading-relaxed max-w-[200px]">Tenures up to 30 years with
-                            step-up/step-down options.</p>
+                        <h3 class="font-display text-2xl font-bold text-gray-900 mb-1 tracking-tight">No More Complexity</h3>
+                        <p class="text-[13px] text-gray-600 leading-relaxed font-body">We simplify everything so you don’t have to figure it out alone.</p>
                     </div>
                 </div>
 
-                <!-- Personal Advisor (Wide Landscape) -->
+                <!-- Your Personal Expert Card -->
                 <div
-                    class="reveal-on-scroll reveal-from-bottom delay-250 group lg:col-span-5 row-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 flex items-center gap-6 relative overflow-hidden">
+                    class="reveal-on-scroll reveal-from-bottom delay-250 group lg:col-span-5 row-span-1 bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-500 flex items-center gap-5 relative overflow-hidden">
                     <div
-                        class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                    </div>
-                    <div
-                        class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden relative z-10 border-4 border-white shadow-lg">
+                        class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden relative z-10 border-4 border-white shadow-lg group-hover:scale-[1.02] transition-transform">
                         <img alt="Advisor"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                            class="w-full h-full object-cover"
                             src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=400&auto=format&fit=crop" />
                     </div>
                     <div class="flex-1 relative z-10">
-                        <div
-                            class="inline-block px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[10px] font-bold uppercase mb-2">
-                            Expert Concierge</div>
-                        <h3 class="font-display text-xl font-bold text-gray-900 mb-1 tracking-tight">Dedicated Advisor
-                        </h3>
-                        <p class="text-sm text-gray-500 mb-4">A single point of contact for legal, finance & paperwork.
-                        </p>
+                        <h3 class="font-display text-2xl font-bold text-gray-900 mb-1 tracking-tight">Your Personal Expert</h3>
+                        <p class="text-[13px] text-gray-500 mb-3 font-body">One dedicated expert handles everything — start to finish.</p>
                         <button
-                            class="flex items-center gap-2 text-primary font-bold text-sm hover:gap-3 transition-all">
-                            Book Free Call <span class="material-icons-outlined text-sm">east</span>
+                            class="flex items-center gap-2 text-primary font-bold text-xs tracking-tight hover:gap-3 transition-all">
+                            Book Free Consultation <span class="material-icons-outlined text-xs">east</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- 100% Online (Small Square/Visual) -->
+                <!-- Enjoy Your Time Card -->
                 <div
-                    class="reveal-on-scroll reveal-from-bottom-right delay-300 group lg:col-span-3 row-span-1 bg-[#FDF6F0] border border-[#E8D8C4] rounded-3xl p-8 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:bg-white">
+                    class="reveal-on-scroll reveal-from-bottom-right delay-300 group lg:col-span-3 row-span-1 bg-[#FDF6F0] border border-[#E8D8C4] rounded-3xl p-7 flex flex-col justify-center relative overflow-hidden transition-all duration-500 hover:bg-white">
                     <div class="relative z-10">
                         <div
-                            class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-4">
-                            <span class="material-icons-outlined text-2xl">smartphone</span>
+                            class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-3 group-hover:scale-110 transition-transform">
+                            <span class="material-icons-outlined text-xl">beach_access</span>
                         </div>
-                        <h3 class="font-display text-xl font-bold text-gray-900 mb-1 tracking-tight">100% Online</h3>
-                        <p class="text-xs text-gray-500">Apply from anywhere, track in real-time.</p>
+                        <h3 class="font-display text-xl font-bold text-gray-900 mb-1 tracking-tight">Enjoy Your Time</h3>
+                        <p class="text-[13px] text-gray-500 font-body leading-tight">No need to spend weekends on documents. We handle it all.</p>
                     </div>
                     <div
-                        class="absolute bottom-0 right-0 w-24 h-24 translate-x-8 translate-y-8 opacity-10 group-hover:opacity-20 transition-all duration-500 group-hover:scale-125">
-                        <span class="material-icons-outlined text-[120px] text-primary">public</span>
+                        class="absolute bottom-0 right-0 w-20 h-20 translate-x-8 translate-y-8 opacity-10 group-hover:opacity-20 transition-all duration-500">
+                        <span class="material-icons-outlined text-[100px] text-primary">local_cafe</span>
                     </div>
                 </div>
             </div>
@@ -962,11 +985,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Header -->
             <div class="text-center mb-20">
-                <div
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white backdrop-blur-sm border border-primary/20 mb-6 shadow-sm">
-                    <span class="material-icons-outlined text-primary text-sm">chat_bubble_outline</span>
-                    <span class="text-primary font-bold text-xs uppercase tracking-wider">Testimonials</span>
-                </div>
                 <h2
                     class="font-display text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-[1.05]">
                     Real Results from <span class="text-primary">Real Homebuyers</span>
@@ -1143,10 +1161,37 @@
                             <span class="font-medium">Compare instantly with market rates</span>
                         </li>
                     </ul>
-                    <a class="inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl text-white bg-primary hover:bg-accent-plum transition-all duration-300 shadow-lg shadow-primary/30"
-                        href="#">
-                        Check My Eligibility <span class="material-icons-outlined ml-2 text-xl">arrow_forward</span>
-                    </a>
+                    <!-- Interactive Scratch Card Reward (Fills the space naturally) -->
+                    <div class="mt-8 border border-gray-200 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl overflow-hidden relative select-none w-full max-w-sm bg-white hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow duration-300 h-[220px]" id="scratch-container">
+                        <!-- Underlying Reward panel (Matches site light theme) -->
+                        <div class="absolute inset-0 p-6 flex flex-col justify-center text-center bg-[#FBF7F1]">
+                            <!-- Gold accent edge -->
+                            <div class="h-1.5 w-full bg-gradient-to-r from-[#D4AF37] via-[#FFF1CC] to-[#D4AF37] absolute top-0 left-0"></div>
+                            
+                            <span class="material-icons-outlined text-primary text-3xl mb-1">workspace_premium</span>
+                            <p class="text-[11px] font-bold text-primary uppercase tracking-[0.2em] mb-1">VIP Cashback</p>
+                            <p class="text-[10px] text-gray-500 font-medium tracking-wide mb-3">0.5% OF SANCTIONED AMOUNT</p>
+                            
+                            <div class="flex justify-center items-baseline gap-1">
+                                <span id="cashback-reward" class="font-display text-[2.5rem] leading-[1] font-extrabold text-primary tracking-tight">₹25,000</span>
+                            </div>
+                            <p class="text-[10px] text-gray-400 mt-4 uppercase tracking-wider">Credited directly to your bank account*</p>
+                        </div>
+                        
+                        <!-- Scratch Canvas Overlay -->
+                        <canvas id="scratch-canvas" class="absolute inset-0 w-full h-full cursor-crosshair touch-none z-20"></canvas>
+                        
+                        <!-- Helper Text overlay (sitting above canvas initially) -->
+                        <div id="scratch-helper" class="absolute inset-0 flex flex-col items-center justify-center z-30 pointer-events-none transition-opacity duration-300">
+                            <!-- Inset Border -->
+                            <div class="absolute inset-4 border-4 border-white/30 rounded-xl pointer-events-none"></div>
+                            
+                            <!-- Minimalist modern icon -->
+                            <i class="fa-solid fa-gift text-white/95 text-[32px] mb-4 drop-shadow-lg"></i>
+                            <h3 class="font-display font-extrabold text-4xl md:text-5xl text-white tracking-tighter drop-shadow-2xl">REVEAL</h3>
+                            <p class="font-ui text-[10px] text-white/80 font-bold uppercase tracking-[0.4em] mt-2 ml-1">Gift Voucher</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Interactive Calculator Layout Side -->
@@ -1214,19 +1259,21 @@
                                     </h4>
 
                                     <div class="space-y-4 pt-6 border-t border-gray-100">
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="flex items-center gap-2 text-gray-600">
-                                                <div class="w-3 h-3 rounded-full bg-primary/20"></div> Principal Amount
+                                        <div class="flex justify-between items-center text-sm bg-gray-50/50 p-2 rounded-xl transition-all duration-300">
+                                            <span class="flex items-center gap-2 text-gray-600 text-xs font-medium">
+                                                <div class="w-2.5 h-2.5 rounded-full bg-primary/20"></div> Principal Amount
                                             </span>
-                                            <span id="principal-val" class="font-bold text-gray-900">₹50,00,000</span>
+                                            <span id="principal-val" class="font-bold text-gray-900 text-sm">₹50,00,000</span>
                                         </div>
-                                        <div class="flex justify-between items-center text-sm">
-                                            <span class="flex items-center gap-2 text-gray-600">
-                                                <div class="w-3 h-3 rounded-full bg-primary"></div> Interest Amount
+                                        <div class="flex justify-between items-center text-sm bg-gray-50/50 p-2 rounded-xl transition-all duration-300">
+                                            <span class="flex items-center gap-2 text-gray-600 text-xs font-medium">
+                                                <div class="w-2.5 h-2.5 rounded-full bg-primary"></div> Interest Amount
                                             </span>
                                             <span id="interest-amt-val"
-                                                class="font-bold text-gray-900">₹54,13,879</span>
+                                                class="font-bold text-gray-900 text-sm">₹54,13,879</span>
                                         </div>
+                                        
+                                        <!-- Interactive Cashback Display Removed -->
                                     </div>
                                 </div>
                                 <div class="w-full h-3 flex rounded-full overflow-hidden">
@@ -1472,16 +1519,14 @@
                     <div class="bg-white p-6 md:p-8 rounded-2xl border border-primary/10 shadow-xl shadow-primary/5">
                         <form class="space-y-5" onsubmit="event.preventDefault();">
                             <div>
-                                <label
-                                    class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Full
+                                <label class="block text-sm font-bold text-primary/60 mb-2">Full
                                     Name</label>
                                 <input type="text"
                                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                                     placeholder="John Doe" />
                             </div>
                             <div>
-                                <label
-                                    class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">Phone
+                                <label class="block text-sm font-bold text-primary/60 mb-2">Phone
                                     Number</label>
                                 <input type="tel"
                                     class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
@@ -1491,8 +1536,7 @@
                                 <!-- Custom Select: I'm looking for -->
                                 <div class="relative w-full" x-data="{ open: false, selected: 'Property to Buy' }"
                                     id="dropdown-looking-for">
-                                    <label
-                                        class="block text-xs font-bold text-primary/60 uppercase tracking-widest mb-2">I'm
+                                    <label class="block text-sm font-bold text-primary/60 mb-2">I'm
                                         looking for</label>
                                     <button type="button" @click="open = !open" @click.away="open = false"
                                         class="w-full h-12 bg-gray-50 border border-gray-200 rounded-xl px-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all flex justify-between items-center outline-none">
@@ -1619,7 +1663,7 @@
                                 Estate.</span>
                         </h4>
                         <p class="text-gray-600 leading-relaxed max-w-sm text-sm">
-                            With over two decades of excellence, Taathya Group bridge the gap between bespoke
+                            With over two decades of excellence, Taathya bridge the gap between bespoke
                             residential search and elite financial engineering.
                         </p>
                     </div>
@@ -1692,14 +1736,13 @@
                     </div>
 
                     <div class="space-y-8 col-span-2 md:col-span-1">
-                        <h5
-                            class="text-xs font-bold text-gray-900 uppercase tracking-widest border-l-2 border-primary pl-4">
+                        <h5 class="text-[14px] font-bold text-gray-900 border-l-2 border-primary pl-4">
                             The Studio</h5>
                         <div class="space-y-6">
                             <div class="flex items-start gap-4">
                                 <span class="material-icons-outlined text-primary mt-0.5">place</span>
                                 <div>
-                                    <p class="text-xs font-bold text-gray-900 uppercase tracking-tighter">Ahmedabad HQ
+                                    <p class="text-[13px] font-bold text-gray-900">Ahmedabad HQ
                                     </p>
                                     <p class="text-xs text-gray-500 mt-1 leading-relaxed">Stellar Business Hub,<br>Ambli
                                         Road, 380015</p>
@@ -1708,7 +1751,7 @@
                             <div class="flex items-start gap-4">
                                 <span class="material-icons-outlined text-primary mt-0.5">headset_mic</span>
                                 <div>
-                                    <p class="text-xs font-bold text-gray-900 uppercase tracking-tighter">Private Line
+                                    <p class="text-[13px] font-bold text-gray-900">Private Line
                                     </p>
                                     <p class="text-xs text-gray-500 mt-1">+91 99000 00000</p>
                                 </div>
@@ -1720,16 +1763,16 @@
 
             <!-- Professional Credits -->
             <div class="pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
-                <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-medium">
-                    © 2026 Taathya Group. Built with Integrity.
+                <p class="text-[12px] text-gray-400 font-medium">
+                    © 2026 Taathya. Built with Integrity.
                 </p>
                 <div class="flex items-center gap-10">
                     <a href="#"
-                        class="text-[10px] text-gray-400 hover:text-primary uppercase tracking-[0.2em] font-medium transition-colors">Privacy</a>
+                        class="text-[12px] text-gray-400 hover:text-primary font-medium transition-colors">Privacy</a>
                     <a href="#"
-                        class="text-[10px] text-gray-400 hover:text-primary uppercase tracking-[0.2em] font-medium transition-colors">Terms</a>
+                        class="text-[12px] text-gray-400 hover:text-primary font-medium transition-colors">Terms</a>
                     <div class="h-4 w-px bg-gray-200"></div>
-                    <p class="text-[10px] text-primary/60 uppercase tracking-[0.2em] font-bold">Studio Alpha</p>
+                    <p class="text-[12px] text-primary/60 font-bold">Studio Alpha</p>
                 </div>
             </div>
         </div>
@@ -1774,8 +1817,225 @@
         if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
         if (themeToggleMobileBtn) themeToggleMobileBtn.addEventListener('click', toggleTheme);
     </script>
-    <!-- External JS (scroll animations only ? tailwind.config is set inline above) -->
+
+    <script>
+        // ================================================================
+        // VIEW YOUR REWARDS — Confetti + Cashback Reveal
+        // ================================================================
+        function initScratchCard() {
+            const canvas = document.getElementById('scratch-canvas');
+            const container = document.getElementById('scratch-container');
+            if (!canvas || !container) return;
+            
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
+            let isDrawing = false;
+            let isScratched = false;
+
+            function resizeCanvas() {
+                const rect = container.getBoundingClientRect();
+                if(rect.width === 0) return; // Hidden parent block
+                
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                
+                // Premium deep plum matte finish
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                gradient.addColorStop(0, '#4A1025');   // Very dark luxury plum
+                gradient.addColorStop(0.5, '#6B1D3A'); // Dark burgundy
+                gradient.addColorStop(1, '#8C274C');   // Brand primary plum
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Elegant Guilloche/Banknote Ring Pattern Overlay
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
+                ctx.lineWidth = 1;
+                const r = 18;
+                for (let x = -r; x < canvas.width + r; x += r * 1.5) {
+                    for (let y = -r; y < canvas.height + r; y += r) {
+                        ctx.beginPath();
+                        ctx.arc(x, y, r, 0, Math.PI * 2);
+                        ctx.stroke();
+                        // Inner ring for depth
+                        ctx.beginPath();
+                        ctx.arc(x, y, r * 0.7, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                }
+
+                // Add subtle matte noise texture for a premium card feel
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.015)';
+                for (let i = 0; i < canvas.width; i += 3) {
+                    for (let j = 0; j < canvas.height; j += 3) {
+                        if (Math.random() > 0.5) {
+                            ctx.fillRect(i, j, 1, 1);
+                        }
+                    }
+                }
+
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = 85; // Massive brush for effortless reveal
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', () => { if(!isScratched) resizeCanvas(); });
+
+            function getMousePos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                // Scale coordinates perfectly
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                return {
+                    x: (clientX - rect.left) * scaleX,
+                    y: (clientY - rect.top) * scaleY
+                };
+            }
+
+            function scratch(e) {
+                if (!isDrawing || isScratched) return;
+                e.preventDefault();
+                const pos = getMousePos(e);
+                
+                if (e.type === 'mousedown' || e.type === 'touchstart') {
+                    ctx.beginPath();
+                    ctx.moveTo(pos.x, pos.y);
+                } else {
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                }
+
+                // Check completion more frequently for aggressive reveal
+                if (Math.random() > 0.85) checkCompletion();
+            }
+
+            function checkCompletion() {
+                if (isScratched) return;
+                const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let transparentCount = 0;
+                
+                // Sample alpha channel (every 4th byte) with a step of 32 for higher accuracy
+                for (let i = 3; i < pixels.length; i += 32) {
+                    if (pixels[i] < 100) { // If alpha is less than 100 (partially transparent)
+                        transparentCount++;
+                    }
+                }
+                
+                const clearedRatio = transparentCount / (pixels.length / 32);
+                if (clearedRatio >= 0.80) { // Increased threshold to 80% for a more comprehensive scratch experience
+                    isScratched = true;
+                    // Prevent any more drawing
+                    canvas.style.pointerEvents = 'none';
+                    
+                    // Fast reveal transition
+                    canvas.style.transition = 'opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+                    canvas.style.opacity = '0';
+                    
+                    const helper = document.getElementById('scratch-helper');
+                    if (helper) helper.style.opacity = '0';
+                    
+                    // Clean up after fast fade
+                    setTimeout(() => {
+                        canvas.style.display = 'none';
+                        fireConfetti(container);
+                    }, 300);
+                }
+            }
+
+            const hideHelper = () => {
+                const helper = document.getElementById('scratch-helper');
+                if(helper) helper.style.opacity = '0';
+            };
+
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; hideHelper(); scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            window.addEventListener('mouseup', () => { 
+                if (isDrawing) { isDrawing = false; checkCompletion(); }
+            });
+            
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; hideHelper(); scratch(e); }, {passive: false});
+            canvas.addEventListener('touchmove', scratch, {passive: false});
+            window.addEventListener('touchend', () => { 
+                if (isDrawing) { isDrawing = false; checkCompletion(); }
+            });
+        }
+
+        // Load canvas-confetti for smooth, natural physics
+        if (!window.confetti) {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+            document.head.appendChild(script);
+        }
+
+        function fireConfetti(origin) {
+            // Wait for script to load if it hasn't already
+            if (!window.confetti) {
+                setTimeout(() => fireConfetti(origin), 100);
+                return;
+            }
+
+            const rect = origin.getBoundingClientRect();
+            // Calculate relative to viewport for canvas-confetti
+            const originX = (rect.left + rect.width / 2) / window.innerWidth;
+            const originY = (rect.top + rect.height / 2) / window.innerHeight;
+
+            // Brand aligned colors: Maroon, Beige, and Cream
+            const colors = ['#8C274C', '#6B1D3A', '#FBF7F1', '#D4AF37', '#FFF1CC', '#E4D5C7'];
+            
+            // Fire a dense realistic burst
+            confetti({
+                particleCount: 80,
+                spread: 60,
+                origin: { x: originX, y: originY },
+                colors: colors,
+                disableForReducedMotion: true,
+                zIndex: 9999,
+                gravity: 1.0,
+                scalar: 0.9,
+                ticks: 200
+            });
+            
+            // Add a secondary burst for depth
+            setTimeout(() => {
+                confetti({
+                    particleCount: 40,
+                    spread: 80,
+                    origin: { x: originX, y: originY },
+                    colors: colors,
+                    disableForReducedMotion: true,
+                    zIndex: 9999,
+                    gravity: 0.7,
+                    scalar: 0.8,
+                    ticks: 250
+                });
+            }, 100);
+        }
+
+        // Keep cashback in sync with slider changes
+        document.addEventListener('DOMContentLoaded', () => {
+            initScratchCard();
+            
+            const loanInput = document.getElementById('loan-amount');
+            const cashbackEl = document.getElementById('cashback-reward');
+
+            if (loanInput && cashbackEl) {
+                const updateCashback = () => {
+                    const loanAmount = parseFloat(loanInput.value || 5000000);
+                    const cashback = Math.round(loanAmount * 0.005);
+                    cashbackEl.textContent = '₹' + cashback.toLocaleString('en-IN');
+                };
+                
+                updateCashback();
+                loanInput.addEventListener('input', updateCashback);
+            }
+        });
+    </script>
+    <!-- Lenis smooth scroll -->
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
     <script src="script.js"></script>
+
 </body>
 
 </html>

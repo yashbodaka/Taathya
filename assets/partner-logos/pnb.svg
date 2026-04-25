@@ -1,7 +1,0 @@
-<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="260" height="80" rx="24" fill="#FFF6F6"/>
-  <rect x="16" y="16" width="48" height="48" rx="16" fill="#9C2433"/>
-  <path d="M31 33H42.5C48.3 33 52 36.4 52 41.7C52 47 48.3 50.5 42.5 50.5H35.8V55H31V33ZM42 46.3C45 46.3 47 44.6 47 41.7C47 38.8 45 37.1 42 37.1H35.8V46.3H42Z" fill="white"/>
-  <text x="78" y="34" fill="#9C2433" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
-  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">Punjab National</text>
-</svg>

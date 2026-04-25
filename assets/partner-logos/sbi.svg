@@ -1,8 +1,0 @@
-<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="260" height="80" rx="24" fill="#F3F8FF"/>
-  <circle cx="40" cy="40" r="24" fill="#2F6BDA"/>
-  <circle cx="40" cy="40" r="9" fill="white"/>
-  <rect x="37" y="43" width="6" height="10" rx="3" fill="white"/>
-  <text x="78" y="34" fill="#2F6BDA" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
-  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">State Bank</text>
-</svg>

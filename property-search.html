@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Taathya | Premium Property Search — Ahmedabad</title>
+
+    <!-- Core Performance & Preconnects -->
+    <link rel="preconnect" href="https://api.mapbox.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="assets/logo.png" as="image" />
+
+    <!-- Mapbox GL JS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Epilogue:wght@800&family=Inter:wght@300;400;500;600;700;800;900&family=Sora:wght@700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- Tailwind Framework -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <script>
+        tailwind.config = {
+            darkMode: false,
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#8C274C",
+                        "primary-light": "#B03366",
+                        "primary-dark": "#6B1D3A",
+                        "bg-page": "#F8F2F4",
+                        "text-main": "#1A1A2E",
+                        "text-sub": "#6B7280",
+                    },
+                    fontFamily: {
+                        display: ["'Sora'", "sans-serif"],
+                        body: ["'Inter'", "sans-serif"],
+                        ui: ["'Inter'", "sans-serif"],
+                        headline: ["Epilogue", "Sora", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+
+    <!-- Custom Styles (Differentiated for Hero & Listings) -->
+    <link rel="stylesheet" href="listings.css" />
+    <link rel="stylesheet" href="assets/property-search.css" />
+    <link rel="stylesheet" href="shared-footer.css" />
+
+    <style>
+        /* Essential overrides for the dual-view structure */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: #F8F2F4;
+        }
+
+        /* On this page, override dynamic-navbar height to match listings.html taller look */
+        #site-header.dynamic-navbar {
+            height: 72px !important;
+        }
+
+        /* Ensure Listings View acts as a full-screen application layout when active */
+        .listings-view {
+            position: fixed;
+            /* Start BELOW the navbar — never use inset:0 here */
+            top: 72px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+            /* BELOW navbar z-index: 9999 */
+            display: flex;
+            flex-direction: column;
+            background: #F8F2F4;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s,
+                transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s,
+                visibility 0.8s;
+        }
+
+        body.searched .listings-view {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            /* No padding-top needed — listings-view already starts at top: 80px */
+        }
+
+        /* When searched, force the navbar into light mode immediately */
+        body.searched #site-header {
+            background: rgba(255, 255, 255, 0.97) !important;
+            border-bottom-color: rgba(220, 210, 215, 0.5) !important;
+            box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+        }
+
+        /* In searched state, override text colours to dark */
+        body.searched #site-header .navbar-text-adaptive,
+        body.searched #site-header .navbar-text-active {
+            color: #4a2a35 !important;
+            text-shadow: none !important;
+        }
+
+        body.searched #site-header .navbar-text-active {
+            color: #8C274C !important;
+        }
+
+        body.searched #site-header .navbar-border-adaptive {
+            border-left-color: rgba(140, 39, 76, 0.2) !important;
+        }
+
+        /* Filter bar sticks to the very top of the listings-view container (which already starts at 80px) */
+        .filter-bar {
+            top: 0 !important;
+            padding-top: 12px !important;
+            padding-bottom: 12px !important;
+        }
+
+        /* Search input styling */
+        #searchInput {
+            border: 1px solid rgba(140, 39, 76, 0.08) !important;
+            background-color: #F9FAFB !important;
+            box-shadow: none !important;
+        }
+
+        #searchInput:focus {
+            background-color: #FFFFFF !important;
+            border-color: rgba(140, 39, 76, 0.2) !important;
+            box-shadow: 0 0 0 4px rgba(140, 39, 76, 0.05) !important;
+        }
+
+        /* Clean up Mapbox attribution and controls to match original */
+        .mapboxgl-ctrl-logo,
+        .mapboxgl-ctrl-attrib {
+            display: none !important;
+        }
+
+        /* Shared kinetic loading screen */
+        body.is-loading,
+        body.loading-lock {
+            overflow: clip !important;
+        }
+
+        #vanilla-loader {
+            visibility: visible !important;
+            opacity: 1 !important;
+            background-color: #601931;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .loader-signature-text {
+            font-family: 'Sora', sans-serif;
+            font-weight: 300;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 10px;
+            margin-top: 2rem;
+        }
+
+        .loader-vessel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loader-orbit {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+        }
+
+        .orbit-1 {
+            width: 400px;
+            height: 400px;
+            animation: orbit-rotate 28s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            border-top-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .orbit-2 {
+            width: 600px;
+            height: 600px;
+            animation: orbit-rotate 42s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite reverse;
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .orbit-3 {
+            width: 850px;
+            height: 850px;
+            animation: orbit-rotate 56s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+            border-left-color: rgba(255, 255, 255, 0.08);
+        }
+
+        @keyframes orbit-rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        body.is-loading>section,
+        body.is-loading>footer,
+        body.is-loading>main,
+        body.is-loading>header,
+        body.is-loading>div:not(#vanilla-loader):not(#filtersOverlay):not(#filtersDrawer):not(.listings-view) {
+            transform: scale(1.05);
+            opacity: 0 !important;
+            visibility: hidden;
+            filter: blur(12px) brightness(0.6);
+            pointer-events: none;
+            transition: all 1.4s cubic-bezier(0.87, 0, 0.13, 1);
+        }
+
+        body.loader-done>section,
+        body.loader-done>footer,
+        body.loader-done>main,
+        body.loader-done>header,
+        body.loader-done>div:not(#vanilla-loader):not(#filtersOverlay):not(#filtersDrawer):not(.listings-view) {
+            transform: scale(1);
+            opacity: 1 !important;
+            visibility: visible;
+            filter: blur(0px) brightness(1);
+            transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1) 0.1s;
+        }
+
+        #loader-logo {
+            height: 45px;
+            filter: brightness(0) invert(1);
+            opacity: 0;
+            transform: translateY(15px);
+            animation: loader-logo-reveal 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards 0.3s;
+        }
+
+        @media (min-width: 768px) {
+            #loader-logo {
+                height: 50px;
+            }
+        }
+
+        @keyframes loader-logo-reveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes progress-indeterminate {
+            0% {
+                left: -30%;
+                width: 30%;
+            }
+
+            50% {
+                left: 40%;
+                width: 50%;
+            }
+
+            100% {
+                left: 100%;
+                width: 30%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-bg-page antialiased font-body text-text-main is-loading">
+
+    <!-- --------------------------------------------------------------
+         VANILLA JS KINETIC LOADING SCREEN (Global)
+    -------------------------------------------------------------- -->
+    <div id="vanilla-loader"
+        class="fixed inset-0 z-[99999] bg-[#601931] flex flex-col items-center justify-center overflow-hidden"
+        style="transition: clip-path 1.6s cubic-bezier(0.16, 1, 0.3, 1); clip-path: circle(150% at 50% 50%); pointer-events: all; touch-action: none;">
+
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+            <div class="loader-orbit orbit-1"></div>
+            <div class="loader-orbit orbit-2"></div>
+            <div class="loader-orbit orbit-3"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="loader-vessel mb-6">
+                <img src="assets/logo.png" alt="Taathya Logo" id="loader-logo">
+            </div>
+            <div class="h-6 overflow-hidden">
+                <p class="loader-signature-text" id="loader-status">FORGING FINANCIAL FUTURES</p>
+            </div>
+            <div class="w-32 h-[1px] bg-white/10 mt-12 relative overflow-hidden rounded-full">
+                <div
+                    class="absolute top-0 left-0 h-full bg-white/40 w-[40%] animate-[progress-indeterminate_5s_ease-in-out_infinite]">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Universal Header -->
+    <header class="dynamic-navbar" data-navbar-mode="transparent" id="site-header">
+        <div class="w-full px-8 lg:px-10 flex items-center justify-between h-full">
+
+            <!-- LEFT: Logo + Nav Links -->
+            <div class="flex items-center gap-6 h-full">
+                <a href="index.html" class="flex-shrink-0 flex items-center h-full group">
+                    <img src="assets/logo.png" alt="Taathya Logo"
+                        class="h-10 md:h-12 w-auto object-contain transition-transform group-hover:scale-105 duration-500 origin-left" />
+                </a>
+                <nav class="hidden lg:flex items-center gap-6 pl-6 border-l navbar-border-adaptive h-7"
+                    style="border-left-width:1px; border-left-style:solid;">
+                    <a href="index.html" class="navbar-text-adaptive navbar-link subpixel-antialiased"
+                        style="font-family: 'Inter', sans-serif; font-size: 14.5px !important; font-weight: 700 !important; letter-spacing: 0.01em;">Home</a>
+                    <a href="property-search.html" class="navbar-text-active navbar-link subpixel-antialiased"
+                        style="font-family: 'Inter', sans-serif; font-size: 14.5px !important; font-weight: 700 !important; letter-spacing: 0.01em;">Properties</a>
+                    <a href="finance.html" class="navbar-text-adaptive navbar-link subpixel-antialiased"
+                        style="font-family: 'Inter', sans-serif; font-size: 14.5px !important; font-weight: 700 !important; letter-spacing: 0.01em;">Finance</a>
+                </nav>
+            </div>
+
+            <!-- CENTER: Search bar -->
+            <div id="universal-search-slot" class="flex-1 max-w-2xl px-4 xl:px-8 hidden md:block">
+                <div class="relative flex items-center w-full group h-12">
+                    <span
+                        class="material-icons-outlined absolute left-5 text-[#6B7280] text-xl group-focus-within:text-[#8C274C] transition-colors"
+                        style="z-index:1;">search</span>
+                    <input id="searchInput" type="text" placeholder="Search by location, project or builder..."
+                        class="w-full h-full pl-14 pr-5 rounded-full border border-gray-200 bg-white text-sm font-medium focus:outline-none focus:border-[#8C274C]/30 focus:ring-4 focus:ring-[#8C274C]/10 transition-all font-ui shadow-inner"
+                        style="font-family: 'Inter', sans-serif;" />
+                </div>
+            </div>
+
+            <!-- RIGHT: Filters + CTA -->
+            <div class="flex items-center gap-3 md:gap-4 shrink-0">
+                <div id="universal-filter-slot">
+                    <button type="button" id="filtersBtn"
+                        class="flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-200 bg-white text-[13px] font-bold text-gray-700 hover:border-[#8C274C] hover:text-[#8C274C] transition-all shadow-sm"
+                        style="font-family: 'Inter', sans-serif;">
+                        <span class="material-icons-outlined text-lg">tune</span>
+                        <span class="hidden xl:inline">Filters</span>
+                    </button>
+                </div>
+                <a href="#"
+                    class="navbar-cta hidden md:flex px-6 md:px-8 py-2.5 md:py-3 rounded-full bg-[#8c274c] text-white text-[13px] md:text-[14px] font-semibold hover:bg-[#6d0c35] shadow-lg shadow-[#8c274c]/20 whitespace-nowrap"
+                    style="font-family: 'Inter', sans-serif;">
+                    Contact Us
+                </a>
+                <button class="lg:hidden text-gray-800 p-2 focus:outline-none">
+                    <span class="material-icons-outlined text-2xl">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===================== HERO VIEW (INITIAL STATE) ===================== -->
+    <section class="hero-view">
+        <div id="hero-map-bg" class="hero-map-bg"></div>
+        <div class="hero-overlay"></div>
+
+
+
+        <div class="hero-content">
+            <h1 class="hero-title">Find Your <span class="hero-title-accent">Dream Property</span></h1>
+            <p class="hero-subtitle">Access verified premium estates across Ahmedabad — with instant approvals and 0.5%
+                cashback.</p>
+
+            <!-- Custom Search Console with Custom Dropdowns -->
+            <div class="glass-search-console animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                <!-- Location -->
+                <div class="console-segment" id="locDropdown">
+                    <span class="material-icons-outlined segment-icon">explore</span>
+                    <div class="segment-info">
+                        <label class="segment-label">Location</label>
+                        <div class="custom-select-trigger">
+                            <span class="selected-value" id="locValue">Ahmedabad</span>
+                            <span class="material-icons-outlined arrow">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="custom-dropdown-menu hidden">
+                        <div class="dropdown-item" data-value="Ambli Road">Ambli Road</div>
+                        <div class="dropdown-item" data-value="SG Highway">SG Highway</div>
+                        <div class="dropdown-item" data-value="Prahlad Nagar">Prahlad Nagar</div>
+                        <div class="dropdown-item" data-value="Bopal">Bopal</div>
+                        <div class="dropdown-item" data-value="all">All Ahmedabad</div>
+                    </div>
+                </div>
+
+                <div class="console-divider"></div>
+
+                <!-- Type -->
+                <div class="console-segment" id="typeDropdown">
+                    <span class="material-icons-outlined segment-icon">home_work</span>
+                    <div class="segment-info">
+                        <label class="segment-label">Property Type</label>
+                        <div class="custom-select-trigger">
+                            <span class="selected-value" id="typeValue">All Types</span>
+                            <span class="material-icons-outlined arrow">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="custom-dropdown-menu hidden">
+                        <div class="dropdown-item" data-value="all">All Types</div>
+                        <div class="dropdown-item" data-value="Apartment">Apartment</div>
+                        <div class="dropdown-item" data-value="Villa">Villa</div>
+                        <div class="dropdown-item" data-value="Penthouse">Penthouse</div>
+                        <div class="dropdown-item" data-value="Plot">Plot</div>
+                    </div>
+                </div>
+
+                <div class="console-divider"></div>
+
+                <!-- Budget -->
+                <div class="console-segment" id="budgetDropdown">
+                    <span class="material-icons-outlined segment-icon">payments</span>
+                    <div class="segment-info">
+                        <label class="segment-label">Budget</label>
+                        <div class="custom-select-trigger">
+                            <span class="selected-value" id="budgetValue">Any Budget</span>
+                            <span class="material-icons-outlined arrow">expand_more</span>
+                        </div>
+                    </div>
+                    <div class="custom-dropdown-menu hidden">
+                        <div class="dropdown-item" data-value="any">Any Budget</div>
+                        <div class="dropdown-item" data-value="0-1.5">Under ₹1.5 Cr</div>
+                        <div class="dropdown-item" data-value="1.5-4">₹1.5 - 4 Cr</div>
+                        <div class="dropdown-item" data-value="4-50">₹4 Cr+</div>
+                    </div>
+                </div>
+
+                <button type="button" class="console-action-btn search-trigger">
+                    <span class="material-icons-outlined">search</span>
+                    <span>Find Now</span>
+                </button>
+            </div>
+
+            <!-- Popular Shortcuts -->
+            <div class="flex items-center justify-center gap-4 mt-12">
+                <span class="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">Popular:</span>
+                <button type="button"
+                    class="popular-shortcut px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-[11px] font-bold text-white/90 hover:bg-white/10 transition"
+                    data-loc="Ambli Road">Ambli Road</button>
+                <button type="button"
+                    class="popular-shortcut px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-[11px] font-bold text-white/90 hover:bg-white/10 transition"
+                    data-loc="SG Highway">SG Highway</button>
+                <button type="button"
+                    class="popular-shortcut px-5 py-2.5 rounded-full border border-white/20 bg-white/5 text-[11px] font-bold text-white/90 hover:bg-white/10 transition"
+                    data-loc="Prahlad Nagar">Prahlad Nagar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== LISTINGS VIEW (EXACT FORMAT AS LISTINGS.HTML) ===================== -->
+    <div class="listings-view">
+
+
+        <!-- filter bar -->
+        <div
+            class="filter-bar flex items-center justify-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-2xl border-b border-border-soft/30 flex-shrink-0 overflow-x-auto scrollbar-hide z-40 transition-all duration-300">
+            <div class="flex items-center gap-2 max-w-7xl mx-auto w-full">
+                <span
+                    class="text-[10px] font-bold text-text-sub uppercase tracking-[0.2em] mr-4 opacity-40">Explore</span>
+                <button class="filter-chip active" data-filter="all">All Properties</button>
+                <button class="filter-chip" data-filter="Apartment">Apartments</button>
+                <button class="filter-chip" data-filter="Villa">Villas</button>
+                <button class="filter-chip" data-filter="Penthouse">Penthouses</button>
+                <button class="filter-chip" data-filter="Plot">Plots</button>
+                <div class="w-px h-6 bg-border-soft/50 flex-shrink-0 mx-4"></div>
+                <button class="filter-chip" data-status="Ready to Move">Ready to Move</button>
+                <button class="filter-chip" data-status="Upcoming">Upcoming</button>
+                <button class="filter-chip" data-status="Pre-launch">Pre-launch</button>
+            </div>
+        </div>
+
+        <!-- main split layout -->
+        <div class="split-layout flex flex-1 min-h-0">
+            <!-- left panel -->
+            <div id="listPanel" class="list-panel bg-surface-main">
+                <div class="flex items-center justify-between px-8 pt-6 pb-4">
+                    <p class="text-[15px] text-text-sub font-ui font-medium tracking-tight">
+                        <span id="resultCount" class="font-bold text-text-main text-lg mr-1">18</span>
+                        luxury properties found
+                    </p>
+                    <button id="sortBtnMobile"
+                        class="sm:hidden flex items-center gap-1 text-xs font-ui text-text-sub transition-colors hover:text-brand-primary">
+                        <span class="material-icons-outlined text-sm">swap_vert</span>
+                        Sort
+                    </button>
+                </div>
+                <div id="cardsContainer" class="cards-container px-6 pb-6 space-y-6 overflow-y-auto flex-1">
+                    <!-- Cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- right panel -->
+            <div id="mapPanel" class="map-panel flex-1 relative">
+                <div class="map-badge">
+                    <span class="badge-dot"></span>
+                    <span id="mapBadgeCount" class="font-ui text-xs font-medium text-text-main">18 properties on
+                        map</span>
+                </div>
+                <div id="map" class="w-full h-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile UI Elements -->
+    <button id="mobileToggle" class="mobile-toggle">
+        <span class="material-icons-outlined text-lg">map</span>
+        <span id="mobileToggleLabel">Show Map</span>
+    </button>
+
+    <!-- Filters Drawer Overlay -->
+    <div id="filtersOverlay" class="filters-overlay hidden"></div>
+    <div id="filtersDrawer" class="filters-drawer">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-border-soft">
+            <h3 class="font-display text-lg font-bold">More Filters</h3>
+            <button type="button" class="close-drawer-btn p-1 rounded-full hover:bg-gray-100 transition">
+                <span class="material-icons-outlined text-xl">close</span>
+            </button>
+        </div>
+        <div class="px-6 py-5 space-y-6 overflow-y-auto flex-1">
+            <!-- Budget -->
+            <div>
+                <label class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Budget
+                    Range</label>
+                <div class="flex items-center gap-3">
+                    <div class="flex-1">
+                        <label class="text-xs text-text-sub mb-1 block">Min (₹ Cr)</label>
+                        <input id="budgetMin" type="number" min="0" max="50" step="0.25" value="0"
+                            class="w-full px-3 py-2 rounded-chip border border-border-soft text-sm font-ui focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none" />
+                    </div>
+                    <span class="text-text-sub text-sm mt-5">—</span>
+                    <div class="flex-1">
+                        <label class="text-xs text-text-sub mb-1 block">Max (₹ Cr)</label>
+                        <input id="budgetMax" type="number" min="0" max="50" step="0.25" value="50"
+                            class="w-full px-3 py-2 rounded-chip border border-border-soft text-sm font-ui focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none" />
+                    </div>
+                </div>
+            </div>
+            <!-- Bedrooms -->
+            <div>
+                <label
+                    class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Bedrooms</label>
+                <div class="flex gap-2 flex-wrap" id="bedroomBtns">
+                    <button class="bedroom-btn active" data-bhk="any">Any</button>
+                    <button class="bedroom-btn" data-bhk="1">1 BHK</button>
+                    <button class="bedroom-btn" data-bhk="2">2 BHK</button>
+                    <button class="bedroom-btn" data-bhk="3">3 BHK</button>
+                    <button class="bedroom-btn" data-bhk="4">4 BHK</button>
+                    <button class="bedroom-btn" data-bhk="5">5+ BHK</button>
+                </div>
+            </div>
+            <!-- Possession -->
+            <div>
+                <label
+                    class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Possession
+                    Timeline</label>
+                <div class="flex gap-2 flex-wrap" id="possessionBtns">
+                    <button class="possession-btn active" data-poss="any">Any</button>
+                    <button class="possession-btn" data-poss="immediate">Immediate</button>
+                    <button class="possession-btn" data-poss="6months">Within 6 Months</button>
+                    <button class="possession-btn" data-poss="1year">Within 1 Year</button>
+                    <button class="possession-btn" data-poss="2years">1–2 Years</button>
+                </div>
+            </div>
+            <!-- Amenities -->
+            <div>
+                <label
+                    class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Amenities</label>
+                <div class="grid grid-cols-2 gap-2" id="amenityToggles">
+                    <label class="amenity-toggle"><input type="checkbox" value="Swimming Pool" /><span>Swimming
+                            Pool</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Gym" /><span>Gym</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Club House" /><span>Club
+                            House</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Garden" /><span>Garden</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Parking" /><span>Parking</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Security" /><span>24/7
+                            Security</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Power Backup" /><span>Power
+                            Backup</span></label>
+                    <label class="amenity-toggle"><input type="checkbox" value="Children Play Area" /><span>Play
+                            Area</span></label>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center gap-3 px-6 py-4 border-t border-border-soft bg-white">
+            <button type="button" id="resetFiltersBtn"
+                class="flex-1 py-2.5 rounded-pill border border-border-soft text-sm font-ui font-medium text-text-sub hover:border-primary hover:text-primary transition-all">Reset</button>
+            <button type="button" id="applyFiltersBtn"
+                class="flex-1 py-2.5 rounded-pill bg-primary text-white text-sm font-ui font-semibold hover:bg-primary-dark transition-all">Apply
+                Filters</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="listings.js" defer></script>
+    <script src="assets/property-search-hero.js" defer></script>
+    <script src="shared-footer.js" defer></script>
+    <script>
+        (function initGlobalLoader() {
+            const MIN_LOADING_TIME = 1300;
+            let isPageLoaded = false;
+            let minTimeElapsed = false;
+
+            window.addEventListener('load', () => {
+                isPageLoaded = true;
+                checkAndRemoveLoader();
+            });
+
+            setTimeout(() => {
+                minTimeElapsed = true;
+                checkAndRemoveLoader();
+            }, MIN_LOADING_TIME);
+
+            function checkAndRemoveLoader() {
+                if (!isPageLoaded || !minTimeElapsed) return;
+
+                const loaderView = document.getElementById('vanilla-loader');
+                if (!loaderView) return;
+
+                loaderView.style.clipPath = 'circle(0% at 50% 50%)';
+                loaderView.style.pointerEvents = 'none';
+
+                document.body.classList.remove('is-loading');
+                document.body.classList.add('loader-done', 'loading-lock');
+                window.dispatchEvent(new Event('resize'));
+
+                sessionStorage.removeItem('scrollPosition');
+
+                setTimeout(() => {
+                    loaderView.remove();
+                    document.body.classList.remove('loading-lock');
+                    window.dispatchEvent(new Event('resize'));
+                }, 1200);
+            }
+        })();
+    </script>
+
+</body>
+
+</html>

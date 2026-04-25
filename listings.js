@@ -3,7 +3,8 @@
    ================================================================ */
 
 // ---- Mapbox Token ----
-mapboxgl.accessToken = 'REPLACE_WITH_YOUR_MAPBOX_TOKEN';
+// IMPORTANT: Replace the dummy key below with your actual Mapbox public token
+mapboxgl.accessToken = 'REPLACE_WITH_YOUR_MAPBOX_PUBLIC_TOKEN';
 
 // ---- Dummy Property Data (18 properties across Ahmedabad) ----
 const PROPERTIES = [
@@ -391,6 +392,18 @@ let activeTypeFilter = 'all';
 let activeStatusFilter = null;
 let searchQuery = '';
 let sortOrder = null; // null | 'asc' | 'desc'
+
+// URL Parameter Handling
+const urlParams = new URL(window.location.href).searchParams;
+if (urlParams.get('search')) {
+    searchQuery = urlParams.get('search');
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.value = searchQuery;
+}
+if (urlParams.get('filter')) {
+    activeTypeFilter = urlParams.get('filter') || 'all';
+}
+
 let markers = [];
 let activePopup = null;
 let highlightedCardId = null;
@@ -414,9 +427,23 @@ let advAmenities = [];
 
 // ---- Initialize ----
 document.addEventListener('DOMContentLoaded', () => {
+    // Apply initial UI states from URL params
+    if (activeTypeFilter !== 'all') {
+        document.querySelectorAll('.filter-chip[data-filter]').forEach(btn => {
+            if (btn.getAttribute('data-filter') === activeTypeFilter) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
     initMap();
     bindEvents();
     renderAll();
+
+    // Failsafe: ensure filters drawer is closed on initial load
+    closeFiltersDrawer();
 });
 
 function switchConfig(e, propertyId, configIndex) {
@@ -424,7 +451,9 @@ function switchConfig(e, propertyId, configIndex) {
     activeConfigs[propertyId] = configIndex;
 
     const prop = PROPERTIES.find(p => p.id === propertyId);
-    const config = prop.configs[configIndex];
+    const config = (prop.configs && prop.configs[configIndex]) ? prop.configs[configIndex] : null;
+
+    if (!config) return;
 
     const card = document.querySelector(`.property-card[data-id="${propertyId}"]`);
     if (card) {
@@ -440,6 +469,10 @@ function switchConfig(e, propertyId, configIndex) {
         const facingEl = card.querySelector('.stat-chip[data-stat="facing"] span:last-child');
         if (facingEl) facingEl.textContent = config.facing;
 
+        // BHK
+        const bhkEl = card.querySelector('.stat-chip[data-stat="bhk"] span:last-child');
+        if (bhkEl) bhkEl.textContent = `${config.bhk} BHK`;
+
         // Cashback
         const cashbackEl = card.querySelector('.cashback-amount');
         if (cashbackEl) {
@@ -447,11 +480,28 @@ function switchConfig(e, propertyId, configIndex) {
             cashbackEl.textContent = `₹${cashback.toLocaleString('en-IN')}`;
         }
 
-        // Toggle UI
+        // Toggle UI on card
         const pills = card.querySelectorAll('.bhk-pill');
         pills.forEach((p, idx) => {
             p.classList.toggle('active', idx === configIndex);
         });
+    }
+
+    // Sync Map Marker Price
+    const m = markers.find(mk => mk.id === propertyId);
+    if (m && m.element) {
+        const textSpan = m.element.querySelector('span');
+        if (textSpan) textSpan.textContent = config.price;
+    }
+
+    // If popup is open for this property, refresh its content
+    if (activePopup) {
+         // Get coordinates of active popup
+         const lngLat = activePopup.getLngLat();
+         // If IDs match (using proximity as a proxy or just checking the currently tracked prop in popup view, let's just re-open as that's safer)
+         if (prop.lng === lngLat.lng && prop.lat === lngLat.lat) {
+             openMapPopup(prop); // This will naturally use the new activeConfigs state
+         }
     }
 }
 
@@ -538,6 +588,11 @@ function renderMarkers() {
     markers = [];
 
     filteredProperties.forEach(prop => {
+        // Check for active BHK config selection
+        const configIdx = activeConfigs[prop.id] || 0;
+        const config = (prop.configs && prop.configs[configIdx]) ? prop.configs[configIdx] : null;
+        const finalPrice = config ? config.price : prop.price;
+
         // Zero-footprint wrapper to prevent Mapbox dimension recalculation leaps
         const wrapper = document.createElement('div');
         wrapper.className = 'marker-wrapper';
@@ -546,15 +601,14 @@ function renderMarkers() {
         const pill = document.createElement('div');
         pill.className = 'price-marker';
         pill.dataset.id = prop.id;
-        pill.innerHTML = `<span>${prop.price}</span>`; // Wrap text in span so we can hide it without breaking the dot container
+        pill.innerHTML = `<span>${finalPrice}</span>`; 
 
         wrapper.appendChild(pill);
 
         // Hover: scale up — gated by hover-intent delay to ignore accidental grazes
         pill.addEventListener('mouseenter', () => {
             triggerHoverIntent(() => {
-                pill.classList.add('active');
-                wrapper.classList.add('top');
+                panToProperty(prop);
                 highlightCard(prop.id, true);
             });
         });
@@ -585,19 +639,27 @@ function openMapPopup(prop) {
     hasClickZoomed = false; // suppress zoom-out inside closeActivePopup so two quick clicks don't fight
     closeActivePopup();
 
+    const configIdx = activeConfigs[prop.id] || 0;
+    const config = (prop.configs && prop.configs[configIdx]) ? prop.configs[configIdx] : null;
+    
+    const displayPrice = config ? config.price : prop.price;
+    const displayBHK = config ? config.bhk : (prop.bhk || '');
+    const displayArea = config ? config.area : prop.area;
+    const displayFacing = config ? config.facing : prop.facing;
+
     const html = `
         <img class="popup-image" src="${prop.image}" alt="${prop.name}" loading="lazy" />
         <div class="popup-body">
-            <div class="popup-price">${prop.price}</div>
+            <div class="popup-price">${displayPrice}</div>
             <div class="popup-name">${prop.name}</div>
             <div class="popup-location">
                 <span class="material-icons-outlined" style="font-size:12px;color:#8C274C">location_on</span>
                 ${prop.location}
             </div>
             <div class="popup-stats">
-                ${prop.bhk ? `<span class="popup-stat">${prop.bhk} BHK</span>` : ''}
-                <span class="popup-stat">${prop.area}</span>
-                <span class="popup-stat">${prop.facing}</span>
+                ${displayBHK ? `<span class="popup-stat">${displayBHK} BHK</span>` : ''}
+                <span class="popup-stat">${displayArea}</span>
+                <span class="popup-stat">${displayFacing}</span>
             </div>
             <button class="popup-view-btn" onclick="scrollToCard(${prop.id})">View Details</button>
         </div>
@@ -642,42 +704,28 @@ function closeActivePopup() {
 }
 
 function panToProperty(prop) {
-    // If the map is zoomed in FROM A CLICK on a DIFFERENT property, reset the view.
-    // If we are hovering the property that is ALREADY zoomed in/open, do nothing (keep the zoom).
-    if (hasClickZoomed) {
-        const isCurrentPropOpen = activePopup && activePopup.getLngLat().lng === prop.lng && activePopup.getLngLat().lat === prop.lat;
+    // If we're hovering a DIFFERENT property than the last one, ensure we stay/return to the default view
+    // This allows the user to browse without being 'stuck' in a zoomed-in focus
+    const isNewFocus = !activePopup || (activePopup.getLngLat().lng !== prop.lng || activePopup.getLngLat().lat !== prop.lat);
 
-        if (!isCurrentPropOpen) {
-            hasClickZoomed = false;      // clear flag
-            closeActivePopup();           // remove UI state of previous property
-            unhighlightAllCards();        // remove card highlight
-            fitMapToBounds();             // zoom out
+    if (isNewFocus) {
+        // Clear focus states
+        hasClickZoomed = false;      
+        closeActivePopup();           
+        
+        // Snap back to the professional default overview showing all properties
+        fitMapToBounds();             
 
-            // Highlight the NEW hovered marker after standardizing view
-            markers.forEach(m => {
-                const isActive = m.id === prop.id;
-                m.element.classList.toggle('active', isActive);
-                m.wrapper.classList.toggle('top', isActive);
-            });
-        }
-        return;
+        // Highlight the hovered marker visually
+        // We do this immediately so it feels responsive while the map is adjusting
+        markers.forEach(m => {
+            const isActive = m.id === prop.id;
+            m.element.classList.toggle('active', isActive);
+            m.wrapper.classList.toggle('top', isActive);
+        });
     }
 
-    // Normal hover: check if property is already visible within current viewport bounds
-    const bounds = map.getBounds();
-    const isVisible = bounds.contains([prop.lng, prop.lat]);
-
-    // Only pan if off-screen (Airbnb style)
-    if (!isVisible) {
-        map.panTo([prop.lng, prop.lat], { duration: 600 });
-    }
-
-    // Highlight marker
-    markers.forEach(m => {
-        const isActive = m.id === prop.id;
-        m.element.classList.toggle('active', isActive);
-        m.wrapper.classList.toggle('top', isActive);
-    });
+    // Scroll card into view is handled by the calling site (mouseenter)
 }
 
 function scrollToCard(propId) {
@@ -854,7 +902,10 @@ function onCardLeave(id) {
 function onCardClick(id) {
     const prop = PROPERTIES.find(p => p.id === id);
     if (!prop) return;
-    openMapPopup(prop);
+    
+    // For the purpose of the demo, navigate to the newly created details page
+    // In a real app we'd pass ?id=${id}
+    window.location.href = `property-detail.html?id=${id}`;
 }
 
 function toggleWishlist(e, id) {
@@ -1031,9 +1082,18 @@ function bindEvents() {
 // FILTERS DRAWER
 // ================================================================
 function openFiltersDrawer() {
-    document.getElementById('filtersOverlay').classList.remove('hidden');
+    const overlay = document.getElementById('filtersOverlay');
+    const drawer = document.getElementById('filtersDrawer');
+    
+    if (!overlay || !drawer) return;
+
+    // Prevent double-triggering if already open
+    if (drawer.classList.contains('open')) return;
+
+    overlay.classList.remove('hidden');
+    // small delay to ensure visibility:hidden is removed before transform
     setTimeout(() => {
-        document.getElementById('filtersDrawer').classList.add('open');
+        drawer.classList.add('open');
     }, 10);
 }
 

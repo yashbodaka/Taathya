@@ -1,8 +1,14 @@
-<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="260" height="80" rx="24" fill="#FFF8F7"/>
-  <rect x="16" y="16" width="48" height="48" rx="16" fill="#C83E3E"/>
-  <rect x="26" y="26" width="28" height="28" rx="8" fill="white" opacity="0.96"/>
-  <rect x="34" y="34" width="12" height="12" rx="3" fill="#1F3563"/>
-  <text x="78" y="34" fill="#8E2D2D" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
-  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">HDFC Bank</text>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_102_829)">
+<path d="M0 -3.43047e-07H24V24H0V-3.43047e-07Z" fill="#ED232A"/>
+<path d="M4.20058 4.20067H19.8023V19.8024H4.20058V4.20067Z" fill="white"/>
+<path d="M10.8003 -3.43047e-07H13.1993V24H10.8003V-3.43047e-07Z" fill="white"/>
+<path d="M0 10.8034H24V13.2024H0V10.8034Z" fill="white"/>
+<path d="M8.40117 8.40133H15.6014V15.6017H8.40117V8.40133Z" fill="#004C8F"/>
+</g>
+<defs>
+<clipPath id="clip0_102_829">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
 </svg>

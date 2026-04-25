@@ -1,8 +1,0 @@
-<svg width="260" height="80" viewBox="0 0 260 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="260" height="80" rx="24" fill="#FFF6F0"/>
-  <circle cx="40" cy="40" r="24" fill="#B76A1F"/>
-  <path d="M31 26C43 27 51 35 51 46C51 50 50 54 47 57C39 56 33 52 30 45C28 40 28 33 31 26Z" fill="#5B240E"/>
-  <path d="M42 23C48 27 52 34 52 41C52 47 50 53 46 58C42 54 39 48 39 41C39 34 40 28 42 23Z" fill="white" opacity="0.88"/>
-  <text x="78" y="34" fill="#B76A1F" font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="0.18em">PARTNER</text>
-  <text x="78" y="56" fill="#162033" font-family="Segoe UI, Arial, sans-serif" font-size="24" font-weight="800">ICICI Bank</text>
-</svg>

@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Sora:wght@100;200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
 
@@ -38,7 +38,20 @@
                     fontFamily: {
                         display: ["'Sora'", "sans-serif"],
                         body: ["'Inter'", "sans-serif"],
-                        ui: ["'Space Grotesk'", "sans-serif"],
+                        ui: ["'Inter'", "sans-serif"],
+                    },
+                    fontSize: {
+                        'display-2xl': ['6rem', { lineHeight: '1', letterSpacing: '-0.04em', fontWeight: '800' }],
+                        'display-xl': ['5rem', { lineHeight: '1.05', letterSpacing: '-0.04em', fontWeight: '800' }],
+                        'display-lg': ['4rem', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '800' }],
+                        'display-md': ['3rem', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '700' }],
+                        'display-sm': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '700' }],
+                        'text-xl': ['1.25rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+                        'text-lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0', fontWeight: '400' }],
+                        'text-md': ['1rem', { lineHeight: '1.5', letterSpacing: '0', fontWeight: '400' }],
+                        'text-sm': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0.01em', fontWeight: '500' }],
+                        'text-xs': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.02em', fontWeight: '600' }],
+                        'overline': ['0.65rem', { lineHeight: '1', letterSpacing: '0.25em', fontWeight: '800' }],
                     },
                     borderRadius: {
                         card: "20px",
@@ -52,9 +65,36 @@
 
     <!-- Listings CSS -->
     <link rel="stylesheet" href="listings.css" />
+    <link rel="stylesheet" href="shared-footer.css" />
 </head>
 
-<body class="font-body bg-bg-page text-text-main m-0 p-0 overflow-hidden h-screen flex flex-col">
+<body class="font-body bg-bg-page text-text-main m-0 p-0 overflow-x-hidden min-h-screen flex flex-col is-loading">
+
+    <!-- --------------------------------------------------------------
+         VANILLA JS KINETIC LOADING SCREEN (Global)
+    -------------------------------------------------------------- -->
+    <div id="vanilla-loader"
+        class="fixed inset-0 z-[99999] bg-[#601931] flex flex-col items-center justify-center overflow-hidden"
+        style="transition: clip-path 1.6s cubic-bezier(0.16, 1, 0.3, 1); clip-path: circle(150% at 50% 50%); pointer-events: all; touch-action: none;">
+
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+            <div class="loader-orbit orbit-1"></div>
+            <div class="loader-orbit orbit-2"></div>
+            <div class="loader-orbit orbit-3"></div>
+        </div>
+
+        <div class="relative z-10 flex flex-col items-center">
+            <div class="loader-vessel mb-6">
+                <img src="assets/logo.png" alt="Taathya Logo" id="loader-logo">
+            </div>
+            <div class="h-6 overflow-hidden">
+                <p class="loader-signature-text" id="loader-status">FORGING FINANCIAL FUTURES</p>
+            </div>
+            <div class="w-32 h-[1px] bg-white/10 mt-12 relative overflow-hidden rounded-full">
+                <div class="absolute top-0 left-0 h-full bg-white/40 w-[40%] animate-[progress-indeterminate_5s_ease-in-out_infinite]"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- ===================== NAVBAR ===================== -->
     <nav
@@ -71,19 +111,19 @@
                 <span
                     class="material-icons-outlined absolute left-5 text-text-sub text-xl group-focus-within:text-primary transition-colors">search</span>
                 <input id="searchInput" type="text" placeholder="Search by name, location, or project type..."
-                    class="w-full h-3rem pl-14 pr-6 rounded-2xl border border-border-soft bg-slate-50 text-base font-ui placeholder:text-text-sub/50 focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]" />
+                    class="w-full h-3rem pl-14 pr-6 rounded-2xl border border-border-soft bg-slate-50 text-md font-ui placeholder:text-text-sub/50 focus:outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]" />
             </div>
         </div>
 
         <!-- Right Actions -->
         <div class="flex items-center gap-4 flex-shrink-0">
             <button id="moreFiltersBtnNav" onclick="openFiltersDrawer()"
-                class="flex items-center gap-2 px-5 py-2.5 rounded-pill border border-border-soft text-sm font-ui font-semibold text-text-sub hover:border-primary hover:shadow-[0_4px_12px_rgba(140,39,76,0.08)] transition-all bg-white">
-                <span class="material-icons-outlined text-lg">tune</span>
+                class="flex items-center gap-2 px-5 py-2.5 rounded-pill border border-border-soft text-[13px] font-semibold text-text-sub hover:border-primary hover:shadow-[0_4px_12px_rgba(140,39,76,0.08)] transition-all bg-white">
+                <span class="material-icons-outlined text-md">tune</span>
                 <span>Filters</span>
             </button>
             <a href="#"
-                class="px-6 py-2.5 rounded-pill bg-primary text-white text-sm font-ui font-bold hover:bg-primary-dark transition-all no-underline shadow-[0_8px_20px_-4px_rgba(140,39,76,0.3)]">
+                class="px-6 py-2.5 rounded-pill bg-primary text-white text-[13px] font-bold hover:bg-primary-dark transition-all no-underline shadow-[0_8px_20px_-4px_rgba(140,39,76,0.3)]">
                 Contact Us
             </a>
         </div>
@@ -93,7 +133,7 @@
     <div
         class="filter-bar flex items-center justify-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-2xl border-b border-border-soft/30 flex-shrink-0 overflow-x-auto scrollbar-hide sticky top-20 z-40 transition-all duration-300">
         <div class="flex items-center gap-2 max-w-7xl mx-auto w-full">
-            <span class="text-[10px] font-bold text-text-sub uppercase tracking-[0.2em] mr-4 opacity-40">Explore</span>
+            <span class="text-[12px] font-bold text-text-sub mr-4 opacity-40">Explore</span>
             <button class="filter-chip active" data-filter="all">All Properties</button>
             <button class="filter-chip" data-filter="Apartment">Apartments</button>
             <button class="filter-chip" data-filter="Villa">Villas</button>
@@ -159,7 +199,7 @@
         <div class="px-6 py-5 space-y-6 overflow-y-auto flex-1">
             <!-- Budget Range -->
             <div>
-                <label class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Budget
+                <label class="text-[13px] font-semibold text-text-sub mb-3 block">Budget
                     Range</label>
                 <div class="flex items-center gap-3">
                     <div class="flex-1">
@@ -178,7 +218,7 @@
             <!-- Bedrooms -->
             <div>
                 <label
-                    class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Bedrooms</label>
+                    class="text-[13px] font-semibold text-text-sub mb-3 block">Bedrooms</label>
                 <div class="flex gap-2 flex-wrap" id="bedroomBtns">
                     <button class="bedroom-btn active" data-bhk="any">Any</button>
                     <button class="bedroom-btn" data-bhk="1">1 BHK</button>
@@ -191,7 +231,7 @@
             <!-- Possession Timeline -->
             <div>
                 <label
-                    class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Possession
+                    class="text-[13px] font-semibold text-text-sub mb-3 block">Possession
                     Timeline</label>
                 <div class="flex gap-2 flex-wrap" id="possessionBtns">
                     <button class="possession-btn active" data-poss="any">Any</button>
@@ -204,7 +244,7 @@
             <!-- Amenities -->
             <div>
                 <label
-                    class="font-ui text-xs font-semibold text-text-sub uppercase tracking-wider mb-3 block">Amenities</label>
+                    class="text-[13px] font-semibold text-text-sub mb-3 block">Amenities</label>
                 <div class="grid grid-cols-2 gap-2" id="amenityToggles">
                     <label class="amenity-toggle"><input type="checkbox" value="Swimming Pool" /><span>Swimming
                             Pool</span></label>
@@ -236,6 +276,8 @@
     </div>
 
     <!-- ===================== JS ===================== -->
+    <script src="shared-footer.js"></script>
+    <script src="script.js"></script>
     <script src="listings.js"></script>
 </body>
 

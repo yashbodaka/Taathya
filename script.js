@@ -1,8 +1,44 @@
+// Preserve Scroll Position Correctly on Reload
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+let storedScrollY = sessionStorage.getItem('scrollPosition') || 0;
+window.addEventListener('beforeunload', () => {
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+});
+
 // Intersection Observer for Reveal Effects
 const observerOptions = {
     threshold: 0.15,
     rootMargin: '0px 0px -50px 0px'
 };
+
+// Initialize Lenis Smooth Scroll
+if (typeof Lenis !== 'undefined') {
+    window.lenis = new Lenis({
+        lerp: 0.1, // Smoothness intensity
+        duration: 1.5, // Even smoother/stickier transition
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.1, // Subtle boost to responsiveness
+        smoothTouch: false,
+        infinite: false,
+    });
+
+    function raf(time) {
+        window.lenis.raf(time);
+        requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+} else {
+    console.warn("Lenis smooth scroll library not found.");
+    // Fallback or dummy object to prevent errors in later on() calls
+    window.lenis = { on: () => {} };
+}
 
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -48,8 +84,8 @@ function switchTab(tabName) {
 }
 
 // Parallax scroll effect for images
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
+window.lenis.on('scroll', (e) => {
+    const scrolled = e.scroll;
     const parallaxImages = document.querySelectorAll('.parallax-image');
 
     parallaxImages.forEach((img, index) => {
@@ -154,6 +190,7 @@ function updateCalculatorUI(principal, emi, interest, rate, tenure) {
     const tenureVal = document.getElementById('tenure-val');
     const principalVal = document.getElementById('principal-val');
     const interestAmtVal = document.getElementById('interest-amt-val');
+    const cashbackVal = document.getElementById('cashback-val');
     const principalBar = document.getElementById('principal-bar');
     const interestBar = document.getElementById('interest-bar');
 
@@ -163,6 +200,7 @@ function updateCalculatorUI(principal, emi, interest, rate, tenure) {
     if (tenureVal) tenureVal.textContent = `${tenure} Yrs`;
     if (principalVal) principalVal.textContent = `₹${principal.toLocaleString('en-IN')}`;
     if (interestAmtVal) interestAmtVal.textContent = `₹${Math.round(interest).toLocaleString('en-IN')}`;
+    if (cashbackVal) cashbackVal.textContent = `₹${Math.round(principal * 0.005).toLocaleString('en-IN')}`;
 
     if (principalBar && interestBar) {
         const total = principal + interest;
@@ -181,7 +219,11 @@ document.addEventListener('DOMContentLoaded', () => {
             el.addEventListener('input', calculateEMI);
         }
     });
-    calculateEMI();
+
+    // Trigger initial calculation once everything is ready
+    if (document.getElementById('loan-amount')) {
+        calculateEMI();
+    }
 
     initCarousel();
 });
@@ -281,9 +323,12 @@ function initHeroScrollAnimation() {
         const rect = container.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         
-        const scrollableDistance = rect.height - windowHeight;
-        let progress = -rect.top / scrollableDistance;
-        
+        let progress = 0;
+        if (!document.body.classList.contains('is-loading') && !document.body.classList.contains('loading-lock')) {
+            const scrollableDistance = Math.max(1, rect.height - windowHeight);
+            progress = -rect.top / scrollableDistance;
+        }
+
         progress = Math.max(0, Math.min(1, progress));
 
         // Phase 1: Circular Expansion Reveal
@@ -369,12 +414,158 @@ function initHeroScrollAnimation() {
         }
     };
 
-    window.addEventListener('scroll', () => {
-        requestAnimationFrame(handleScroll);
-    });
+    window.lenis.on('scroll', handleScroll);
     window.addEventListener('resize', handleScroll);
     
     handleScroll();
 }
 
 document.addEventListener('DOMContentLoaded', initHeroScrollAnimation);
+
+// ================================================================
+// DYNAMIC NAVBAR — Scroll-adaptive transparency & color detection
+// ================================================================
+(function initDynamicNavbar() {
+    const navbar = document.getElementById('site-header');
+    if (!navbar) return;
+
+    // Helper: parse rgb/rgba string → {r, g, b, a}
+    function parseRGB(str) {
+        if (!str) return null;
+        const m = str.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+        if (!m) return null;
+        return {
+            r: +m[1], g: +m[2], b: +m[3],
+            a: m[4] !== undefined ? +m[4] : 1
+        };
+    }
+
+    // Helper: relative luminance (WCAG formula)
+    function luminance(r, g, b) {
+        const sRGB = [r, g, b].map(c => {
+            c /= 255;
+            return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+        });
+        return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
+    }
+
+    // Walk up DOM to get the effective background color
+    function getEffectiveBg(el) {
+        while (el && el !== document.documentElement) {
+            const bg = window.getComputedStyle(el).backgroundColor;
+            const parsed = parseRGB(bg);
+            // Skip transparent elements
+            if (parsed && parsed.a > 0.05 && !(parsed.r === 0 && parsed.g === 0 && parsed.b === 0 && parsed.a < 0.1)) {
+                return parsed;
+            }
+            el = el.parentElement;
+        }
+        // Default: treat as light
+        return { r: 255, g: 255, b: 255, a: 1 };
+    }
+
+    let lastMode = '';
+    let rafPending = false;
+
+    function updateNavbar() {
+        rafPending = false;
+        const scrollY = window.scrollY;
+        const navH = navbar.offsetHeight || 80;
+
+        // Sample a point just below the navbar (center of page)
+        const sampleX = window.innerWidth / 2;
+        const sampleY = navH + 20;
+
+        // Temporarily hide navbar to hit-test the element below it
+        navbar.style.pointerEvents = 'none';
+        const el = document.elementFromPoint(sampleX, sampleY);
+        navbar.style.pointerEvents = '';
+
+        const bg = el ? getEffectiveBg(el) : { r: 255, g: 255, b: 255, a: 1 };
+        const lum = luminance(bg.r, bg.g, bg.b);
+        const theme = lum > 0.35 ? 'light' : 'dark';
+
+        let mode;
+        if (scrollY < 30) {
+            // Very top — always transparent to blend with hero
+            mode = 'transparent';
+        } else {
+            mode = theme;
+        }
+
+        if (mode !== lastMode) {
+            navbar.setAttribute('data-navbar-mode', mode);
+            lastMode = mode;
+        }
+        
+        // Also set theme so transparent state knows if background is light or dark
+        navbar.setAttribute('data-navbar-theme', theme);
+    }
+
+    function scheduleUpdate() {
+        if (!rafPending) {
+            rafPending = true;
+            requestAnimationFrame(updateNavbar);
+        }
+    }
+
+    window.lenis.on('scroll', scheduleUpdate);
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
+
+    // Initial run after a short delay to let page paint
+    setTimeout(updateNavbar, 120);
+})();
+
+// ================================================================
+// GLOBAL KINETIC LOADING SCREEN
+// ================================================================
+(function initGlobalLoader() {
+    // Aesthetic loading time (1.3s)
+    const MIN_LOADING_TIME = 1300; 
+    let isPageLoaded = false;
+    let minTimeElapsed = false;
+
+    window.addEventListener('load', () => {
+        isPageLoaded = true;
+        checkAndRemoveLoader();
+    });
+
+    setTimeout(() => {
+        minTimeElapsed = true;
+        checkAndRemoveLoader();
+    }, MIN_LOADING_TIME);
+
+    function checkAndRemoveLoader() {
+        if (!isPageLoaded || !minTimeElapsed) return;
+
+        const loaderView = document.getElementById("vanilla-loader");
+        if (loaderView) {
+            // Circle shrink effect
+            loaderView.style.clipPath = "circle(0% at 50% 50%)";
+            loaderView.style.pointerEvents = "none";
+            
+            // Sync: Hide scrollbar during the transition animation (1.2s)
+            document.body.classList.remove("is-loading");
+            document.body.classList.add("loader-done", "loading-lock");
+
+            window.dispatchEvent(new Event('resize'));
+            
+            // Hero video handling (if present)
+            const heroVideo = document.getElementById("hero-video");
+            if (heroVideo) {
+                heroVideo.play().catch(e => console.log("Hero video autoplay delayed", e));
+            }
+
+            // Clear stored scroll position to prevent cross-page scroll bleeding
+            // (e.g., when navigating from one page to another via link)
+            sessionStorage.removeItem('scrollPosition');
+
+            // Clean up DOM after animation is finished
+            setTimeout(() => {
+                loaderView.remove();
+                document.body.classList.remove("loading-lock");
+                window.dispatchEvent(new Event('resize'));
+            }, 1200);
+        }
+    }
+})();
